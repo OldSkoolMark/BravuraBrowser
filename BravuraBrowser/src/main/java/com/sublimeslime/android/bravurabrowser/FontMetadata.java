@@ -12,8 +12,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by mark on 4/1/14.
@@ -75,7 +78,7 @@ public class FontMetadata {
     }
 
     /**
-     * Result of parsing the glyph json file
+     * Result of parsing the glyph json file. Categorizes glyphs by name
      */
     private GlyphMap mGlyphMap;
 
@@ -94,6 +97,14 @@ public class FontMetadata {
         public String toString() {
             return "[ " + codepoint + "," + (alternateCodepoint == null ? "" : alternateCodepoint) + " ]" ;
         }
-
     }
+    public List<String> getCategories(){
+        Set<String> keySet = mGlyphClasses.glyphClasses.keySet();
+        List<String> keys = new ArrayList<String>();
+        keys.addAll(keySet);
+        Collections.sort(keys);
+        return keys;
+    }
+
+    private final List<String> mGlyphCategoryNames = new ArrayList<String>();
 }
