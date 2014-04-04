@@ -61,6 +61,10 @@ public class FontMetadata {
         Reader r = new InputStreamReader(is);
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         mGlyphClasses = gson.fromJson(r, GlyphClasses.class);
+
+        Set<String> keySet = mGlyphClasses.glyphClasses.keySet();
+        mGlyphClassNames.addAll(keySet);
+        Collections.sort(mGlyphClassNames);
 //        Log.i(TAG, mGlyphClasses.toString());
     }
     // Singleton
@@ -76,11 +80,11 @@ public class FontMetadata {
             return "glyphClasses = "+ glyphClasses;
         }
     }
-
     /**
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */
     private GlyphMap mGlyphMap;
+    private List<String> mGlyphClassNames = new ArrayList<String>();
 
     public static class GlyphMap {
         Map<String,Glyph> glyphMap;
@@ -99,11 +103,7 @@ public class FontMetadata {
         }
     }
     public List<String> getCategories(){
-        Set<String> keySet = mGlyphClasses.glyphClasses.keySet();
-        List<String> keys = new ArrayList<String>();
-        keys.addAll(keySet);
-        Collections.sort(keys);
-        return keys;
+        return mGlyphClassNames;
     }
 
     private final List<String> mGlyphCategoryNames = new ArrayList<String>();

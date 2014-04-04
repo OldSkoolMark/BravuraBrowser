@@ -142,11 +142,17 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void selectItem(int position) {
-        // update the main content by replacing fragments
-        Fragment fragment = new GridFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
+        List<String> categories = FontMetadata.getInstance().getCategories();
+        if( position < categories.size()){
+            String glyphClassName = categories.get(position);
+            // update the main content by replacing fragments
+            Bundle b = new Bundle();
+            b.putString("category", glyphClassName);
+            Fragment fragment = new GridFragment();
+            fragment.setArguments(b);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
   //      setTitle(mPlanetTitles[position]);
@@ -178,31 +184,6 @@ public class MainActivity extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
-
-    public static class PlanetFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
-        public PlanetFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-            int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.planets_array)[i];
-
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                    "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
-            return rootView;
-        }
-    }
-     */
     public static class GridFragment extends Fragment {
         public GridFragment() {
             // Empty constructor required for fragment subclasses
@@ -212,12 +193,20 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
+            Bundle b = getArguments();
+            String category = b.getString("category");
             mGridView = (GridView)rootView.findViewById(R.id.gridview);
             mGridView.setAdapter(new NumberListAdapter(this.getActivity()));
             return rootView;
         }
 
         private GridView mGridView;
+    }
+    private static List<String> mNumberList = new ArrayList<String>();
+    static {
+        for( int i=0; i<133; i++){
+            mNumberList.add(i, Integer.toString(i));
+        }
     }
     public static class NumberListAdapter extends ArrayAdapter<String>{
         public NumberListAdapter(Context c){
@@ -235,12 +224,7 @@ public class MainActivity extends ActionBarActivity {
             return super.getView(position, convertView, parent);
         }
     }
-    private static List<String> mNumberList = new ArrayList<String>();
-    static {
-        for( int i=0; i<133; i++){
-            mNumberList.add(i, Integer.toString(i));
-        }
-    }
+
     private class LoadGlyphsTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
