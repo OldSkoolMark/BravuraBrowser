@@ -73,9 +73,12 @@ public class FontMetadata {
     private final static String TAG = FontMetadata.class.getCanonicalName();
 
     private GlyphClasses mGlyphClasses;
+    public ArrayList<String> getGlyphsNamesForCategory(String category){
+        return mGlyphClasses.glyphClasses.get(category);
+    }
     public static class GlyphClasses {
-        Map<String, ArrayList<String>> glyphClasses;
-        @Override
+        public Map<String, ArrayList<String>> glyphClasses;
+         @Override
         public String toString(){
             return "glyphClasses = "+ glyphClasses;
         }
@@ -85,7 +88,9 @@ public class FontMetadata {
      */
     private GlyphMap mGlyphMap;
     private List<String> mGlyphClassNames = new ArrayList<String>();
-
+    public Glyph getGlyphByName(String name){
+        return mGlyphMap.glyphMap.get(name);
+    }
     public static class GlyphMap {
         Map<String,Glyph> glyphMap;
         @Override

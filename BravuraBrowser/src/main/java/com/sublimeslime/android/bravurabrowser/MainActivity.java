@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.app.SearchManager;
@@ -31,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
@@ -41,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle =  "foobar";
     private FontMetadata mFontMetadata;
+    private Typeface mTypeface;
     private ArrayAdapter<String> mCategoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
         mCategoryAdapter = new CategoryListAdapter(MainActivity.this);
         mDrawerList.setAdapter(mCategoryAdapter);
 
+        mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -184,7 +188,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public static class GridFragment extends Fragment {
+    public class GridFragment extends Fragment {
         public GridFragment() {
             // Empty constructor required for fragment subclasses
         }
@@ -196,24 +200,36 @@ public class MainActivity extends ActionBarActivity {
             Bundle b = getArguments();
             String category = b.getString("category");
             mGridView = (GridView)rootView.findViewById(R.id.gridview);
-            mGridView.setAdapter(new NumberListAdapter(this.getActivity()));
+            mGridView.setAdapter(new GlyphListAdapter(category));
             return rootView;
         }
 
         private GridView mGridView;
     }
-    private static List<String> mNumberList = new ArrayList<String>();
-    static {
-        for( int i=0; i<133; i++){
-            mNumberList.add(i, Integer.toString(i));
+
+    public class GlyphListAdapter extends ArrayAdapter<FontMetadata.Glyph>{
+        public GlyphListAdapter( String glyphCategory){
+            super( MainActivity.this, R.layout.glyph);
+            for(String name : FontMetadata.getInstance().getGlyphsNamesForCategory(glyphCategory))
+            {
+                add(FontMetadata.getInstance().getGlyphByName(name));
+            }
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = convertView == null ?
+                    ((LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null)
+                    : convertView;
+            TextView tv = (TextView)convertView;
+            FontMetadata.Glyph g = (FontMetadata.Glyph)getItem(position);
+            tv.setTypeface(mTypeface);
+            String uniCode = g.codepoint.replace("U+","\\u");
+            tv.setText(uniCode);
+            return tv;
         }
     }
-    public static class NumberListAdapter extends ArrayAdapter<String>{
-        public NumberListAdapter(Context c){
-            super(c, R.layout.grid_item, mNumberList);
-        }
-    }
-    public class CategoryListAdapter extends ArrayAdapter<String>{
+
+      public class CategoryListAdapter extends ArrayAdapter<String>{
         private List<String> mCategoryTitles;
         public CategoryListAdapter(Context c){
             super(c, R.layout.drawer_list_item);
@@ -229,8 +245,8 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                mFontMetadata.parseGlyphNames(MainActivity.this, "glyphnames.json");
-                mFontMetadata.parseGlyphClasses(MainActivity.this, "classes.json");
+                mFontMetadata.parseGlyphNames(MainActivity.this, "bravura/glyphnames.json");
+                mFontMetadata.parseGlyphClasses(MainActivity.this, "bravura/classes.json");
             } catch( IOException e){
                 Log.e(TAG, "error parsing glyph names: " + e.getMessage());
             }
