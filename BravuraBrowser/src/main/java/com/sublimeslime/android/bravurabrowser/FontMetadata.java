@@ -83,6 +83,13 @@ public class FontMetadata {
             return "glyphClasses = "+ glyphClasses;
         }
     }
+
+    public String parseUnicodeCodepoint( String codepoint ){
+        String hex = codepoint.replace("U+","");
+        int intValue = Integer.parseInt(hex, 16);
+        char uniChar = (char)intValue;
+        return Character.toString(uniChar);
+    }
     /**
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */

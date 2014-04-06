@@ -223,7 +223,7 @@ public class MainActivity extends ActionBarActivity {
             TextView tv = (TextView)convertView;
             FontMetadata.Glyph g = (FontMetadata.Glyph)getItem(position);
             tv.setTypeface(mTypeface);
-            String uniCode = g.codepoint.replace("U+","\\u");
+            String uniCode = FontMetadata.getInstance().parseUnicodeCodepoint(g.codepoint);
             tv.setText(uniCode);
             return tv;
         }
