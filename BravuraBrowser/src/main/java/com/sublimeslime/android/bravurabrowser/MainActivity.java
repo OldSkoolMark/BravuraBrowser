@@ -2,17 +2,12 @@ package com.sublimeslime.android.bravurabrowser;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,10 +26,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
@@ -43,7 +36,6 @@ public class MainActivity extends ActionBarActivity {
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle =  "foobar";
-    private FontMetadata mFontMetadata;
     private Typeface mTypeface;
     private ArrayAdapter<String> mCategoryAdapter;
     @Override
@@ -91,7 +83,6 @@ public class MainActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-        mFontMetadata = FontMetadata.getInstance();
         new LoadGlyphsTask().execute();
 
     }
@@ -224,7 +215,7 @@ public class MainActivity extends ActionBarActivity {
             TextView tv = (TextView)convertView;
             FontMetadata.Glyph g = (FontMetadata.Glyph)getItem(position);
             tv.setTypeface(mTypeface);
-            String uniCode = FontMetadata.getInstance().parseUnicodeCodepoint(g.codepoint);
+            String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
             tv.setText(uniCode);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40.0f);
             return tv;
@@ -247,8 +238,8 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                mFontMetadata.parseGlyphNames(MainActivity.this, "bravura/glyphnames.json");
-                mFontMetadata.parseGlyphClasses(MainActivity.this, "bravura/classes.json");
+                FontMetadata.getInstance().parseGlyphNames(MainActivity.this, "bravura/glyphnames.json");
+                FontMetadata.getInstance().parseGlyphCategories(MainActivity.this, "bravura/classes.json");
             } catch( IOException e){
                 Log.e(TAG, "error parsing glyph names: " + e.getMessage());
             }
@@ -258,7 +249,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mCategoryAdapter.addAll(mFontMetadata.getCategories());
+            mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
             mCategoryAdapter.notifyDataSetChanged();
  //           Log.d(TAG,"num categories = "+mFontMetadata.getCategories().size()+" count = "+mCategoryAdapter.getCount());
         }

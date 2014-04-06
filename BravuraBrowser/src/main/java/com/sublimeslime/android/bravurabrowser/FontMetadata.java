@@ -34,7 +34,7 @@ public class FontMetadata {
      * Beginning of file: { glyphMap :
      * End of file: }
      *
-     * @param context
+     * @param context that can provide assets
      * @param jsonAssetFilename name of file in assets/ directory.
      * @throws IOException
      */
@@ -47,16 +47,36 @@ public class FontMetadata {
     }
 
     /**
+     * Translate string representation of codepoint (e.g. U+e054) into unicode
+     * @param codepoint
+     * @return string containing a single unicode character
+     */
+    public String parseGlyphCodepoint(String codepoint){
+        String hex = codepoint.replace("U+","");
+        int intValue = Integer.parseInt(hex, 16);
+        char uniChar = (char)intValue;
+        return Character.toString(uniChar);
+    }
+
+    /**
+     * Return the metadata associate with a glyph
+     * @param name of glyph
+     * @return metadata
+     */
+    public Glyph getGlyphByName(String name){
+        return mGlyphMap.glyphMap.get(name);
+    }
+    /**
      * Parses the Smufl classes.json file. 0.85 was not gson friendly and required hand editing as
      * follows:
      *
      * Beginning of file: { glyphClasses :
      * End of file: }
-     * @param context
+     * @param context that can provide assets
      * @param jsonAssetFilename name of file in assets directory.
      * @throws IOException
      */
-    public void parseGlyphClasses(Context context, String jsonAssetFilename) throws IOException {
+    public void parseGlyphCategories(Context context, String jsonAssetFilename) throws IOException {
         InputStream is = context.getAssets().open(jsonAssetFilename);
         Reader r = new InputStreamReader(is);
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
@@ -67,15 +87,30 @@ public class FontMetadata {
         Collections.sort(mGlyphClassNames);
 //        Log.i(TAG, mGlyphClasses.toString());
     }
+
+    /**
+     * Get names of all glyph categories
+     * @return list of names
+     */
+    public List<String> getCategories(){
+        return mGlyphClassNames;
+    }
+
+    /**
+     * Get names of all glyphs in a category
+     * @param category of glyphs
+     * @return list of names in category
+     */
+    public ArrayList<String> getGlyphsNamesForCategory(String category){
+        return mGlyphClasses.glyphClasses.get(category);
+    }
+
     // Singleton
     private static FontMetadata mThis;
     private FontMetadata(){}
     private final static String TAG = FontMetadata.class.getCanonicalName();
 
     private GlyphClasses mGlyphClasses;
-    public ArrayList<String> getGlyphsNamesForCategory(String category){
-        return mGlyphClasses.glyphClasses.get(category);
-    }
     public static class GlyphClasses {
         public Map<String, ArrayList<String>> glyphClasses;
          @Override
@@ -84,20 +119,11 @@ public class FontMetadata {
         }
     }
 
-    public String parseUnicodeCodepoint( String codepoint ){
-        String hex = codepoint.replace("U+","");
-        int intValue = Integer.parseInt(hex, 16);
-        char uniChar = (char)intValue;
-        return Character.toString(uniChar);
-    }
     /**
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */
     private GlyphMap mGlyphMap;
     private List<String> mGlyphClassNames = new ArrayList<String>();
-    public Glyph getGlyphByName(String name){
-        return mGlyphMap.glyphMap.get(name);
-    }
     public static class GlyphMap {
         Map<String,Glyph> glyphMap;
         @Override
@@ -114,9 +140,4 @@ public class FontMetadata {
             return "[ " + codepoint + "," + (alternateCodepoint == null ? "" : alternateCodepoint) + " ]" ;
         }
     }
-    public List<String> getCategories(){
-        return mGlyphClassNames;
-    }
-
-    private final List<String> mGlyphCategoryNames = new ArrayList<String>();
 }
