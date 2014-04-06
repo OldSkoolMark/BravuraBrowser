@@ -21,6 +21,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -225,6 +226,7 @@ public class MainActivity extends ActionBarActivity {
             tv.setTypeface(mTypeface);
             String uniCode = FontMetadata.getInstance().parseUnicodeCodepoint(g.codepoint);
             tv.setText(uniCode);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40.0f);
             return tv;
         }
     }
