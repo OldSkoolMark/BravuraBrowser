@@ -4,6 +4,7 @@ package com.sublimeslime.android.bravurabrowser;
 import java.io.IOException;
 import java.util.List;
 
+import android.app.FragmentTransaction;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -37,7 +39,9 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle =  "foobar";
     private Typeface mTypeface;
+    private float mFontSize = 64.0f;
     private ArrayAdapter<String> mCategoryAdapter;
+    private String mCurrentFragmentTag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,11 +128,39 @@ public class MainActivity extends ActionBarActivity {
                 }
                 return true;
                 */
+            case R.id.action_fontsize:
+                View v = findViewById(R.id.action_fontsize);
+                PopupMenu pm = new PopupMenu(this, v);
+                pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        mFontSize = Float.parseFloat(menuItem.getTitle().toString());
+                        Fragment fragment = new GridFragment();
+                        Bundle b = new Bundle();
+                        b.putString("category", mCurrentFragmentTag);
+                        fragment.setArguments(b);
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+                        ft.replace(R.id.content_frame, fragment, mCurrentFragmentTag);
+                        ft.addToBackStack(mCurrentFragmentTag);
+                        ft.commit();
+                        return true;
+                    }
+                });
+                pm.inflate(R.menu.fontsize_menu);
+                pm.show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    public Fragment getActiveFragment() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+        return (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
+    }
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -147,7 +179,11 @@ public class MainActivity extends ActionBarActivity {
             Fragment fragment = new GridFragment();
             fragment.setArguments(b);
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.content_frame, fragment, glyphClassName);
+            ft.addToBackStack(glyphClassName);
+            ft.commit();
+            mCurrentFragmentTag = glyphClassName;
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -217,7 +253,7 @@ public class MainActivity extends ActionBarActivity {
             tv.setTypeface(mTypeface);
             String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
             tv.setText(uniCode);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40.0f);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSize);
             return tv;
         }
     }
