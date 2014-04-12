@@ -4,7 +4,6 @@ package com.sublimeslime.android.bravurabrowser;
 import java.io.IOException;
 import java.util.List;
 
-import android.app.FragmentTransaction;
 import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -116,18 +115,6 @@ public class MainActivity extends ActionBarActivity {
         }
         // Handle action buttons
         switch(item.getItemId()) {
-/*            case R.id.action_websearch:
-                // create intent to perform web search for this planet
-                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-                // catch event that there's no activity to handle intent
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-                }
-                return true;
-                */
             case R.id.action_fontsize:
                 View v = findViewById(R.id.action_fontsize);
                 PopupMenu pm = new PopupMenu(this, v);
@@ -135,15 +122,7 @@ public class MainActivity extends ActionBarActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         mFontSize = Float.parseFloat(menuItem.getTitle().toString());
-                        Fragment fragment = new GridFragment();
-                        Bundle b = new Bundle();
-                        b.putString("category", mCurrentFragmentTag);
-                        fragment.setArguments(b);
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.content_frame, fragment, mCurrentFragmentTag);
-                        ft.addToBackStack(mCurrentFragmentTag);
-                        ft.commit();
+                        replaceGridViewFragment(mCurrentFragmentTag);
                         return true;
                     }
                 });
@@ -154,12 +133,20 @@ public class MainActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-    public Fragment getActiveFragment() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            return null;
+
+    private void replaceGridViewFragment(String tag){
+        if( tag != null ) {
+            Fragment fragment = new GridFragment();
+            Bundle b = new Bundle();
+            b.putString("category", tag);
+            fragment.setArguments(b);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.content_frame, fragment, tag);
+            ft.addToBackStack(tag);
+            ft.commit();
+            mCurrentFragmentTag = tag;
         }
-        String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-        return (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -173,17 +160,7 @@ public class MainActivity extends ActionBarActivity {
         List<String> categories = FontMetadata.getInstance().getCategories();
         if( position < categories.size()){
             String glyphClassName = categories.get(position);
-            // update the main content by replacing fragments
-            Bundle b = new Bundle();
-            b.putString("category", glyphClassName);
-            Fragment fragment = new GridFragment();
-            fragment.setArguments(b);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.content_frame, fragment, glyphClassName);
-            ft.addToBackStack(glyphClassName);
-            ft.commit();
-            mCurrentFragmentTag = glyphClassName;
+            replaceGridViewFragment(glyphClassName);
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -197,29 +174,20 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(mTitle);
     }
 
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     public class GridFragment extends Fragment {
-        public GridFragment() {
-            // Empty constructor required for fragment subclasses
-        }
+        public GridFragment() { }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -227,12 +195,10 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
             Bundle b = getArguments();
             String category = b.getString("category");
-            mGridView = (GridView)rootView.findViewById(R.id.gridview);
-            mGridView.setAdapter(new GlyphListAdapter(category));
+            GridView gridView = (GridView)rootView.findViewById(R.id.gridview);
+            gridView.setAdapter(new GlyphListAdapter(category));
             return rootView;
         }
-
-        private GridView mGridView;
     }
 
     public class GlyphListAdapter extends ArrayAdapter<FontMetadata.Glyph>{
@@ -287,7 +253,6 @@ public class MainActivity extends ActionBarActivity {
             super.onPostExecute(aVoid);
             mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
             mCategoryAdapter.notifyDataSetChanged();
- //           Log.d(TAG,"num categories = "+mFontMetadata.getCategories().size()+" count = "+mCategoryAdapter.getCount());
         }
     }
     private final static String TAG = MainActivity.class.getCanonicalName();
