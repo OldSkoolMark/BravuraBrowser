@@ -61,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("no category selected");
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -69,15 +70,13 @@ public class MainActivity extends ActionBarActivity {
                 mDrawerLayout,         /* DrawerLayout object */
                 R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
                 R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-        ) {
+                R.string.drawer_close)  /* "close drawer" description for accessibility */
+        {
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -136,6 +135,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void replaceGridViewFragment(String tag){
         if( tag != null ) {
+            getSupportActionBar().setTitle(tag);
             Fragment fragment = new GridFragment();
             Bundle b = new Bundle();
             b.putString("category", tag);
@@ -225,7 +225,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
       public class CategoryListAdapter extends ArrayAdapter<String>{
-        private List<String> mCategoryTitles;
         public CategoryListAdapter(Context c){
             super(c, R.layout.drawer_list_item);
         }

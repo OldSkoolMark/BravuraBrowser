@@ -1,6 +1,6 @@
 { glyphClasses :
 {
-  "accidentals" : [
+  "Accidentals" : [
     "accidentalFlat",
     "accidentalNatural",
     "accidentalSharp",
@@ -394,7 +394,7 @@
     "accidentalQuarterToneFlatVanBlankenburg",
     "accidentalThreeQuarterTonesFlatCouper"
   ],
-  "accidentals24EDOArrows" : [
+  "Accidentals 24EDOArrows" : [
     "accidentalQuarterToneFlatArrowUp",
     "accidentalThreeQuarterTonesFlatArrowDown",
     "accidentalQuarterToneSharpNaturalArrowUp",
@@ -408,7 +408,7 @@
     "accidentalArrowUp",
     "accidentalArrowDown"
   ],
-  "accidentals53EDOTurkish" : [
+  "Accidentals 53EDOTurkish" : [
     "accidental1CommaSharp",
     "accidental2CommaSharp",
     "accidental3CommaSharp",
@@ -418,7 +418,7 @@
     "accidental3CommaFlat",
     "accidental4CommaFlat"
   ],
-  "accidentals72EDOWyschnegradsky" : [
+  "Accidentals 72EDOWyschnegradsky" : [
     "accidentalWyschnegradsky1TwelfthsSharp",
     "accidentalWyschnegradsky2TwelfthsSharp",
     "accidentalWyschnegradsky3TwelfthsSharp",
@@ -442,7 +442,7 @@
     "accidentalWyschnegradsky10TwelfthsFlat",
     "accidentalWyschnegradsky11TwelfthsFlat"
   ],
-  "accidentalsAEU" : [
+  "Accidentals AEU" : [
     "accidentalBuyukMucennebFlat",
     "accidentalKucukMucennebFlat",
     "accidentalBakiyeFlat",
@@ -452,7 +452,7 @@
     "accidentalKucukMucennebSharp",
     "accidentalBuyukMucennebSharp"
   ],
-  "accidentalsHelmholtzEllis" : [
+  "Accidentals HelmholtzEllis" : [
     "accidentalDoubleFlatOneArrowDown",
     "accidentalFlatOneArrowDown",
     "accidentalNaturalOneArrowDown",
@@ -507,7 +507,7 @@
     "accidentalSharpEqualTempered",
     "accidentalDoubleSharpEqualTempered"
   ],
-  "accidentalsJohnston" : [
+  "Accidentals Johnston" : [
     "accidentalJohnstonPlus",
     "accidentalJohnstonMinus",
     "accidentalJohnstonEl",
@@ -517,11 +517,11 @@
     "accidentalJohnston13",
     "accidentalJohnston31"
   ],
-  "accidentalsPersian" : [
+  "Accidentals Persian" : [
     "accidentalKoron",
     "accidentalSori"
   ],
-  "accidentalsSagittalAthenian" : [
+  "Accidentals SagittalAthenian" : [
     "accSagittal7v11KleismaUp",
     "accSagittal7v11KleismaDown",
     "accSagittal17CommaUp",
@@ -563,13 +563,13 @@
     "accSagittalDoubleSharp7v11kDown",
     "accSagittalDoubleFlat7v11kUp"
   ],
-  "accidentalsSagittalDiacritics" : [
+  "Accidentals SagittalDiacritics" : [
     "accSagittalShaftUp",
     "accSagittalShaftDown",
     "accSagittalAcute",
     "accSagittalGrave"
   ],
-  "accidentalsSagittalMixed" : [
+  "Accidentals SagittalMixed" : [
     "accidentalFlat",
     "accidentalNatural",
     "accidentalSharp",
@@ -592,7 +592,7 @@
     "accSagittal35LargeDiesisDown",
     "accidentalLargeDoubleSharp"
   ],
-  "accidentalsSagittalPromethean" : [
+  "Accidentals SagittalPromethean" : [
     "accSagittal19SchismaUp",
     "accSagittal19SchismaDown",
     "accSagittal17KleismaUp",
@@ -688,7 +688,7 @@
     "accSagittalDoubleSharp19sDown",
     "accSagittalDoubleFlat19sUp"
   ],
-  "accidentalsSagittalPure" : [
+  "Accidentals SagittalPure" : [
     "accidentalNatural",
     "accSagittalSharp25SDown",
     "accSagittalFlat25SUp",
@@ -729,7 +729,7 @@
     "accSagittalDoubleSharp",
     "accSagittalDoubleFlat"
   ],
-  "accidentalsSagittalTrojan" : [
+  "Acidentals SagittalTrojan" : [
     "accSagittal23CommaUp",
     "accSagittal23CommaDown",
     "accSagittal5v19CommaUp",
@@ -755,7 +755,7 @@
     "accSagittalDoubleSharp23CDown",
     "accSagittalDoubleFlat23CUp"
   ],
-  "accidentalsSims" : [
+  "Accidentals Sims" : [
     "accidentalSims12Down",
     "accidentalSims6Down",
     "accidentalSims4Down",
@@ -763,7 +763,7 @@
     "accidentalSims6Up",
     "accidentalSims4Up"
   ],
-  "accidentalsStandard" : [
+  "Accidentals Standard" : [
     "accidentalFlat",
     "accidentalNatural",
     "accidentalSharp",
@@ -777,7 +777,7 @@
     "accidentalParensLeft",
     "accidentalParensRight"
   ],
-  "accidentalsSteinZimmermann" : [
+  "Accidentals SteinZimmermann" : [
     "accidentalQuarterToneFlatStein",
     "accidentalThreeQuarterTonesFlatZimmermann",
     "accidentalQuarterToneSharpStein",
@@ -798,7 +798,7 @@
     "accidentalOneAndAHalfSharpsArrowUp",
     "accidentalOneAndAHalfSharpsArrowDown"
   ],
-  "articulations" : [
+  "Articulations" : [
     "articAccentAbove",
     "articAccentBelow",
     "articStaccatoAbove",
@@ -828,7 +828,7 @@
     "articLaissezVibrerAbove",
     "articLaissezVibrerBelow"
   ],
-  "articulationsAbove" : [
+  "Articulations Above" : [
     "articAccentAbove",
     "articStaccatoAbove",
     "articTenutoAbove",
@@ -844,7 +844,7 @@
     "articUnstressAbove",
     "articLaissezVibrerAbove"
   ],
-  "articulationsBelow" : [
+  "Articulations Below" : [
     "articAccentBelow",
     "articStaccatoBelow",
     "articTenutoBelow",
@@ -860,7 +860,7 @@
     "articUnstressBelow",
     "articLaissezVibrerBelow"
   ],
-  "combiningStaffPositions" : [
+  "CombiningStaffPositions" : [
     "gClef",
     "gClef15mb",
     "gClef8vb",
@@ -1847,7 +1847,7 @@
     "kievianAccidentalSharp",
     "kievianAccidentalFlat"
   ],
-  "forTextBasedApplications" : [
+  "ForTextBasedApplications" : [
     "bracket",
     "staff1Line",
     "staff2Lines",
@@ -1977,7 +1977,7 @@
     "luteBarlineEndRepeat",
     "luteBarlineFinal"
   ],
-  "multiGlyphForms" : [
+  "MultiGlyphForms" : [
     "ornamentTopLeftConcaveStroke",
     "ornamentTopLeftConvexStroke",
     "ornamentHighLeftConcaveStroke",
@@ -2082,20 +2082,20 @@
     "wiggleRandom3",
     "wiggleRandom4"
   ],
-  "noteheadSetCircleX" : [
+  "Notehead SetCircleX" : [
     "noteheadCircleXDoubleWhole",
     "noteheadCircleXWhole",
     "noteheadCircleXHalf",
     "noteheadCircleX",
     "noteheadDoubleWholeWithX"
   ],
-  "noteheadSetCircled" : [
+  "Notehead SetCircled" : [
     "noteheadCircledBlack",
     "noteheadCircledHalf",
     "noteheadCircledWhole",
     "noteheadCircledDoubleWhole"
   ],
-  "noteheadSetDefault" : [
+  "Notehead SetDefault" : [
     "noteheadDoubleWhole",
     "noteheadDoubleWholeSquare",
     "noteheadWhole",
@@ -2122,7 +2122,7 @@
     "noteheadClusterQuarterMiddle",
     "noteheadClusterQuarterBottom"
   ],
-  "noteheadSetDiamond" : [
+  "Notehead SetDiamond" : [
     "noteheadDiamondDoubleWhole",
     "noteheadDiamondWhole",
     "noteheadDiamondHalf",
@@ -2138,30 +2138,30 @@
     "noteheadDiamondClusterBlackMiddle",
     "noteheadDiamondClusterBlackBottom"
   ],
-  "noteheadSetDiamondOld" : [
+  "Notehead SetDiamondOld" : [
     "noteheadDiamondDoubleWholeOld",
     "noteheadDiamondWholeOld",
     "noteheadDiamondHalfOld",
     "noteheadDiamondBlackOld",
     "noteheadDiamondHalfFilled"
   ],
-  "noteheadSetHeavyX" : [
+  "Notehead SetHeavyX" : [
     "noteheadHeavyX",
     "noteheadHeavyXHat"
   ],
-  "noteheadSetLargeArrowDown" : [
+  "Notehead SetLargeArrowDown" : [
     "noteheadLargeArrowDownDoubleWhole",
     "noteheadLargeArrowDownWhole",
     "noteheadLargeArrowDownHalf",
     "noteheadLargeArrowDownBlack"
   ],
-  "noteheadSetLargeArrowUp" : [
+  "Notehead SetLargeArrowUp" : [
     "noteheadLargeArrowUpDoubleWhole",
     "noteheadLargeArrowUpWhole",
     "noteheadLargeArrowUpHalf",
     "noteheadLargeArrowUpBlack"
   ],
-  "noteheadSetNamesPitch" : [
+  "Notehead SetNamesPitch" : [
     "noteAFlatWhole",
     "noteAWhole",
     "noteASharpWhole",
@@ -2232,7 +2232,7 @@
     "noteHBlack",
     "noteHSharpBlack"
   ],
-  "noteheadSetNamesSolfege" : [
+  "Notehead SetNamesSolfege" : [
     "noteDoWhole",
     "noteReWhole",
     "noteMiWhole",
@@ -2258,28 +2258,28 @@
     "noteTiBlack",
     "noteSiBlack"
   ],
-  "noteheadSetPlus" : [
+  "Notehead SetPlus" : [
     "noteheadPlusDoubleWhole",
     "noteheadPlusWhole",
     "noteheadPlusHalf",
     "noteheadPlusBlack",
     "noteheadCircleXDoubleWhole"
   ],
-  "noteheadSetRoundLarge" : [
+  "Notehead SetRoundLarge" : [
     "noteheadRoundBlackLarge",
     "noteheadRoundWhiteLarge",
     "noteheadRoundWhiteWithDotLarge",
     "noteheadRoundBlackSlashedLarge",
     "noteheadRoundWhiteSlashedLarge"
   ],
-  "noteheadSetRoundSmall" : [
+  "Notehead SetRoundSmall" : [
     "noteheadRoundBlack",
     "noteheadRoundWhite",
     "noteheadRoundWhiteWithDot",
     "noteheadRoundBlackSlashed",
     "noteheadRoundWhiteSlashed"
   ],
-  "noteheadSetSacredHarp" : [
+  "Notehead SetSacredHarp" : [
     "noteShapeRoundWhite",
     "noteShapeRoundBlack",
     "noteShapeSquareWhite",
@@ -2297,7 +2297,7 @@
     "noteShapeTriangleRoundWhite",
     "noteShapeTriangleRoundBlack"
   ],
-  "noteheadSetSlashHorizontalEnds" : [
+  "Notehead SetSlashHorizontalEnds" : [
     "noteheadSlashHorizontalEnds",
     "noteheadSlashWhite",
     "noteheadSlashDiamondWhite",
@@ -2305,7 +2305,7 @@
     "noteheadSlashHorizontalEndsMuted",
     "noteheadSlashWhiteMuted"
   ],
-  "noteheadSetSlashVerticalEnds" : [
+  "Notehead SetSlashVerticalEnds" : [
     "noteheadSlashVerticalEnds",
     "noteheadSlashWhite",
     "noteheadSlashDiamondWhite",
@@ -2313,19 +2313,19 @@
     "noteheadSlashVerticalEndsMuted",
     "noteheadSlashWhiteMuted"
   ],
-  "noteheadSetSlashed1" : [
+  "Notehead SetSlashed1" : [
     "noteheadSlashedBlack1",
     "noteheadSlashedHalf1",
     "noteheadSlashedWhole1",
     "noteheadSlashedDoubleWhole1"
   ],
-  "noteheadSetSlashed2" : [
+  "Notehead SetSlashed2" : [
     "noteheadSlashedBlack2",
     "noteheadSlashedHalf2",
     "noteheadSlashedWhole2",
     "noteheadSlashedDoubleWhole2"
   ],
-  "noteheadSetSquare" : [
+  "Notehead SetSquare" : [
     "noteheadSquareBlackLarge",
     "noteheadSquareBlackWhite",
     "noteheadRectangularClusterBlackTop",
@@ -2335,42 +2335,42 @@
     "noteheadRectangularClusterWhiteMiddle",
     "noteheadRectangularClusterWhiteBottom"
   ],
-  "noteheadSetTriangleDown" : [
+  "Notehead SetTriangleDown" : [
     "noteheadTriangleDownDoubleWhole",
     "noteheadTriangleDownWhole",
     "noteheadTriangleDownHalf",
     "noteheadTriangleDownWhite",
     "noteheadTriangleDownBlack"
   ],
-  "noteheadSetTriangleLeft" : [
+  "Notehead SetTriangleLeft" : [
     "noteheadTriangleLeftWhite",
     "noteheadTriangleLeftBlack"
   ],
-  "noteheadSetTriangleRight" : [
+  "Notehead SetTriangleRight" : [
     "noteheadTriangleRightWhite",
     "noteheadTriangleRightBlack"
   ],
-  "noteheadSetTriangleUp" : [
+  "Notehead SetTriangleUp" : [
     "noteheadTriangleUpDoubleWhole",
     "noteheadTriangleUpWhole",
     "noteheadTriangleUpHalf",
     "noteheadTriangleUpWhite",
     "noteheadTriangleUpBlack"
   ],
-  "noteheadSetWithX" : [
+  "Notehead SetWithX" : [
     "noteheadDoubleWholeWithX",
     "noteheadWholeWithX",
     "noteheadHalfWithX",
     "noteheadVoidWithX"
   ],
-  "noteheadSetX" : [
+  "Notehead SetX" : [
     "noteheadXDoubleWhole",
     "noteheadXWhole",
     "noteheadXHalf",
     "noteheadXBlack",
     "noteheadXOrnate"
   ],
-  "noteheads" : [
+  "Noteheads" : [
     "noteheadDoubleWhole",
     "noteheadDoubleWholeSquare",
     "noteheadWhole",
@@ -2664,11 +2664,11 @@
     "ornamentPrecompTrillSuffixDandrieu",
     "ornamentPrecompPortDeVoixMordent"
   ],
-  "parenthesesNotehead" : [
+  "ParenthesesNotehead" : [
     "noteheadParenthesisLeft",
     "noteheadParenthesisRight"
   ],
-  "pauses" : [
+  "Pauses" : [
     "fermataAbove",
     "fermataBelow",
     "fermataVeryShortAbove",
@@ -2690,7 +2690,7 @@
     "breathMarkSalzedo",
     "curlewSign"
   ],
-  "pausesAbove" : [
+  "Pauses Above" : [
     "fermataAbove",
     "fermataVeryShortAbove",
     "fermataShortAbove",
@@ -2699,7 +2699,7 @@
     "fermataLongHenzeAbove",
     "fermataShortHenzeAbove"
   ],
-  "pausesBelow" : [
+  "Pauses Below" : [
     "fermataBelow",
     "fermataVeryShortBelow",
     "fermataShortBelow",
@@ -2708,7 +2708,7 @@
     "fermataLongHenzeBelow",
     "fermataShortHenzeBelow"
   ],
-  "rests" : [
+  "Rests" : [
     "restLonga",
     "restDoubleWhole",
     "restWhole",
@@ -2729,7 +2729,7 @@
     "restWholeLegerLine",
     "restHalfLegerLine"
   ],
-  "stemDecorations" : [
+  "StemDecorations" : [
     "tremolo1",
     "tremolo2",
     "tremolo3",
@@ -2758,7 +2758,7 @@
     "accdnRicochetStem5",
     "accdnRicochetStem6"
   ],
-  "wigglesArpeggiato" : [
+  "Wiggles Arpeggiato" : [
     "wiggleArpeggiatoUp",
     "wiggleArpeggiatoDown",
     "wiggleArpeggiatoUpSwash",
@@ -2766,17 +2766,17 @@
     "wiggleArpeggiatoUpArrow",
     "wiggleArpeggiatoDownArrow"
   ],
-  "wigglesArpeggiatoDown" : [
+  "Wiggles ArpeggiatoDown" : [
     "wiggleArpeggiatoDown",
     "wiggleArpeggiatoDownSwash",
     "wiggleArpeggiatoDownArrow"
   ],
-  "wigglesArpeggiatoUp" : [
+  "Wiggles ArpeggiatoUp" : [
     "wiggleArpeggiatoUp",
     "wiggleArpeggiatoUpSwash",
     "wiggleArpeggiatoUpArrow"
   ],
-  "wigglesCircularMotion" : [
+  "Wiggles CircularMotion" : [
     "wiggleCircularStart",
     "wiggleCircularLargest",
     "wiggleCircularLargerStill",
@@ -2786,13 +2786,13 @@
     "wiggleCircularSmall",
     "wiggleCircularEnd"
   ],
-  "wigglesQuasiRandom" : [
+  "Wiggles QuasiRandom" : [
     "wiggleRandom1",
     "wiggleRandom2",
     "wiggleRandom3",
     "wiggleRandom4"
   ],
-  "wigglesTrill" : [
+  "Wiggles Trill" : [
     "wiggleTrillFastest",
     "wiggleTrillFasterStill",
     "wiggleTrillFaster",
@@ -2803,13 +2803,13 @@
     "wiggleTrillSlowerStill",
     "wiggleTrillSlowest"
   ],
-  "wigglesVibrato" : [
+  "Wiggles Vibrato" : [
     "wiggleVibrato",
     "wiggleVibratoWide",
     "guitarVibratoStroke",
     "guitarWideVibratoStroke"
   ],
-  "wigglesVibratoVariable" : [
+  "Wiggles VibratoVariable" : [
     "wiggleVibratoStart",
     "wiggleVibratoSmallestFastest",
     "wiggleVibratoSmallestFasterStill",

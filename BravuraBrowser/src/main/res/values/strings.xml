@@ -6,5 +6,6 @@
     <string name="action_fontsize">font size</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="basic_explanation">Select a glyph category\nfrom the nav drawer</string>
 
 </resources>
