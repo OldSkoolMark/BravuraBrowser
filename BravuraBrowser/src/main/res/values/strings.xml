@@ -7,5 +7,9 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="basic_explanation">Select a glyph category\nfrom the nav drawer</string>
+    <string name="search_title">search glyphs</string>
+    <string name="search_hint">enter codepoint or glyph name</string>
+s    <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

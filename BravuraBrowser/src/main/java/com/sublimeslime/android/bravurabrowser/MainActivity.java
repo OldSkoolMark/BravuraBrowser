@@ -4,9 +4,12 @@ package com.sublimeslime.android.bravurabrowser;
 import java.io.IOException;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.app.SearchManager;
 import android.graphics.Typeface;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -14,8 +17,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
+import android.widget.SearchView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -30,7 +33,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -59,9 +62,9 @@ public class MainActivity extends ActionBarActivity {
 
         mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("no category selected");
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle("no category selected");
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -93,7 +96,12 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -135,13 +143,13 @@ public class MainActivity extends ActionBarActivity {
 
     private void replaceGridViewFragment(String tag){
         if( tag != null ) {
-            getSupportActionBar().setTitle(tag);
+            getActionBar().setTitle(tag);
             Fragment fragment = new GridFragment();
             Bundle b = new Bundle();
             b.putString("category", tag);
             fragment.setArguments(b);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            android.support.v4.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.content_frame, fragment, tag);
             ft.addToBackStack(tag);
             ft.commit();
@@ -171,7 +179,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        getActionBar().setTitle(mTitle);
     }
 
     @Override
