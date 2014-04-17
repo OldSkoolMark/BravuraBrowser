@@ -7,6 +7,8 @@ import java.util.List;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
 import android.graphics.Typeface;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -38,8 +40,7 @@ public class MainActivity extends Activity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private CharSequence mDrawerTitle;
-    private CharSequence mTitle =  "foobar";
+    private CharSequence mTitle;
     private Typeface mTypeface;
     private float mFontSize = 64.0f;
     private ArrayAdapter<String> mCategoryAdapter;
@@ -49,7 +50,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTitle = mDrawerTitle = getTitle();
+        mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -63,7 +64,7 @@ public class MainActivity extends Activity {
         mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+ //       getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle("no category selected");
 
         // ActionBarDrawerToggle ties together the the proper interactions
@@ -100,6 +101,8 @@ public class MainActivity extends Activity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+        ComponentName cn = getComponentName();
+        SearchableInfo si = searchManager.getSearchableInfo(cn);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }

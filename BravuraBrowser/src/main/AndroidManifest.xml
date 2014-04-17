@@ -9,6 +9,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.MainActivity"
             android:label="@string/app_name" >
@@ -16,22 +17,29 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            <!-- set action bar search widget target -->
             <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:name="android.app.default_searchable"
+                android:value=".SearchResultsActivity" />
+
         </activity>
         <activity
-            android:name="com.sublimeslime.android.bravurabrowser.SearchResultsActivity"
+            android:name=".SearchResultsActivity"
             android:launchMode="singleTop"
             android:label="@string/title_activity_search_results"
             android:parentActivityName="com.sublimeslime.android.bravurabrowser.MainActivity" >
+            <!-- make this activity the target of the action bar search from MainActivity -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <!--
+            <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
+                -->
         </activity>
     </application>
 
