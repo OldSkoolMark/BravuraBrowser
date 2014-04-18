@@ -8,11 +8,7 @@
         android:orderInCategory="1"
         android:showAsAction="collapseActionView|ifRoom"
         android:actionViewClass="android.widget.SearchView" />
-    <item android:id="@+id/action_fontsize"
-        android:title="@string/action_fontsize"
-        android:orderInCategory="2"
-        app:showAsAction="always" />
-    <item android:id="@+id/action_settings"
+      <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"
         app:showAsAction="never" />
