@@ -9,6 +9,7 @@ import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,14 +44,17 @@ public class MainActivity extends Activity {
 
     private CharSequence mTitle;
     private Typeface mTypeface;
-    private float mFontSize = 64.0f;
+    private float mGridFontSize;
+    private float mDetailFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
     private String mCurrentFragmentTag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        String s = SettingsActivity.Settings.GRID_FONT_SIZE.toString();
+        mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"64.0f"));
+        mDetailFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(),"128.0f"));
         mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -125,19 +130,8 @@ public class MainActivity extends Activity {
         }
         // Handle action buttons
         switch(item.getItemId()) {
-            case R.id.action_fontsize:
-                View v = findViewById(R.id.action_fontsize);
-                PopupMenu pm = new PopupMenu(this, v);
-                pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        mFontSize = Float.parseFloat(menuItem.getTitle().toString());
-                        replaceGridViewFragment(mCurrentFragmentTag);
-                        return true;
-                    }
-                });
-                pm.inflate(R.menu.fontsize_menu);
-                pm.show();
+               case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -230,7 +224,7 @@ public class MainActivity extends Activity {
             tv.setTypeface(mTypeface);
             String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
             tv.setText(uniCode);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSize);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mGridFontSize);
             return tv;
         }
     }

@@ -1,0 +1,73 @@
+<resources>
+        <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Font Sizes -->
+    <string name="pref_header_font_sizes">Font size settings</string>
+
+    <string name="pref_grid_view_title">Grid view glyphs</string>
+    <string-array name="pref_grid_view_titles">
+        <item>12</item>
+        <item>14</item>
+        <item>18</item>
+        <item>22</item>
+        <item>32</item>
+        <item>48</item>
+        <item>64</item>
+        <item>96</item>
+        <item>128</item>
+    </string-array>
+    <string-array name="pref_grid_view_values">
+        <item>12.0f</item>
+        <item>14.0f</item>
+        <item>18.0f</item>
+        <item>22.0f</item>
+        <item>32.0f</item>
+        <item>48.0f</item>
+        <item>64.0f</item>
+        <item>96.0f</item>
+        <item>128.0f</item>
+    </string-array>
+
+    <string name="pref_detail_view_title">Detail view glyphs</string>
+    <string-array name="pref_detail_view_titles">
+        <item>12</item>
+        <item>14</item>
+        <item>18</item>
+        <item>22</item>
+        <item>32</item>
+        <item>48</item>
+        <item>64</item>
+        <item>96</item>
+        <item>128</item>
+    </string-array>
+    <string-array name="pref_detail_view_values">
+        <item>12.0f</item>
+        <item>14.0f</item>
+        <item>18.0f</item>
+        <item>22.0f</item>
+        <item>32.0f</item>
+        <item>48.0f</item>
+        <item>64.0f</item>
+        <item>96.0f</item>
+        <item>128.0f</item>
+    </string-array>
+
+
+</resources>
