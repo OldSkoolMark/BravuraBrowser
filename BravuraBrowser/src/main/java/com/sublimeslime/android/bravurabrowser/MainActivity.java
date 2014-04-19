@@ -48,9 +48,6 @@ public class MainActivity extends Activity {
     private float mGridFontSize;
     private float mDetailFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
-    private String mCurrentFragmentTag;
-    private int mSelectedCategoryPosition = 0;
-    private static boolean sNeedToLoadFonts = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,33 +91,9 @@ public class MainActivity extends Activity {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
-            selectItem(0);
-        } else {
-            mSelectedCategoryPosition = savedInstanceState.getInt(InstanceStateKey.CATEGORY_POSITION.name());
-            selectItem(mSelectedCategoryPosition);
-        }
-        if( sNeedToLoadFonts ) {
-            new LoadGlyphsTask().execute();
-        } else {
-            setupCategoryAdapter();
-        }
+        new LoadGlyphsTask().execute();
     }
     private enum InstanceStateKey { CATEGORY_POSITION }
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG,"onSaveInstanceState()");
-        super.onSaveInstanceState(outState);
-        outState.putInt(InstanceStateKey.CATEGORY_POSITION.name(), mSelectedCategoryPosition);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.d(TAG,"onRestoreInstanceState()");
-        mSelectedCategoryPosition = savedInstanceState.getInt(InstanceStateKey.CATEGORY_POSITION.name());
-        selectItem(mSelectedCategoryPosition);
-    }
 
     @Override
     public void onStart(){
@@ -191,7 +164,6 @@ public class MainActivity extends Activity {
             ft.replace(R.id.content_frame, fragment, tag);
             ft.addToBackStack(tag);
             ft.commit();
-            mCurrentFragmentTag = tag;
         }
     }
     /* The click listner for ListView in the navigation drawer */
@@ -208,7 +180,6 @@ public class MainActivity extends Activity {
             String glyphClassName = categories.get(position);
             replaceGridViewFragment(glyphClassName);
         }
-        mSelectedCategoryPosition = position;
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
   //      setTitle(mPlanetTitles[position]);
@@ -310,7 +281,6 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             setupCategoryAdapter();
-            sNeedToLoadFonts = false;
         }
     }
     private void setupCategoryAdapter(){
