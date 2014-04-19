@@ -2,6 +2,9 @@ package com.sublimeslime.android.bravurabrowser;
 
 import android.content.Context;
 import android.util.Log;
+import android.graphics.Typeface;
+import android.util.TypedValue;
+import android.widget.TextView;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -17,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Created by mark on 4/1/14.
@@ -67,6 +71,12 @@ public class FontMetadata {
         return mGlyphMap.glyphMap.get(name);
     }
 
+    /**
+     * Return the key associated with a codepoint/alternatCodepoint value in the glyph map
+     * @param codepoint
+     * @param alternateCodepoint
+     * @return key
+     */
     public String lookupGlyphKeyByCodepoints( String codepoint, String alternateCodepoint){
         return mGlyphMap.lookupGlyphKeyByCodepoints(codepoint, alternateCodepoint);
     }
@@ -130,7 +140,7 @@ public class FontMetadata {
     private GlyphMap mGlyphMap;
     private List<String> mGlyphClassNames = new ArrayList<String>();
     public static class GlyphMap {
-        Map<String,Glyph> glyphMap;
+        TreeMap<String,Glyph> glyphMap;
         @Override
         public String toString() {
             return "GlyphMap =" + glyphMap ;
@@ -154,5 +164,12 @@ public class FontMetadata {
         public String toString() {
             return "[ " + codepoint + "," + (alternateCodepoint == null ? "" : alternateCodepoint) + " ]" ;
         }
+    }
+
+    public static void displayGlyph(TextView tv, String codepoint, float fontSize, Typeface face){
+        tv.setTypeface(face);
+        String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(codepoint);
+        tv.setText(uniCode);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
 }

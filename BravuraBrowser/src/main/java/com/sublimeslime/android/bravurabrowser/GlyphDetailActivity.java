@@ -1,18 +1,16 @@
 package com.sublimeslime.android.bravurabrowser;
 
-import java.util.Locale;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,43 +20,54 @@ import android.widget.TextView;
 
 
 public class GlyphDetailActivity extends ActionBarActivity {
-    public enum IntentKey { GLYPH_NAME }
-    public final static void start(Context c, String glyphName){
+    public enum IntentKey { GLYPH_NAME, GLYPH_CATEGORY }
+    public final static void start(Context c, String glyphName, String glyphCategory){
         Intent i = new Intent(c, GlyphDetailActivity.class);
         i.putExtra(IntentKey.GLYPH_NAME.name(), glyphName);
+        i.putExtra(IntentKey.GLYPH_CATEGORY.name(), glyphCategory);
         c.startActivity(i);
     }
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * {@link FragmentStatePagerAdapter} derivative, which will keep every
      * loaded fragment in memory. If this becomes too memory intensive, it
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    GlyphDetailPagerAdapter mGlyphDetailPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
     private String mInitialGlyphName;
+    private String mGlyphCategory;
+    private String mCategoryGlyphNames[];
+    private Typeface mTypeface;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glyph_detail);
-        Intent i = getIntent();
-        mInitialGlyphName = i.getStringExtra(IntentKey.GLYPH_NAME.name());
+        Intent intent = getIntent();
+        mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
+        mInitialGlyphName = intent.getStringExtra(IntentKey.GLYPH_NAME.name());
+        mGlyphCategory = intent.getStringExtra(IntentKey.GLYPH_CATEGORY.name());
+        ArrayList<String> names = FontMetadata.getInstance().getGlyphsNamesForCategory(mGlyphCategory);
+        mCategoryGlyphNames = names.toArray(new String[names.size()]);
 
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
+        // Set up the ViewPager
+        mGlyphDetailPagerAdapter = new GlyphDetailPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        mViewPager.setAdapter(mGlyphDetailPagerAdapter);
+        //
+        int i;
+        for( i=0; i<mCategoryGlyphNames.length; i++){
+            if( mCategoryGlyphNames[i].equals(mInitialGlyphName)){
+                break;
+            }
+        }
+        mViewPager.setCurrentItem(i);
     }
 
 
@@ -85,74 +94,68 @@ public class GlyphDetailActivity extends ActionBarActivity {
     
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A {@link FragmentStatePagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class GlyphDetailPagerAdapter extends FragmentStatePagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public GlyphDetailPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            // Return a GlyphDetailFragment (defined as a static inner class below).
+            return newGlyphFragmentInstance(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return mCategoryGlyphNames.length;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
+            return mCategoryGlyphNames[position];
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String GLYPH_INDEX = "glyph_index";
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
+    public GlyphDetailFragment newGlyphFragmentInstance(int sectionNumber) {
+        GlyphDetailFragment fragment = new GlyphDetailFragment();
+        Bundle args = new Bundle();
+        args.putInt(GLYPH_INDEX, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    private class GlyphDetailFragment extends Fragment {
+        public GlyphDetailFragment() {  }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+            String glyphName = mCategoryGlyphNames[getArguments().getInt(GLYPH_INDEX)];
+            FontMetadata.Glyph glyph = FontMetadata.getInstance().getGlyphByName(glyphName);
             View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
+            // glyph name
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+            textView.setText(glyphName);
+            // glyph
+            TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
+            FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint, 256.0f,mTypeface);
+            // codepoint
+            String codepointLabel = getActivity().getResources().getString(R.string.codepoint);
+            TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
+            cpTv.setText(codepointLabel + glyph.codepoint);
+            // alt codepoint if present
+            if( glyph.alternateCodepoint != null ){
+                String alternateLabel = getActivity().getResources().getString(R.string.alternate);
+                TextView altTv = (TextView)rootView.findViewById(R.id.alternate_codepoint);
+                altTv.setText(alternateLabel + glyph.alternateCodepoint);
+            }
+
             return rootView;
         }
     }

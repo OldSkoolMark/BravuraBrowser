@@ -244,7 +244,7 @@ public class MainActivity extends Activity {
             Glyph g = (Glyph)gla.getItem(position);
             String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint, g.alternateCodepoint);
  //           Log.d(TAG,"clicked glyph: " + glyphName);
-            GlyphDetailActivity.start(getActivity(), glyphName);
+            GlyphDetailActivity.start(getActivity(), glyphName, mCategory);
         }
     }
 
