@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 
 public class SearchResultsActivity extends Activity {
-
+    private static String sGlyphNames[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +34,24 @@ public class SearchResultsActivity extends Activity {
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            if( sGlyphNames == null || sGlyphNames.length < 1) {
+                sGlyphNames = FontMetadata.getInstance().getAllGlyphNames();
+            }
+
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d(TAG, "query string: " + query);
+            doQuery(query);
         }
     }
 
+    private void doQuery(String query){
+        for( String name : sGlyphNames ){
+            if( name.matches(query)){
+                Log.d(TAG,"match for '"+query+"' : "+name);
+            }
+        }
+    }
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -58,7 +71,7 @@ public class SearchResultsActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
     /**
      * A placeholder fragment containing a simple view.
      */

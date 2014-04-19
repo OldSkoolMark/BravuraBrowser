@@ -120,6 +120,10 @@ public class FontMetadata {
         return mGlyphClasses.glyphClasses.get(category);
     }
 
+    public String[] getAllGlyphNames(){
+        return mGlyphMap.getAllGlyphNames();
+    }
+
     // Singleton
     private static FontMetadata mThis;
     private FontMetadata(){}
@@ -141,6 +145,9 @@ public class FontMetadata {
     private List<String> mGlyphClassNames = new ArrayList<String>();
     public static class GlyphMap {
         TreeMap<String,Glyph> glyphMap;
+        public String[] getAllGlyphNames(){
+            return glyphMap.keySet().toArray(new String[glyphMap.size()]);
+        }
         @Override
         public String toString() {
             return "GlyphMap =" + glyphMap ;
