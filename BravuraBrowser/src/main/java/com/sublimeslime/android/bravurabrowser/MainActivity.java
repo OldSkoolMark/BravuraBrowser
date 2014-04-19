@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
+    private boolean mGridFontSizeChanged = false;
     private float mDetailFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
     @Override
@@ -53,7 +54,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate()");
-        mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"64.0f"));
         mDetailFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(),"128.0f"));
         mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -104,7 +104,11 @@ public class MainActivity extends Activity {
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume()");
-    }
+        // Font size setting was changed. Set flag so that when returning to the grid view it gets redrawn.
+        float fontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"64.0f"));
+        mGridFontSizeChanged = fontSize != mGridFontSize ? true : false;
+        mGridFontSize = fontSize;
+     }
 
     @Override
     protected void onPause() {
@@ -152,12 +156,13 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void replaceGridViewFragment(String tag){
+    private void replaceGridViewFragment(String tag, float fontSize){
         if( tag != null ) {
             getActionBar().setTitle(tag);
             Fragment fragment = new GridFragment();
             Bundle b = new Bundle();
             b.putString("category", tag);
+            b.putFloat("font_size", fontSize);
             fragment.setArguments(b);
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -178,7 +183,7 @@ public class MainActivity extends Activity {
         List<String> categories = FontMetadata.getInstance().getCategories();
         if( position < categories.size()){
             String glyphClassName = categories.get(position);
-            replaceGridViewFragment(glyphClassName);
+            replaceGridViewFragment(glyphClassName, mGridFontSize);
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -205,17 +210,29 @@ public class MainActivity extends Activity {
     }
 
     public class GridFragment extends Fragment implements AdapterView.OnItemClickListener {
+        private float mFontSize;
+        private String mCategory;
         public GridFragment() { }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
             Bundle b = getArguments();
-            String category = b.getString("category");
+            mCategory = b.getString("category");
+            mFontSize = b.getFloat("font_size");
             GridView gridView = (GridView)rootView.findViewById(R.id.gridview);
-            gridView.setAdapter(new GlyphListAdapter(category));
+            gridView.setAdapter(new GlyphListAdapter(mCategory));
             gridView.setOnItemClickListener(this);
             return rootView;
+        }
+        @Override
+        public void onResume(){
+            super.onResume();
+            Log.d(TAG,"GridFragment.onResume()");
+            if( mGridFontSizeChanged ){
+                mGridFontSizeChanged = false;
+                replaceGridViewFragment(mCategory, mGridFontSize);
+            }
         }
 
         /**
