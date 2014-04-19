@@ -47,14 +47,12 @@ public class MainActivity extends Activity {
     private Typeface mTypeface;
     private float mGridFontSize;
     private boolean mGridFontSizeChanged = false;
-    private float mDetailFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate()");
-        mDetailFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(),"128.0f"));
         mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -108,7 +106,7 @@ public class MainActivity extends Activity {
         float fontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"64.0f"));
         mGridFontSizeChanged = fontSize != mGridFontSize ? true : false;
         mGridFontSize = fontSize;
-     }
+    }
 
     @Override
     protected void onPause() {

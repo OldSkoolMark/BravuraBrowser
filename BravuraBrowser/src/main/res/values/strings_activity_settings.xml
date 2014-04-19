@@ -45,26 +45,24 @@
 
     <string name="pref_detail_view_title">Detail view glyphs</string>
     <string-array name="pref_detail_view_titles">
-        <item>12</item>
-        <item>14</item>
-        <item>18</item>
-        <item>22</item>
         <item>32</item>
         <item>48</item>
         <item>64</item>
         <item>96</item>
         <item>128</item>
+        <item>256</item>
+        <item>384</item>
+
     </string-array>
     <string-array name="pref_detail_view_values">
-        <item>12.0f</item>
-        <item>14.0f</item>
-        <item>18.0f</item>
-        <item>22.0f</item>
         <item>32.0f</item>
         <item>48.0f</item>
         <item>64.0f</item>
         <item>96.0f</item>
         <item>128.0f</item>
+        <item>256.0f</item>
+        <item>384.0f</item>
+
     </string-array>
 
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,12 +46,14 @@ public class GlyphDetailActivity extends ActionBarActivity {
     private String mGlyphCategory;
     private String mCategoryGlyphNames[];
     private Typeface mTypeface;
+    private float mFontSize;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glyph_detail);
         Intent intent = getIntent();
         mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
+        mFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(),"128.0f"));
         mInitialGlyphName = intent.getStringExtra(IntentKey.GLYPH_NAME.name());
         mGlyphCategory = intent.getStringExtra(IntentKey.GLYPH_CATEGORY.name());
         ArrayList<String> names = FontMetadata.getInstance().getGlyphsNamesForCategory(mGlyphCategory);
@@ -69,8 +72,7 @@ public class GlyphDetailActivity extends ActionBarActivity {
         }
         mViewPager.setCurrentItem(i);
     }
-
-
+ /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -91,12 +93,7 @@ public class GlyphDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    
-
-    /**
-     * A {@link FragmentStatePagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+  */
     private class GlyphDetailPagerAdapter extends FragmentStatePagerAdapter {
 
         public GlyphDetailPagerAdapter(FragmentManager fm) {
@@ -144,7 +141,7 @@ public class GlyphDetailActivity extends ActionBarActivity {
             textView.setText(glyphName);
             // glyph
             TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
-            FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint, 256.0f,mTypeface);
+            FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint, mFontSize,mTypeface);
             // codepoint
             String codepointLabel = getActivity().getResources().getString(R.string.codepoint);
             TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);

@@ -18,12 +18,15 @@
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/glyph"
+        android:layout_below="@id/section_label"
+        android:layout_above="@+id/codepoint"
+        android:gravity="top"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
     <TextView
-        android:id="@+id/codepoint"
+        android:id="@id/codepoint"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
