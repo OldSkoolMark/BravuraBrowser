@@ -36,6 +36,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.sublimeslime.android.bravurabrowser.FontMetadata.*;
 
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
@@ -48,10 +49,13 @@ public class MainActivity extends Activity {
     private float mDetailFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
     private String mCurrentFragmentTag;
+    private int mSelectedCategoryPosition = 0;
+    private static boolean sNeedToLoadFonts = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG,"onCreate()");
         mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"64.0f"));
         mDetailFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(),"128.0f"));
         mTitle = getTitle();
@@ -92,8 +96,46 @@ public class MainActivity extends Activity {
 
         if (savedInstanceState == null) {
             selectItem(0);
+        } else {
+            mSelectedCategoryPosition = savedInstanceState.getInt(InstanceStateKey.CATEGORY_POSITION.name());
+            selectItem(mSelectedCategoryPosition);
         }
-        new LoadGlyphsTask().execute();
+        if( sNeedToLoadFonts ) {
+            new LoadGlyphsTask().execute();
+        } else {
+            setupCategoryAdapter();
+        }
+    }
+    private enum InstanceStateKey { CATEGORY_POSITION }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG,"onSaveInstanceState()");
+        super.onSaveInstanceState(outState);
+        outState.putInt(InstanceStateKey.CATEGORY_POSITION.name(), mSelectedCategoryPosition);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(TAG,"onRestoreInstanceState()");
+        mSelectedCategoryPosition = savedInstanceState.getInt(InstanceStateKey.CATEGORY_POSITION.name());
+        selectItem(mSelectedCategoryPosition);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG,"onStart()");
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.d(TAG,"onResume()");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
 
     }
 
@@ -166,6 +208,7 @@ public class MainActivity extends Activity {
             String glyphClassName = categories.get(position);
             replaceGridViewFragment(glyphClassName);
         }
+        mSelectedCategoryPosition = position;
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
   //      setTitle(mPlanetTitles[position]);
@@ -190,18 +233,30 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public class GridFragment extends Fragment {
+    public class GridFragment extends Fragment implements AdapterView.OnItemClickListener {
         public GridFragment() { }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
             Bundle b = getArguments();
             String category = b.getString("category");
             GridView gridView = (GridView)rootView.findViewById(R.id.gridview);
             gridView.setAdapter(new GlyphListAdapter(category));
+            gridView.setOnItemClickListener(this);
             return rootView;
+        }
+
+        /**
+         * Launch GlyphDetailActivity on clicking a glyph
+         */
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            GlyphListAdapter gla = (GlyphListAdapter)parent.getAdapter();
+            Glyph g = (Glyph)gla.getItem(position);
+            String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint, g.alternateCodepoint);
+ //           Log.d(TAG,"clicked glyph: " + glyphName);
+            GlyphDetailActivity.start(getActivity(), glyphName);
         }
     }
 
@@ -254,9 +309,13 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
-            mCategoryAdapter.notifyDataSetChanged();
+            setupCategoryAdapter();
+            sNeedToLoadFonts = false;
         }
+    }
+    private void setupCategoryAdapter(){
+        mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
+        mCategoryAdapter.notifyDataSetChanged();
     }
     private final static String TAG = MainActivity.class.getCanonicalName();
 }

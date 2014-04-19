@@ -66,6 +66,11 @@ public class FontMetadata {
     public Glyph getGlyphByName(String name){
         return mGlyphMap.glyphMap.get(name);
     }
+
+    public String lookupGlyphKeyByCodepoints( String codepoint, String alternateCodepoint){
+        return mGlyphMap.lookupGlyphKeyByCodepoints(codepoint, alternateCodepoint);
+    }
+
     /**
      * Parses the Smufl classes.json file. 0.85 was not gson friendly and required hand editing as
      * follows:
@@ -130,7 +135,17 @@ public class FontMetadata {
         public String toString() {
             return "GlyphMap =" + glyphMap ;
         }
-    }
+        public String lookupGlyphKeyByCodepoints(String codepoint, String alternateCodepoint){
+            for( String key : glyphMap.keySet()){
+                if( codepoint != null && codepoint.equals( glyphMap.get(key).codepoint)) {
+                    if( alternateCodepoint == null || alternateCodepoint.equals( glyphMap.get(key).alternateCodepoint)){
+                        return key;
+                    }
+                }
+            }
+            return "";
+        }
+      }
     public static class Glyph {
         public String codepoint;
         public String alternateCodepoint;

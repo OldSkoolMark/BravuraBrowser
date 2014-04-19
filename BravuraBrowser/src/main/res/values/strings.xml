@@ -9,7 +9,11 @@
     <string name="basic_explanation">Select a glyph category\nfrom the nav drawer</string>
     <string name="search_title">search glyphs</string>
     <string name="search_hint">enter codepoint or glyph name</string>
-s    <string name="title_activity_search_results">SearchResultsActivity</string>
+s        <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_glyph_detail">GlyphDetailActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>
