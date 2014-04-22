@@ -2,7 +2,10 @@ package com.sublimeslime.android.bravurabrowser;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -10,6 +13,7 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -46,7 +50,6 @@ public class MainActivity extends Activity {
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
-    private boolean mGridFontSizeChanged = false;
     private ArrayAdapter<String> mCategoryAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class MainActivity extends Activity {
         mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
+        mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(), "64.0f"));
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
@@ -102,11 +105,7 @@ public class MainActivity extends Activity {
     public void onResume(){
         super.onResume();
         Log.d(TAG,"onResume()");
-        // Font size setting was changed. Set flag so that when returning to the grid view it gets redrawn.
-        float fontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"64.0f"));
-        mGridFontSizeChanged = fontSize != mGridFontSize ? true : false;
-        mGridFontSize = fontSize;
-    }
+      }
 
     @Override
     protected void onPause() {
@@ -207,10 +206,19 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public class GridFragment extends Fragment implements AdapterView.OnItemClickListener {
+    public static class GridFragment extends Fragment implements AdapterView.OnItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
         private float mFontSize;
         private String mCategory;
+        private GridView mGridView;
+        private Typeface mTypeface;
         public GridFragment() { }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            prefs.registerOnSharedPreferenceChangeListener(this);
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -218,19 +226,18 @@ public class MainActivity extends Activity {
             Bundle b = getArguments();
             mCategory = b.getString("category");
             mFontSize = b.getFloat("font_size");
-            GridView gridView = (GridView)rootView.findViewById(R.id.gridview);
-            gridView.setAdapter(new GlyphListAdapter(mCategory));
-            gridView.setOnItemClickListener(this);
+            mTypeface = Typeface.createFromAsset(getActivity().getAssets(), "bravura/Bravura.otf");
+            mGridView = (GridView)rootView.findViewById(R.id.gridview);
+            mGridView.setAdapter(new GlyphListAdapter(getActivity(), FontMetadata.getInstance().getGlyphsNamesForCategory(mCategory), mFontSize, mTypeface));
+            mGridView.setOnItemClickListener(this);
             return rootView;
         }
+
         @Override
-        public void onResume(){
-            super.onResume();
-            Log.d(TAG,"GridFragment.onResume()");
-            if( mGridFontSizeChanged ){
-                mGridFontSizeChanged = false;
-                replaceGridViewFragment(mCategory, mGridFontSize);
-            }
+        public void onDestroy() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            prefs.unregisterOnSharedPreferenceChangeListener(this);
+            super.onDestroy();
         }
 
         /**
@@ -244,12 +251,27 @@ public class MainActivity extends Activity {
  //           Log.d(TAG,"clicked glyph: " + glyphName);
             GlyphDetailActivity.start(getActivity(), glyphName, mCategory);
         }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if( key.equals(SettingsActivity.Settings.GRID_FONT_SIZE.toString())) {
+                float fontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(), "64.0f"));
+                if (mFontSize != fontSize) {
+                    mFontSize = fontSize;
+                    mGridView.setAdapter(new GlyphListAdapter(getActivity(),FontMetadata.getInstance().getGlyphsNamesForCategory(mCategory), mFontSize, mTypeface));
+                }
+            }
+        }
     }
 
-    public class GlyphListAdapter extends ArrayAdapter<FontMetadata.Glyph>{
-        public GlyphListAdapter( String glyphCategory){
-            super( MainActivity.this, R.layout.glyph);
-            for(String name : FontMetadata.getInstance().getGlyphsNamesForCategory(glyphCategory))
+    public static class GlyphListAdapter extends ArrayAdapter<FontMetadata.Glyph>{
+        private final float mFontSize;
+        private final Typeface mTypeface;
+        public GlyphListAdapter( Context context, ArrayList<String> glyphs, float fontSize, Typeface typeFace){
+            super( context, R.layout.glyph);
+            mFontSize = fontSize;
+            mTypeface = typeFace;
+            for(String name : glyphs)
             {
                 add(FontMetadata.getInstance().getGlyphByName(name));
             }
@@ -257,14 +279,14 @@ public class MainActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = convertView == null ?
-                    ((LayoutInflater) MainActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null)
+                    ((LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null)
                     : convertView;
             TextView tv = (TextView)convertView;
             FontMetadata.Glyph g = (FontMetadata.Glyph)getItem(position);
             tv.setTypeface(mTypeface);
             String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
             tv.setText(uniCode);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mGridFontSize);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSize);
             return tv;
         }
     }

@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class SearchResultsActivity extends Activity {
+public class SearchResultsActivity extends ActionBarActivity {
     private static String sGlyphNames[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +35,6 @@ public class SearchResultsActivity extends Activity {
     private void handleIntent(Intent intent) {
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            if( sGlyphNames == null || sGlyphNames.length < 1) {
-                sGlyphNames = FontMetadata.getInstance().getAllGlyphNames();
-            }
-
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d(TAG, "query string: " + query);
             doQuery(query);
@@ -45,6 +42,9 @@ public class SearchResultsActivity extends Activity {
     }
 
     private void doQuery(String query){
+        if( sGlyphNames == null || sGlyphNames.length < 1) {
+            sGlyphNames = FontMetadata.getInstance().getAllGlyphNames();
+        }
         for( String name : sGlyphNames ){
             if( name.matches(query)){
                 Log.d(TAG,"match for '"+query+"' : "+name);
