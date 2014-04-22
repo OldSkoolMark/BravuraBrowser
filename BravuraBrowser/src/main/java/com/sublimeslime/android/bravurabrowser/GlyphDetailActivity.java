@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
+
 
 public class GlyphDetailActivity extends ActionBarActivity {
     public enum IntentKey { GLYPH_NAME, GLYPH_CATEGORY }
@@ -36,7 +38,7 @@ public class GlyphDetailActivity extends ActionBarActivity {
      * may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    GlyphDetailPagerAdapter mGlyphDetailPagerAdapter;
+    GlyphDetailFragment.GlyphDetailPagerAdapter mGlyphDetailPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -60,7 +62,9 @@ public class GlyphDetailActivity extends ActionBarActivity {
         mCategoryGlyphNames = names.toArray(new String[names.size()]);
 
         // Set up the ViewPager
-        mGlyphDetailPagerAdapter = new GlyphDetailPagerAdapter(getSupportFragmentManager());
+        mGlyphDetailPagerAdapter = new GlyphDetailFragment.GlyphDetailPagerAdapter(getSupportFragmentManager(), mCategoryGlyphNames,
+                "bravura/Bravura.otf",
+                mFontSize );
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mGlyphDetailPagerAdapter);
         //
@@ -72,89 +76,27 @@ public class GlyphDetailActivity extends ActionBarActivity {
         }
         mViewPager.setCurrentItem(i);
     }
- /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.glyph_detail, menu);
-        return true;
-    }
+    /*
+       @Override
+       public boolean onCreateOptionsMenu(Menu menu) {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+           // Inflate the menu; this adds items to the action bar if it is present.
+           getMenuInflater().inflate(R.menu.glyph_detail, menu);
+           return true;
+       }
 
-  */
-    private class GlyphDetailPagerAdapter extends FragmentStatePagerAdapter {
+       @Override
+       public boolean onOptionsItemSelected(MenuItem item) {
+           // Handle action bar item clicks here. The action bar will
+           // automatically handle clicks on the Home/Up button, so long
+           // as you specify a parent activity in AndroidManifest.xml.
+           int id = item.getItemId();
+           if (id == R.id.action_settings) {
+               return true;
+           }
+           return super.onOptionsItemSelected(item);
+       }
 
-        public GlyphDetailPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a GlyphDetailFragment (defined as a static inner class below).
-            return newGlyphFragmentInstance(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mCategoryGlyphNames.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mCategoryGlyphNames[position];
-        }
-    }
-
-    private static final String GLYPH_INDEX = "glyph_index";
-
-    public GlyphDetailFragment newGlyphFragmentInstance(int sectionNumber) {
-        GlyphDetailFragment fragment = new GlyphDetailFragment();
-        Bundle args = new Bundle();
-        args.putInt(GLYPH_INDEX, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-    private class GlyphDetailFragment extends Fragment {
-        public GlyphDetailFragment() {  }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            String glyphName = mCategoryGlyphNames[getArguments().getInt(GLYPH_INDEX)];
-            FontMetadata.Glyph glyph = FontMetadata.getInstance().getGlyphByName(glyphName);
-            View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
-            // glyph name
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(glyphName);
-            // glyph
-            TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
-            FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint, mFontSize,mTypeface);
-            // codepoint
-            String codepointLabel = getActivity().getResources().getString(R.string.codepoint);
-            TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
-            cpTv.setText(codepointLabel + glyph.codepoint);
-            // alt codepoint if present
-            if( glyph.alternateCodepoint != null ){
-                String alternateLabel = getActivity().getResources().getString(R.string.alternate);
-                TextView altTv = (TextView)rootView.findViewById(R.id.alternate_codepoint);
-                altTv.setText(alternateLabel + glyph.alternateCodepoint);
-            }
-
-            return rootView;
-        }
-    }
+     */
 
 }
