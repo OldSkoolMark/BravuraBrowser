@@ -1,11 +1,8 @@
-package com.sublimeslime.android.bravurabrowser;
+package com.sublimeslime.android.bravurabrowser.activities;
 
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.PreferenceChangeEvent;
-import java.util.prefs.PreferenceChangeListener;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -13,7 +10,6 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -25,11 +21,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.PopupMenu;
 import android.widget.SearchView;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,10 +30,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
-import com.sublimeslime.android.bravurabrowser.FontMetadata.*;
+
+import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
 public class MainActivity extends Activity {

@@ -16,9 +16,9 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
-import com.sublimeslime.android.bravurabrowser.GlyphDetailActivity;
+import com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity;
 import com.sublimeslime.android.bravurabrowser.R;
-import com.sublimeslime.android.bravurabrowser.SettingsActivity;
+import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
 
 import java.util.ArrayList;
 

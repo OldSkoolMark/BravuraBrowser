@@ -1,4 +1,4 @@
-package com.sublimeslime.android.bravurabrowser;
+package com.sublimeslime.android.bravurabrowser.activities;
 
 import java.util.ArrayList;
 
@@ -7,18 +7,12 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 

@@ -1,6 +1,5 @@
-package com.sublimeslime.android.bravurabrowser;
+package com.sublimeslime.android.bravurabrowser.activities;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Intent;
@@ -8,10 +7,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.R;
 
 
 public class SearchResultsActivity extends ActionBarActivity {

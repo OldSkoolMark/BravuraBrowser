@@ -1,4 +1,4 @@
-package com.sublimeslime.android.bravurabrowser;
+package com.sublimeslime.android.bravurabrowser.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
+
+import com.sublimeslime.android.bravurabrowser.R;
 
 import java.util.List;
 
