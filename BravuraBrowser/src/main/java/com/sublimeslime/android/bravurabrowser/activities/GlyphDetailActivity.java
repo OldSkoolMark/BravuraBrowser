@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
@@ -16,7 +18,22 @@ import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 
-public class GlyphDetailActivity extends ActionBarActivity {
+public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetailFragment.IParentData{
+    @Override
+    public String getGlyphName() {
+        return mInitialGlyphName;
+    }
+
+    @Override
+    public float getFontSize() {
+        return mFontSize;
+    }
+
+    @Override
+    public Typeface getTypeface() {
+        return mTypeface;
+    }
+
     public enum IntentKey { GLYPH_NAME, GLYPH_CATEGORY }
     public final static void start(Context c, String glyphName, String glyphCategory){
         Intent i = new Intent(c, GlyphDetailActivity.class);
@@ -24,19 +41,9 @@ public class GlyphDetailActivity extends ActionBarActivity {
         i.putExtra(IntentKey.GLYPH_CATEGORY.name(), glyphCategory);
         c.startActivity(i);
     }
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentStatePagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    GlyphDetailFragment.GlyphDetailPagerAdapter mGlyphDetailPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    GlyphDetailPagerAdapter mGlyphDetailPagerAdapter;
+
     ViewPager mViewPager;
     private String mInitialGlyphName;
     private String mGlyphCategory;
@@ -56,9 +63,7 @@ public class GlyphDetailActivity extends ActionBarActivity {
         mCategoryGlyphNames = names.toArray(new String[names.size()]);
 
         // Set up the ViewPager
-        mGlyphDetailPagerAdapter = new GlyphDetailFragment.GlyphDetailPagerAdapter(getSupportFragmentManager(), mCategoryGlyphNames,
-                "bravura/Bravura.otf",
-                mFontSize );
+        mGlyphDetailPagerAdapter = new GlyphDetailPagerAdapter(getSupportFragmentManager(), mCategoryGlyphNames);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mGlyphDetailPagerAdapter);
         //
@@ -69,6 +74,30 @@ public class GlyphDetailActivity extends ActionBarActivity {
             }
         }
         mViewPager.setCurrentItem(i);
+    }
+    private class GlyphDetailPagerAdapter extends FragmentStatePagerAdapter {
+        private String[] mGlyphNames;
+
+        public GlyphDetailPagerAdapter(FragmentManager fm, String[] glyphNames)
+        {
+            super(fm);
+            mGlyphNames = glyphNames;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return GlyphDetailFragment.newGlyphFragmentInstance(GlyphDetailActivity.this, position);
+        }
+
+        @Override
+        public int getCount() {
+            return mGlyphNames.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mGlyphNames[position];
+        }
     }
     /*
        @Override

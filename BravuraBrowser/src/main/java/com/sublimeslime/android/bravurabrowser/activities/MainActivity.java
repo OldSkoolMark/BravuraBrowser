@@ -41,6 +41,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
