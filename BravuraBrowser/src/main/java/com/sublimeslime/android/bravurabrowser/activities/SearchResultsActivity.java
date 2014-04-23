@@ -3,6 +3,7 @@ package com.sublimeslime.android.bravurabrowser.activities;
 import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -13,18 +14,15 @@ import android.view.ViewGroup;
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
 
+import java.util.ArrayList;
+
 
 public class SearchResultsActivity extends ActionBarActivity {
-    private static String sGlyphNames[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
         handleIntent(getIntent());
     }
 
@@ -37,20 +35,31 @@ public class SearchResultsActivity extends ActionBarActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d(TAG, "query string: " + query);
-            doQuery(query);
+            new QueryTask().execute(query);
+        }
+    }
+    private static class QueryTask extends AsyncTask<String, Void, ArrayList<String>>{
+
+        @Override
+        protected ArrayList<String> doInBackground(String... query) {
+            return doQuery(query[0]);
+        }
+        private ArrayList<String> doQuery(String query){
+            String glyphNames[] = FontMetadata.getInstance().getAllGlyphNames();
+            ArrayList<String> matches = new ArrayList<String>();
+            for( String name : glyphNames){
+                if( name.matches(query)){
+                    matches.add(name);
+                }
+            }
+            return matches;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<String> qlyphNames) {
+
         }
     }
 
-    private void doQuery(String query){
-        if( sGlyphNames == null || sGlyphNames.length < 1) {
-            sGlyphNames = FontMetadata.getInstance().getAllGlyphNames();
-        }
-        for( String name : sGlyphNames ){
-            if( name.matches(query)){
-                Log.d(TAG,"match for '"+query+"' : "+name);
-            }
-        }
-    }
 /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,20 +81,6 @@ public class SearchResultsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 */
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
 
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_search_results, container, false);
-            return rootView;
-        }
-    }
     private final static String TAG = SearchResultsActivity.class.getCanonicalName();
 }
