@@ -66,10 +66,14 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         mGlyphDetailPagerAdapter = new GlyphDetailPagerAdapter(getSupportFragmentManager(), mCategoryGlyphNames);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mGlyphDetailPagerAdapter);
-        //
+        scrollViewPagerTo( mInitialGlyphName);
+
+    }
+
+    private void scrollViewPagerTo( String glyphName ){
         int i;
         for( i=0; i<mCategoryGlyphNames.length; i++){
-            if( mCategoryGlyphNames[i].equals(mInitialGlyphName)){
+            if( mCategoryGlyphNames[i].equals(glyphName)){
                 break;
             }
         }
