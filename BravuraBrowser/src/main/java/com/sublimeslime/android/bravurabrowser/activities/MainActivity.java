@@ -2,6 +2,7 @@ package com.sublimeslime.android.bravurabrowser.activities;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -36,15 +37,15 @@ import com.sublimeslime.android.bravurabrowser.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements GridFragment.IParentData{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
+    private String mCategoryName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +66,7 @@ public class MainActivity extends Activity {
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
  //       getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setTitle("no category selected");
+        getActionBar().setTitle(R.string.no_category_selected);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
@@ -88,23 +89,27 @@ public class MainActivity extends Activity {
 
         new LoadGlyphsTask().execute();
     }
-    private enum InstanceStateKey { CATEGORY_POSITION }
-
+    /**
+     * GridFragment.IParentData implementation
+     */
     @Override
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG,"onStart()");
+    public ArrayList<String> getGlyphNames() {
+        return  mCategoryName == null ? new ArrayList<String>() : FontMetadata.getInstance().getGlyphsNamesForCategory(mCategoryName);
     }
-    @Override
-    public void onResume(){
-        super.onResume();
-        Log.d(TAG,"onResume()");
-      }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public Typeface getTypeface() {
+        return mTypeface;
+    }
 
+    @Override
+    public float getFontSize() {
+        return mGridFontSize;
+    }
+
+    @Override
+    public void onGridItemClick(String glyphName){
+        GlyphDetailActivity.start(this, glyphName, mCategoryName);
     }
 
     @Override
@@ -115,8 +120,6 @@ public class MainActivity extends Activity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
-        ComponentName cn = getComponentName();
-        SearchableInfo si = searchManager.getSearchableInfo(cn);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
@@ -147,14 +150,11 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void replaceGridViewFragment(String tag, float fontSize){
+    private void replaceGridViewFragment(String tag){
         if( tag != null ) {
             getActionBar().setTitle(tag);
+            mCategoryName = tag;
             Fragment fragment = new GridFragment();
-            Bundle b = new Bundle();
-            b.putString("category", tag);
-            b.putFloat("font_size", fontSize);
-            fragment.setArguments(b);
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.content_frame, fragment, tag);
@@ -173,12 +173,11 @@ public class MainActivity extends Activity {
     private void selectItem(int position) {
         List<String> categories = FontMetadata.getInstance().getCategories();
         if( position < categories.size()){
-            String glyphClassName = categories.get(position);
-            replaceGridViewFragment(glyphClassName, mGridFontSize);
+            mCategoryName = categories.get(position);
+            replaceGridViewFragment(mCategoryName);
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-  //      setTitle(mPlanetTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -199,8 +198,6 @@ public class MainActivity extends Activity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
-
 
     public class CategoryListAdapter extends ArrayAdapter<String>{
         public CategoryListAdapter(Context c){
@@ -228,12 +225,10 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            setupCategoryAdapter();
+            mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
+            mCategoryAdapter.notifyDataSetChanged();
         }
     }
-    private void setupCategoryAdapter(){
-        mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
-        mCategoryAdapter.notifyDataSetChanged();
-    }
+
     private final static String TAG = MainActivity.class.getCanonicalName();
 }
