@@ -54,7 +54,7 @@
                 android:value="MainActivity" />
         </activity>
         <activity
-            android:name=".activities.GlyphDetailActivity"
+            android:name=".activities.GlyphCategoryDetailActivity"
             android:label="@string/title_activity_glyph_detail"
             android:parentActivityName=".activities.MainActivity" >
             <meta-data

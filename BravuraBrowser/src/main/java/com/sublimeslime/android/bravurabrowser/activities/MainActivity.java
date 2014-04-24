@@ -8,8 +8,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.app.Fragment;
@@ -91,7 +89,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
         new LoadGlyphsTask().execute();
     }
     /**
-     * GridFragment.IParentData implementation
+     * GridFragment.IParentActivity implementation
      */
     @Override
     public ArrayList<String> getGlyphNames() {
@@ -110,7 +108,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
 
     @Override
     public void onGridItemClick(String glyphName){
-        GlyphDetailActivity.start(this, glyphName, mCategoryName);
+        GlyphCategoryDetailActivity.start(this, glyphName, mCategoryName);
     }
 
     @Override

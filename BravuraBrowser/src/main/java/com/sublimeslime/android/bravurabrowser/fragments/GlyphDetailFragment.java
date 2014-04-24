@@ -1,10 +1,8 @@
 package com.sublimeslime.android.bravurabrowser.fragments;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import com.sublimeslime.android.bravurabrowser.R;
 
 public class GlyphDetailFragment extends Fragment {
 
-    public interface IParentData {
+    public interface IParentActivity {
         public String getGlyphName();
         public float getFontSize();
         public Typeface getTypeface();
@@ -25,7 +23,7 @@ public class GlyphDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        IParentData parent = (IParentData)getActivity();
+        IParentActivity parent = (IParentActivity)getActivity();
 
         FontMetadata.Glyph glyph = FontMetadata.getInstance().getGlyphByName(parent.getGlyphName());
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
@@ -51,7 +49,7 @@ public class GlyphDetailFragment extends Fragment {
     }
 
     public static final String GLYPH_NAME = "glyph_name";
-    public static GlyphDetailFragment newGlyphFragmentInstance(GlyphDetailFragment.IParentData parent, int sectionNumber) {
+    public static GlyphDetailFragment newGlyphFragmentInstance(IParentActivity parent, int sectionNumber) {
         GlyphDetailFragment fragment = new GlyphDetailFragment();
         return fragment;
     }

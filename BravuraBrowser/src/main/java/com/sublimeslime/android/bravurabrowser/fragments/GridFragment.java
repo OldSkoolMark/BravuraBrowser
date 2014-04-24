@@ -16,7 +16,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
-import com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
 
@@ -69,7 +68,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     /**
-     * Launch GlyphDetailActivity on clicking a glyph
+     * Launch GlyphCategoryDetailActivity on clicking a glyph
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

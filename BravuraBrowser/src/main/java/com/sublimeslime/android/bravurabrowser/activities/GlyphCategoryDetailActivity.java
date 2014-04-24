@@ -18,7 +18,7 @@ import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 
-public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetailFragment.IParentData{
+public class GlyphCategoryDetailActivity extends ActionBarActivity implements GlyphDetailFragment.IParentActivity {
     @Override
     public String getGlyphName() {
         return mInitialGlyphName;
@@ -36,7 +36,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
 
     public enum IntentKey { GLYPH_NAME, GLYPH_CATEGORY }
     public final static void start(Context c, String glyphName, String glyphCategory){
-        Intent i = new Intent(c, GlyphDetailActivity.class);
+        Intent i = new Intent(c, GlyphCategoryDetailActivity.class);
         i.putExtra(IntentKey.GLYPH_NAME.name(), glyphName);
         i.putExtra(IntentKey.GLYPH_CATEGORY.name(), glyphCategory);
         c.startActivity(i);
@@ -90,7 +90,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
 
         @Override
         public Fragment getItem(int position) {
-            return GlyphDetailFragment.newGlyphFragmentInstance(GlyphDetailActivity.this, position);
+            return GlyphDetailFragment.newGlyphFragmentInstance(GlyphCategoryDetailActivity.this, position);
         }
 
         @Override
