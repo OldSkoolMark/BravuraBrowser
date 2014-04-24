@@ -143,7 +143,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
         }
         // Handle action buttons
         switch(item.getItemId()) {
-               case R.id.action_settings:
+            case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:

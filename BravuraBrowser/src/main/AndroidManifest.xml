@@ -23,7 +23,7 @@
             <!-- set action bar search widget target -->
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchResultsActivity" />
+                android:value=".activities.SearchResultsActivity" />
         </activity>
         <activity
             android:name=".activities.SearchResultsActivity"
