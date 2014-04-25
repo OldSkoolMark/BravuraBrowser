@@ -19,7 +19,7 @@ import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 
 public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetailFragment.IParentActivity {
-
+    // IParentActivity contract
     @Override
     public float getFontSize() {
         return mFontSize;
@@ -30,6 +30,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         return mTypeface;
     }
 
+    // start activity convenience method
     public final static void start(Context c) {
         Intent i = new Intent(c, GlyphDetailActivity.class);
         c.startActivity(i);

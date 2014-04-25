@@ -26,7 +26,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     /**
      * Parent activity support for grid adapters and views
      */
-    public interface IParentData {
+    public interface IParentActivity {
         public ArrayList<String> getGlyphNames();
         public Typeface getTypeface();
         public float getFontSize();
@@ -49,7 +49,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
         // Parent activity contract with
-        IParentData parent = (IParentData)getActivity();
+        IParentActivity parent = (IParentActivity)getActivity();
         mFontSize = parent.getFontSize();
         mGridView = (GridView) rootView.findViewById(R.id.gridview);
         mGridView.setAdapter(new GlyphListAdapter(getActivity(),
@@ -75,7 +75,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
         GlyphListAdapter gla = (GlyphListAdapter) parent.getAdapter();
         FontMetadata.Glyph g = gla.getItem(position);
         String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint, g.alternateCodepoint);
-        ((IParentData)getActivity()).onGridItemClick(glyphName);
+        ((IParentActivity)getActivity()).onGridItemClick(glyphName);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
                     "64.0f"));
             if (mFontSize != fontSize) {
                 mFontSize = fontSize;
-                IParentData parent = (IParentData)getActivity();
+                IParentActivity parent = (IParentActivity)getActivity();
                 mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphNames(), mFontSize, parent.getTypeface()));
             }
         }

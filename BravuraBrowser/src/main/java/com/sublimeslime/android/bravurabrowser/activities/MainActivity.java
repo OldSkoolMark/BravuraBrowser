@@ -36,7 +36,7 @@ import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
-public class MainActivity extends Activity implements GridFragment.IParentData{
+public class MainActivity extends Activity implements GridFragment.IParentActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -45,7 +45,32 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
     private Typeface mTypeface;
     private float mGridFontSize;
     private ArrayAdapter<String> mCategoryAdapter;
-    private String mCategoryName;
+
+    // GridFragment.IParentActivity implementation
+
+    @Override
+    public ArrayList<String> getGlyphNames() {
+        return ((ViewSMuFLFontApplication)getApplication()).getGlyphNameList();
+    }
+
+    @Override
+    public Typeface getTypeface() {
+        return mTypeface;
+    }
+
+    @Override
+    public float getFontSize() {
+        return mGridFontSize;
+    }
+
+    @Override
+    public void onGridItemClick(String glyphName){
+        ((ViewSMuFLFontApplication)getApplication()).setGlyphNameListLabel(glyphName);
+        GlyphDetailActivity.start(this);
+    }
+
+    // Lifecycle methods
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,29 +115,6 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
 
         new LoadGlyphsTask().execute();
     }
-    /**
-     * GridFragment.IParentActivity implementation
-     */
-    @Override
-    public ArrayList<String> getGlyphNames() {
-        return ((ViewSMuFLFontApplication)getApplication()).getGlyphNameList();
-    }
-
-    @Override
-    public Typeface getTypeface() {
-        return mTypeface;
-    }
-
-    @Override
-    public float getFontSize() {
-        return mGridFontSize;
-    }
-
-    @Override
-    public void onGridItemClick(String glyphName){
-        ((ViewSMuFLFontApplication)getApplication()).setGlyphNameListLabel(glyphName);
-        GlyphDetailActivity.start(this);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,19 +154,8 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
         }
     }
 
-    private void replaceGridViewFragment(String categoryName){
-        if( categoryName != null ) {
-            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphsNamesForCategory(categoryName));
-            getActionBar().setTitle(categoryName);
-            Fragment fragment = new GridFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.content_frame, fragment, categoryName);
-            ft.addToBackStack(categoryName);
-            ft.commit();
-        }
-    }
-    /* The click listner for ListView in the navigation drawer */
+    // Handle nav drawer list item selection
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -182,6 +173,18 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
+    private void replaceGridViewFragment(String categoryName){
+        if( categoryName != null ) {
+            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphsNamesForCategory(categoryName));
+            getActionBar().setTitle(categoryName);
+            Fragment fragment = new GridFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.content_frame, fragment, categoryName);
+            ft.addToBackStack(categoryName);
+            ft.commit();
+        }
+    }
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;

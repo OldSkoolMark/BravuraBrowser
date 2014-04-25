@@ -19,27 +19,9 @@ import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
 import java.util.ArrayList;
 
-public class SearchResultsActivity extends ActionBarActivity implements GridFragment.IParentData{
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
-        handleIntent(getIntent());
-    }
+public class SearchResultsActivity extends ActionBarActivity implements GridFragment.IParentActivity {
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
-    }
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.d(TAG, "query string: " + query);
-            new QueryTask().execute(query);
-        }
-    }
-
+    // IParentActivity contract
     @Override
     public ArrayList<String> getGlyphNames() {
         return ((ViewSMuFLFontApplication)getApplication()).getGlyphNameList();
@@ -61,6 +43,27 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         GlyphDetailActivity.start(this);
     }
 
+    // Lifecycle methods
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_results);
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(intent);
+    }
+    private void handleIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG, "query string: " + query);
+            new QueryTask().execute(query);
+        }
+    }
+    // Async search and result display
     private class QueryTask extends AsyncTask<String, Void, ArrayList<String>>{
         private String mQuery;
         @Override
