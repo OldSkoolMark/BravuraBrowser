@@ -33,6 +33,7 @@ import android.widget.ListView;
 
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
+import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
 public class MainActivity extends Activity implements GridFragment.IParentData{
@@ -48,6 +49,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate()");
         mTitle = getTitle();
@@ -61,7 +63,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
         mCategoryAdapter = new CategoryListAdapter(MainActivity.this);
         mDrawerList.setAdapter(mCategoryAdapter);
 
-        mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
+        mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
  //       getActionBar().setHomeButtonEnabled(true);

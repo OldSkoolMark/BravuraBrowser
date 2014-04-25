@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
+import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
 
     @Override
     public Typeface getTypeface() {
-        return Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
+        return ((ViewSMuFLFontApplication)getApplication()).getTypeface();
     }
 
     @Override

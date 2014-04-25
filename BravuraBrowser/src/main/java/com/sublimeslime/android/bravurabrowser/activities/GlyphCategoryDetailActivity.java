@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
+import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 
@@ -55,14 +56,14 @@ public class GlyphCategoryDetailActivity extends ActionBarActivity implements Gl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glyph_detail);
         Intent intent = getIntent();
-        mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
+        mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
         mFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(),"128.0f"));
         mInitialGlyphName = intent.getStringExtra(IntentKey.GLYPH_NAME.name());
+
+        // Set up the ViewPager
         mGlyphCategory = intent.getStringExtra(IntentKey.GLYPH_CATEGORY.name());
         ArrayList<String> names = FontMetadata.getInstance().getGlyphsNamesForCategory(mGlyphCategory);
         mCategoryGlyphNames = names.toArray(new String[names.size()]);
-
-        // Set up the ViewPager
         mGlyphDetailPagerAdapter = new GlyphDetailPagerAdapter(getSupportFragmentManager(), mCategoryGlyphNames);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mGlyphDetailPagerAdapter);
