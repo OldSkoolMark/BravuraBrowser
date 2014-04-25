@@ -10,30 +10,30 @@ import android.widget.TextView;
 
 import com.sublimeslime.android.bravurabrowser.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
+import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 
 public class GlyphDetailFragment extends Fragment {
 
     public interface IParentActivity {
-        public String getGlyphName();
         public float getFontSize();
         public Typeface getTypeface();
     }
     public GlyphDetailFragment() {  }
-
+    private  enum IntentKey {POSITION};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         IParentActivity parent = (IParentActivity)getActivity();
-
-        FontMetadata.Glyph glyph = FontMetadata.getInstance().getGlyphByName(parent.getGlyphName());
+        Bundle b = getArguments();
+        String glyphName = ((ViewSMuFLFontApplication)getActivity().getApplication()).getGlyphNameList().get(b.getInt(IntentKey.POSITION.name()));
+        FontMetadata.Glyph glyph = FontMetadata.getInstance().getGlyphByName(glyphName);
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
         // glyph name
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(parent.getGlyphName());
+        textView.setText(glyphName);
         // glyph
         TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
-        FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint,
-                parent.getFontSize(),parent.getTypeface());
+        FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint, parent.getFontSize(),parent.getTypeface());
         // codepoint
         String codepointLabel = getActivity().getResources().getString(R.string.codepoint);
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
@@ -48,9 +48,11 @@ public class GlyphDetailFragment extends Fragment {
         return rootView;
     }
 
-    public static final String GLYPH_NAME = "glyph_name";
-    public static GlyphDetailFragment newGlyphFragmentInstance(IParentActivity parent, int sectionNumber) {
+    public static GlyphDetailFragment newGlyphFragmentInstance(int position) {
+        Bundle b = new Bundle();
+        b.putInt(IntentKey.POSITION.name(), position);
         GlyphDetailFragment fragment = new GlyphDetailFragment();
+        fragment.setArguments(b);
         return fragment;
     }
 

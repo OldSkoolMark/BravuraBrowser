@@ -95,7 +95,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
      */
     @Override
     public ArrayList<String> getGlyphNames() {
-        return  mCategoryName == null ? new ArrayList<String>() : FontMetadata.getInstance().getGlyphsNamesForCategory(mCategoryName);
+        return ((ViewSMuFLFontApplication)getApplication()).getGlyphNameList();
     }
 
     @Override
@@ -110,7 +110,8 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
 
     @Override
     public void onGridItemClick(String glyphName){
-        GlyphCategoryDetailActivity.start(this, glyphName, mCategoryName);
+        ((ViewSMuFLFontApplication)getApplication()).setGlyphNameListLabel(glyphName);
+        GlyphDetailActivity.start(this);
     }
 
     @Override
@@ -151,15 +152,15 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
         }
     }
 
-    private void replaceGridViewFragment(String tag){
-        if( tag != null ) {
-            getActionBar().setTitle(tag);
-            mCategoryName = tag;
+    private void replaceGridViewFragment(String categoryName){
+        if( categoryName != null ) {
+            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphsNamesForCategory(categoryName));
+            getActionBar().setTitle(categoryName);
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.content_frame, fragment, tag);
-            ft.addToBackStack(tag);
+            ft.replace(R.id.content_frame, fragment, categoryName);
+            ft.addToBackStack(categoryName);
             ft.commit();
         }
     }
@@ -174,8 +175,7 @@ public class MainActivity extends Activity implements GridFragment.IParentData{
     private void selectItem(int position) {
         List<String> categories = FontMetadata.getInstance().getCategories();
         if( position < categories.size()){
-            mCategoryName = categories.get(position);
-            replaceGridViewFragment(mCategoryName);
+            replaceGridViewFragment(categories.get(position));
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);

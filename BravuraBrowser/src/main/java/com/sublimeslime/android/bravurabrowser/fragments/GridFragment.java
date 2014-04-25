@@ -68,16 +68,14 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     }
 
     /**
-     * Launch GlyphCategoryDetailActivity on clicking a glyph
+     * Launch GlyphDetailActivity on clicking a glyph
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GlyphListAdapter gla = (GlyphListAdapter) parent.getAdapter();
-        FontMetadata.Glyph g = (FontMetadata.Glyph) gla.getItem(position);
+        FontMetadata.Glyph g = gla.getItem(position);
         String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint, g.alternateCodepoint);
         ((IParentData)getActivity()).onGridItemClick(glyphName);
-        //           Log.d(TAG,"clicked glyph: " + glyphName);
-  //
     }
 
     @Override
@@ -114,7 +112,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
                     ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null)
                     : convertView;
             TextView tv = (TextView) convertView;
-            FontMetadata.Glyph g = (FontMetadata.Glyph) getItem(position);
+            FontMetadata.Glyph g = getItem(position);
             tv.setTypeface(mGlyphTypeface);
             String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
             tv.setText(uniCode);
