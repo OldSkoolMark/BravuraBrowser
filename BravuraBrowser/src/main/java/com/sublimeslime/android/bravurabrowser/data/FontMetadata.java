@@ -111,22 +111,6 @@ public class FontMetadata {
         return mGlyphRanges.map.get(rangeName);
     }
 
-    /**
-     * Get names of all glyphs in a range
-     * @param range of glyphs
-     * @return list of names in range
-     */
-    public ArrayList<String> getGlyphNamesForRange(String range){
-        GlyphRange aRange = mGlyphRanges.map.get(range);
-        ArrayList<String> names = new ArrayList<String>();
-        names.addAll(Arrays.asList(aRange.glyphs));
-        return names;
-    }
-
-    public String[] getAllGlyphNames(){
-        return mGlyphMap.getAllGlyphNames();
-    }
-
     // Singleton
     private static FontMetadata mThis;
     private FontMetadata(){}
@@ -155,7 +139,22 @@ public class FontMetadata {
             return "map = "+ map;
         }
     }
-
+    public ArrayList<Glyph> getGlyphsForRange(String rangeName){
+        GlyphRange range = getGlyphRange(rangeName);
+        ArrayList<Glyph> glyphs = new ArrayList<Glyph>(range.glyphs.length);
+        for( String glyphName : range.glyphs ){
+            glyphs.add(getGlyphByName(glyphName));
+        }
+        return glyphs;
+    }
+    public ArrayList<Glyph> getGlyphsByMatchingKey( String key ){
+        ArrayList<Glyph> matches = new ArrayList<Glyph>();
+        for( String s : mGlyphMap.glyphMap.keySet()){
+            if(s.matches(key))
+                matches.add(mGlyphMap.glyphMap.get(s));
+        }
+        return matches;
+    }
     /**
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */

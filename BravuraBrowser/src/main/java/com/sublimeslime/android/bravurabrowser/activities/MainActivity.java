@@ -33,7 +33,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
+
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
@@ -46,13 +48,16 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
-    private ArrayAdapter<FontMetadata.GlyphRange> mRangeAdapter;
+    private ArrayAdapter<GlyphRange> mRangeAdapter;
+    private ArrayList<Glyph> mCurrentGlyphs = new ArrayList<Glyph>();
+    private Long mGlyphArrayListKey;
+
 
     // GridFragment.IParentActivity implementation
 
     @Override
-    public ArrayList<String> getGlyphNames() {
-        return ((ViewSMuFLFontApplication)getApplication()).getGlyphNameList();
+    public ArrayList<Glyph> getGlyphs() {
+        return mCurrentGlyphs;
     }
 
     @Override
@@ -66,9 +71,10 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     }
 
     @Override
-    public void onGridItemClick(String glyphName){
-        ((ViewSMuFLFontApplication)getApplication()).setGlyphNameListLabel(glyphName);
-        GlyphDetailActivity.start(this);
+    public void onGridItemClick(int position){
+        mGlyphArrayListKey = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
+        GlyphDetailActivity.start(this, position, mGlyphArrayListKey);
+
     }
 
     // Lifecycle methods
@@ -87,7 +93,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        ArrayList<FontMetadata.GlyphRange> grList = new ArrayList<FontMetadata.GlyphRange>();
+        ArrayList<GlyphRange> grList = new ArrayList<GlyphRange>();
         mRangeAdapter = new RangeListAdapter(MainActivity.this, grList);
         mDrawerList.setAdapter(mRangeAdapter);
 
@@ -178,7 +184,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
     private void replaceGridViewFragment(String rangeName){
         if( rangeName != null ) {
-            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphNamesForRange(rangeName));
+
+            mCurrentGlyphs = FontMetadata.getInstance().getGlyphsForRange(rangeName);
             getActionBar().setTitle(FontMetadata.getInstance().getGlyphRange(rangeName).description);
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
@@ -209,9 +216,9 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     /**
      * List adapter maps range name to range description
      */
-    public class RangeListAdapter extends ArrayAdapter<FontMetadata.GlyphRange>{
+    public class RangeListAdapter extends ArrayAdapter<GlyphRange>{
 
-        public RangeListAdapter(Context c, List<FontMetadata.GlyphRange> range ){
+        public RangeListAdapter(Context c, List<GlyphRange> range ){
             super(c, R.layout.drawer_list_item);
             addAll(range);
         }

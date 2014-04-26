@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
 
@@ -27,10 +29,10 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
      * Parent activity support for grid adapters and views
      */
     public interface IParentActivity {
-        public ArrayList<String> getGlyphNames();
+        public ArrayList<Glyph> getGlyphs();
         public Typeface getTypeface();
         public float getFontSize();
-        public void onGridItemClick( String glyphName );
+        public void onGridItemClick( int position );
     }
 
     private float mFontSize; // needed for pref change check
@@ -53,7 +55,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
         mFontSize = parent.getFontSize();
         mGridView = (GridView) rootView.findViewById(R.id.gridview);
         mGridView.setAdapter(new GlyphListAdapter(getActivity(),
-                parent.getGlyphNames(),
+                parent.getGlyphs(),
                 mFontSize,
                 parent.getTypeface()));
         mGridView.setOnItemClickListener(this);
@@ -74,8 +76,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GlyphListAdapter gla = (GlyphListAdapter) parent.getAdapter();
         FontMetadata.Glyph g = gla.getItem(position);
-        String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint);
-        ((IParentActivity)getActivity()).onGridItemClick(glyphName);
+        ((IParentActivity)getActivity()).onGridItemClick(position);
     }
 
     @Override
@@ -87,7 +88,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
             if (mFontSize != fontSize) {
                 mFontSize = fontSize;
                 IParentActivity parent = (IParentActivity)getActivity();
-                mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphNames(), mFontSize, parent.getTypeface()));
+                mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, parent.getTypeface()));
             }
         }
     }
@@ -97,13 +98,11 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
         private final float mGlyphFontSize;
         private final Typeface mGlyphTypeface;
 
-        public GlyphListAdapter(Context context, ArrayList<String> glyphs, float fontSize, Typeface typeFace) {
+        public GlyphListAdapter(Context context, ArrayList<Glyph> glyphs, float fontSize, Typeface typeFace) {
             super(context, R.layout.glyph);
             mGlyphFontSize = fontSize;
             mGlyphTypeface = typeFace;
-            for (String name : glyphs) {
-                add(FontMetadata.getInstance().getGlyphByName(name));
-            }
+            addAll(glyphs);
         }
 
         @Override
@@ -112,7 +111,8 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
                     ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null)
                     : convertView;
             TextView tv = (TextView) convertView;
-            FontMetadata.Glyph g = getItem(position);
+            Glyph g = getItem(position);
+//            Log.d(TAG, g.description + " :"+g.codepoint );
             tv.setTypeface(mGlyphTypeface);
             String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
             tv.setText(uniCode);
@@ -120,4 +120,5 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
             return tv;
         }
     }
+    private final static String TAG = GridFragment.class.getCanonicalName();
 }

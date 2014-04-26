@@ -31,7 +31,6 @@
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.SearchResultsActivity"
             android:label="@string/title_activity_search_results"
-            android:launchMode="singleTop"
             android:parentActivityName="com.sublimeslime.android.bravurabrowser.activities.MainActivity" >
 
             <!-- make this activity the target of the action bar search from MainActivity -->
@@ -42,9 +41,7 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+
         </activity>
 
         <activity
@@ -59,10 +56,8 @@
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity"
             android:label="@string/title_activity_glyph_detail"
-            android:parentActivityName="com.sublimeslime.android.bravurabrowser.activities.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+            >
+
         </activity>
 
         <provider

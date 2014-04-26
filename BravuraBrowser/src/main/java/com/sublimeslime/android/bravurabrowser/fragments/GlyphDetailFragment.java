@@ -3,41 +3,44 @@ package com.sublimeslime.android.bravurabrowser.fragments;
 import android.support.v4.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
 import com.sublimeslime.android.bravurabrowser.R;
-import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
+
+import java.util.ArrayList;
 
 public class GlyphDetailFragment extends Fragment {
 
     public interface IParentActivity {
+        public ArrayList<Glyph> getGlyphs();
         public float getFontSize();
         public Typeface getTypeface();
     }
     public GlyphDetailFragment() {  }
     private  enum IntentKey {POSITION};
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         IParentActivity parent = (IParentActivity)getActivity();
-        Bundle b = getArguments();
-        String glyphName = ((ViewSMuFLFontApplication)getActivity().getApplication()).getGlyphNameList().get(b.getInt(IntentKey.POSITION.name()));
-        FontMetadata.Glyph glyph = FontMetadata.getInstance().getGlyphByName(glyphName);
+        int position = getArguments().getInt(IntentKey.POSITION.name());
+        Glyph glyph = parent.getGlyphs().get(position);
+  //      Log.d(TAG, glyph.description + " :" +glyph.codepoint);
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
         // glyph name
         TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(glyphName);
+        textView.setText(glyph.description);
         // glyph
         TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
-        FontMetadata.getInstance().displayGlyph(glyphTv,glyph.codepoint, parent.getFontSize(),parent.getTypeface());
+        FontMetadata.getInstance().displayGlyph( glyphTv, glyph.codepoint, parent.getFontSize(), parent.getTypeface());
         // codepoint
-        String codepointLabel = getActivity().getResources().getString(R.string.codepoint);
+        StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
-        cpTv.setText(codepointLabel + glyph.codepoint);
+        cpTv.setText(codepointLabel.append( glyph.codepoint));
 
         return rootView;
     }
@@ -49,5 +52,5 @@ public class GlyphDetailFragment extends Fragment {
         fragment.setArguments(b);
         return fragment;
     }
-
+    private final static String TAG = GlyphDetailFragment.class.getCanonicalName();
 }

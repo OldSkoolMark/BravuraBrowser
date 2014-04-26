@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
@@ -23,8 +24,8 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
 
     // IParentActivity contract
     @Override
-    public ArrayList<String> getGlyphNames() {
-        return ((ViewSMuFLFontApplication)getApplication()).getGlyphNameList();
+    public ArrayList<Glyph> getGlyphs() {
+        return mCurrentGlyphs;
     }
 
     @Override
@@ -38,9 +39,10 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
     }
 
     @Override
-    public void onGridItemClick(String glyphName) {
-        ((ViewSMuFLFontApplication)getApplication()).setGlyphNameListLabel(glyphName);
-        GlyphDetailActivity.start(this);
+    public void onGridItemClick(int position) {
+        Long key = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
+
+        GlyphDetailActivity.start(this, position, key);
     }
 
     // Lifecycle methods
@@ -59,31 +61,26 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.d(TAG, "query string: " + query);
             new QueryTask().execute(query);
         }
     }
+
+    private ArrayList<Glyph> mCurrentGlyphs;
     // Async search and result display
-    private class QueryTask extends AsyncTask<String, Void, ArrayList<String>>{
+    private class QueryTask extends AsyncTask<String, Void, ArrayList<Glyph>>{
         private String mQuery;
         @Override
-        protected ArrayList<String> doInBackground(String... query) {
+        protected ArrayList<Glyph> doInBackground(String... query) {
             return doQuery(query[0]);
         }
-        private ArrayList<String> doQuery(String query){
+        private ArrayList<Glyph> doQuery(String query){
+            Log.d(TAG, "doQuery()");
             mQuery = query;
-            String glyphNames[] = FontMetadata.getInstance().getAllGlyphNames();
-            ArrayList<String> matches = new ArrayList<String>();
-            for( String name : glyphNames){
-                if( name.matches(query)){
-                    matches.add(name);
-                }
-            }
-            return matches;
+            return FontMetadata.getInstance().getGlyphsByMatchingKey(mQuery);
         }
         @Override
-        protected void onPostExecute(ArrayList<String> results) {
-            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(results);
+        protected void onPostExecute(ArrayList<Glyph> results) {
+            mCurrentGlyphs = results;
             getActionBar().setTitle(mQuery);
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
