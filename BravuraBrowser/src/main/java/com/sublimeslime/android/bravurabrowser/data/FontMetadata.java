@@ -1,7 +1,6 @@
 package com.sublimeslime.android.bravurabrowser.data;
 
 import android.content.Context;
-import android.util.Log;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -82,44 +80,48 @@ public class FontMetadata {
     }
 
     /**
-     * Parses the Smufl classes.json file. 0.85 was not gson friendly and required hand editing as
+     * Parses the Smufl ranges.json file. Not gson friendly and required hand editing as
      * follows:
      *
-     * Beginning of file: { glyphClasses :
+     * Beginning of file: { map :
      * End of file: }
      * @param context that can provide assets
      * @param jsonAssetFilename name of file in assets directory.
      * @throws IOException
      */
-    public void parseGlyphCategories(Context context, String jsonAssetFilename) throws IOException {
+    public void parseGlyphRanges(Context context, String jsonAssetFilename) throws IOException {
         InputStream is = context.getAssets().open(jsonAssetFilename);
         Reader r = new InputStreamReader(is);
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
-        mGlyphClasses = gson.fromJson(r, GlyphClasses.class);
+        mGlyphRanges = gson.fromJson(r, GlyphRanges.class);
 
-        Set<String> keySet = mGlyphClasses.glyphClasses.keySet();
-        mGlyphClassNames.addAll(keySet);
-        Collections.sort(mGlyphClassNames);
-//        Log.i(TAG, mGlyphClasses.toString());
+        Set<String> keySet = mGlyphRanges.map.keySet();
+        mGlyphRangeNames.addAll(keySet);
+        Collections.sort(mGlyphRangeNames);
+//        Log.i(TAG, mGlyphRanges.toString());
     }
 
     /**
      * Get names of all glyph categories
      * @return list of names
      */
-    public List<String> getCategories(){
-        return mGlyphClassNames;
+    public List<String> getRangeNames(){
+        return mGlyphRangeNames;
+    }
+
+    public String getRangeDescription(String rangeName) {
+        return mGlyphRanges.map.get(rangeName).description;
     }
 
     /**
-     * Get names of all glyphs in a category
-     * @param category of glyphs
-     * @return list of names in category
+     * Get names of all glyphs in a range
+     * @param range of glyphs
+     * @return list of names in range
      */
-    public ArrayList<String> getGlyphsNamesForCategory(String category){
-        GlyphRange range = mGlyphClasses.glyphClasses.get(category);
+    public ArrayList<String> getGlyphNamesForRange(String range){
+        GlyphRange aRange = mGlyphRanges.map.get(range);
         ArrayList<String> names = new ArrayList<String>();
-        names.addAll(Arrays.asList(range.glyphs));
+        names.addAll(Arrays.asList(aRange.glyphs));
         return names;
     }
 
@@ -137,12 +139,12 @@ public class FontMetadata {
         public String range_end;
         public String range_start;
     }
-    private GlyphClasses mGlyphClasses;
-    public static class GlyphClasses {
-        public Map<String, GlyphRange> glyphClasses;
+    private GlyphRanges mGlyphRanges;
+    public static class GlyphRanges {
+        public Map<String, GlyphRange> map;
          @Override
         public String toString(){
-            return "glyphClasses = "+ glyphClasses;
+            return "map = "+ map;
         }
     }
 
@@ -150,7 +152,7 @@ public class FontMetadata {
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */
     private GlyphMap mGlyphMap;
-    private List<String> mGlyphClassNames = new ArrayList<String>();
+    private List<String> mGlyphRangeNames = new ArrayList<String>();
     public static class GlyphMap {
         TreeMap<String,Glyph> glyphMap;
         public String[] getAllGlyphNames(){

@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
-    private ArrayAdapter<String> mCategoryAdapter;
+    private ArrayAdapter<String> mRangeAdapter;
 
     // GridFragment.IParentActivity implementation
 
@@ -85,8 +85,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mCategoryAdapter = new CategoryListAdapter(MainActivity.this);
-        mDrawerList.setAdapter(mCategoryAdapter);
+        mRangeAdapter = new RangeListAdapter(MainActivity.this);
+        mDrawerList.setAdapter(mRangeAdapter);
 
         mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -164,24 +164,24 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     }
 
     private void selectItem(int position) {
-        List<String> categories = FontMetadata.getInstance().getCategories();
-        if( position < categories.size()){
-            replaceGridViewFragment(categories.get(position));
+        List<String> ranges = FontMetadata.getInstance().getRangeNames();
+        if( position < ranges.size()){
+            replaceGridViewFragment(ranges.get(position));
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-    private void replaceGridViewFragment(String categoryName){
-        if( categoryName != null ) {
-            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphsNamesForCategory(categoryName));
-            getActionBar().setTitle(categoryName);
+    private void replaceGridViewFragment(String rangeName){
+        if( rangeName != null ) {
+            ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphNamesForRange(rangeName));
+            getActionBar().setTitle(FontMetadata.getInstance().getRangeDescription(rangeName));
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.content_frame, fragment, categoryName);
-            ft.addToBackStack(categoryName);
+            ft.replace(R.id.content_frame, fragment, rangeName);
+            ft.addToBackStack(rangeName);
             ft.commit();
         }
     }
@@ -203,8 +203,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public class CategoryListAdapter extends ArrayAdapter<String>{
-        public CategoryListAdapter(Context c){
+    public class RangeListAdapter extends ArrayAdapter<String>{
+        public RangeListAdapter(Context c){
             super(c, R.layout.drawer_list_item);
         }
 
@@ -219,7 +219,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         protected Void doInBackground(Void... params) {
             try {
                 FontMetadata.getInstance().parseGlyphNames(MainActivity.this, "SMuFL/glyphnames.json");
-                FontMetadata.getInstance().parseGlyphCategories(MainActivity.this, "SMuFL/ranges.json");
+                FontMetadata.getInstance().parseGlyphRanges(MainActivity.this, "SMuFL/ranges.json");
             } catch( IOException e){
                 Log.e(TAG, "error parsing glyph names: " + e.getMessage());
             }
@@ -229,8 +229,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mCategoryAdapter.addAll(FontMetadata.getInstance().getCategories());
-            mCategoryAdapter.notifyDataSetChanged();
+            mRangeAdapter.addAll(FontMetadata.getInstance().getRangeNames());
+            mRangeAdapter.notifyDataSetChanged();
         }
     }
 
