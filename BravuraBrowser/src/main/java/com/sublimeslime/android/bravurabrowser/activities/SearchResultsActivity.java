@@ -12,7 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;

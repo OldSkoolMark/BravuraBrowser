@@ -49,7 +49,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         setContentView(R.layout.activity_glyph_detail);
         mTypeface = ((ViewSMuFLFontApplication) getApplication()).getTypeface();
         mFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "128.0f"));
-        mGlyphName = ((ViewSMuFLFontApplication) getApplication()).getmGlyphNameListLabel();
+        mGlyphName = ((ViewSMuFLFontApplication) getApplication()).getGlyphNameListLabel();
 
         // Set up the ViewPager
         ArrayList<String> names = ((ViewSMuFLFontApplication) getApplication()).getGlyphNameList();

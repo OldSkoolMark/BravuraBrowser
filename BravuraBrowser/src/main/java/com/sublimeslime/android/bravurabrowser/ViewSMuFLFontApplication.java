@@ -23,12 +23,12 @@ public class ViewSMuFLFontApplication extends Application {
     public final void setGlyphNameListLabel(String label){
         mGlyphNameListLabel = label;
     }
-    public final String getmGlyphNameListLabel(){
+    public final String getGlyphNameListLabel(){
         return mGlyphNameListLabel;
     }
     @Override
     public void onCreate() {
         super.onCreate();
-        mTypeface = Typeface.createFromAsset(getAssets(), "bravura/Bravura.otf");
+        mTypeface = Typeface.createFromAsset(getAssets(), "bravura_0_9/Bravura.otf");
     }
 }

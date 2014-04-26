@@ -1,4 +1,4 @@
-package com.sublimeslime.android.bravurabrowser;
+package com.sublimeslime.android.bravurabrowser.data;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -74,11 +75,10 @@ public class FontMetadata {
     /**
      * Return the key associated with a codepoint/alternatCodepoint value in the glyph map
      * @param codepoint
-     * @param alternateCodepoint
      * @return key
      */
-    public String lookupGlyphKeyByCodepoints( String codepoint, String alternateCodepoint){
-        return mGlyphMap.lookupGlyphKeyByCodepoints(codepoint, alternateCodepoint);
+    public String lookupGlyphKeyByCodepoints( String codepoint){
+        return mGlyphMap.lookupGlyphKeyByCodepoints(codepoint);
     }
 
     /**
@@ -117,7 +117,10 @@ public class FontMetadata {
      * @return list of names in category
      */
     public ArrayList<String> getGlyphsNamesForCategory(String category){
-        return mGlyphClasses.glyphClasses.get(category);
+        GlyphRange range = mGlyphClasses.glyphClasses.get(category);
+        ArrayList<String> names = new ArrayList<String>();
+        names.addAll(Arrays.asList(range.glyphs));
+        return names;
     }
 
     public String[] getAllGlyphNames(){
@@ -128,10 +131,15 @@ public class FontMetadata {
     private static FontMetadata mThis;
     private FontMetadata(){}
     private final static String TAG = FontMetadata.class.getCanonicalName();
-
+    public class GlyphRange {
+        public String description;
+        public String[] glyphs;
+        public String range_end;
+        public String range_start;
+    }
     private GlyphClasses mGlyphClasses;
     public static class GlyphClasses {
-        public Map<String, ArrayList<String>> glyphClasses;
+        public Map<String, GlyphRange> glyphClasses;
          @Override
         public String toString(){
             return "glyphClasses = "+ glyphClasses;
@@ -152,12 +160,10 @@ public class FontMetadata {
         public String toString() {
             return "GlyphMap =" + glyphMap ;
         }
-        public String lookupGlyphKeyByCodepoints(String codepoint, String alternateCodepoint){
+        public String lookupGlyphKeyByCodepoints(String codepoint){
             for( String key : glyphMap.keySet()){
                 if( codepoint != null && codepoint.equals( glyphMap.get(key).codepoint)) {
-                    if( alternateCodepoint == null || alternateCodepoint.equals( glyphMap.get(key).alternateCodepoint)){
-                        return key;
-                    }
+                    return key;
                 }
             }
             return "";
@@ -165,11 +171,11 @@ public class FontMetadata {
       }
     public static class Glyph {
         public String codepoint;
-        public String alternateCodepoint;
+        public String description;
         public Glyph(){}
         @Override
         public String toString() {
-            return "[ " + codepoint + "," + (alternateCodepoint == null ? "" : alternateCodepoint) + " ]" ;
+            return "[ "+description + " " + codepoint + " ]" ;
         }
     }
 

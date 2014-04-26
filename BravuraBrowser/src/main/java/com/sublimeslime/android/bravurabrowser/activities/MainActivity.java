@@ -31,7 +31,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
@@ -218,8 +218,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                FontMetadata.getInstance().parseGlyphNames(MainActivity.this, "bravura/glyphnames.json");
-                FontMetadata.getInstance().parseGlyphCategories(MainActivity.this, "bravura/classes.json");
+                FontMetadata.getInstance().parseGlyphNames(MainActivity.this, "SMuFL/glyphnames.json");
+                FontMetadata.getInstance().parseGlyphCategories(MainActivity.this, "SMuFL/ranges.json");
             } catch( IOException e){
                 Log.e(TAG, "error parsing glyph names: " + e.getMessage());
             }

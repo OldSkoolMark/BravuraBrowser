@@ -7,7 +7,7 @@ public class SMuFLDbSchema {
     public enum Table { AVAILABLE_FONTS, FONT, GLYPH, CATEGORY }
     public enum AvailableFontsColumn {
         ID("_id"), // _id needed for CursorLoader
-        LABEL("label"),
+        NAME("name"),
         ASSETS_DIRECTORY("dir");
         private AvailableFontsColumn(String columnName){
             mName = columnName;

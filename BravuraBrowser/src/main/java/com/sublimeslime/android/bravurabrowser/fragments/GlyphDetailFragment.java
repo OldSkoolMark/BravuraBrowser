@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 
@@ -38,12 +38,6 @@ public class GlyphDetailFragment extends Fragment {
         String codepointLabel = getActivity().getResources().getString(R.string.codepoint);
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
         cpTv.setText(codepointLabel + glyph.codepoint);
-        // alt codepoint if present
-        if( glyph.alternateCodepoint != null ){
-            String alternateLabel = getActivity().getResources().getString(R.string.alternate);
-            TextView altTv = (TextView)rootView.findViewById(R.id.alternate_codepoint);
-            altTv.setText(alternateLabel + glyph.alternateCodepoint);
-        }
 
         return rootView;
     }

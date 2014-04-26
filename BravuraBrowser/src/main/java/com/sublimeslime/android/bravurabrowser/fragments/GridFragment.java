@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.sublimeslime.android.bravurabrowser.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
 
@@ -74,7 +74,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         GlyphListAdapter gla = (GlyphListAdapter) parent.getAdapter();
         FontMetadata.Glyph g = gla.getItem(position);
-        String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint, g.alternateCodepoint);
+        String glyphName = FontMetadata.getInstance().lookupGlyphKeyByCodepoints(g.codepoint);
         ((IParentActivity)getActivity()).onGridItemClick(glyphName);
     }
 
