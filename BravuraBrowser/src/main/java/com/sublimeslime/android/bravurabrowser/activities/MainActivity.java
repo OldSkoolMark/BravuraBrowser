@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.R;
@@ -44,7 +46,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
-    private ArrayAdapter<String> mRangeAdapter;
+    private ArrayAdapter<FontMetadata.GlyphRange> mRangeAdapter;
 
     // GridFragment.IParentActivity implementation
 
@@ -85,7 +87,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-        mRangeAdapter = new RangeListAdapter(MainActivity.this);
+        ArrayList<FontMetadata.GlyphRange> grList = new ArrayList<FontMetadata.GlyphRange>();
+        mRangeAdapter = new RangeListAdapter(MainActivity.this, grList);
         mDrawerList.setAdapter(mRangeAdapter);
 
         mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
@@ -176,7 +179,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private void replaceGridViewFragment(String rangeName){
         if( rangeName != null ) {
             ((ViewSMuFLFontApplication)getApplication()).setGlyphNameList(FontMetadata.getInstance().getGlyphNamesForRange(rangeName));
-            getActionBar().setTitle(FontMetadata.getInstance().getRangeDescription(rangeName));
+            getActionBar().setTitle(FontMetadata.getInstance().getGlyphRange(rangeName).description);
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -203,14 +206,22 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public class RangeListAdapter extends ArrayAdapter<String>{
-        public RangeListAdapter(Context c){
+    /**
+     * List adapter maps range name to range description
+     */
+    public class RangeListAdapter extends ArrayAdapter<FontMetadata.GlyphRange>{
+
+        public RangeListAdapter(Context c, List<FontMetadata.GlyphRange> range ){
             super(c, R.layout.drawer_list_item);
+            addAll(range);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return super.getView(position, convertView, parent);
+            LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            convertView = convertView == null ? inflater.inflate(R.layout.drawer_list_item,null) : convertView;
+             ((TextView) convertView).setText(getItem(position).description);
+            return convertView;
         }
     }
 
@@ -229,7 +240,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            mRangeAdapter.addAll(FontMetadata.getInstance().getRangeNames());
+            mRangeAdapter.addAll(FontMetadata.getInstance().getGlyphRanges());
             mRangeAdapter.notifyDataSetChanged();
         }
     }

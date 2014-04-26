@@ -94,10 +94,8 @@ public class FontMetadata {
         Reader r = new InputStreamReader(is);
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.IDENTITY).create();
         mGlyphRanges = gson.fromJson(r, GlyphRanges.class);
-
-        Set<String> keySet = mGlyphRanges.map.keySet();
-        mGlyphRangeNames.addAll(keySet);
-        Collections.sort(mGlyphRangeNames);
+        mGlyphRangeMapKeys.addAll(mGlyphRanges.map.keySet());
+        Collections.sort(mGlyphRangeMapKeys);
 //        Log.i(TAG, mGlyphRanges.toString());
     }
 
@@ -106,11 +104,11 @@ public class FontMetadata {
      * @return list of names
      */
     public List<String> getRangeNames(){
-        return mGlyphRangeNames;
+        return mGlyphRangeMapKeys;
     }
 
-    public String getRangeDescription(String rangeName) {
-        return mGlyphRanges.map.get(rangeName).description;
+    public GlyphRange getGlyphRange(String rangeName) {
+        return mGlyphRanges.map.get(rangeName);
     }
 
     /**
@@ -140,6 +138,16 @@ public class FontMetadata {
         public String range_start;
     }
     private GlyphRanges mGlyphRanges;
+
+    public ArrayList<GlyphRange> getGlyphRanges(){
+        ArrayList<String> sortedKeys = new ArrayList<String>(mGlyphRanges.map.keySet());
+        Collections.sort(sortedKeys);
+        ArrayList<GlyphRange> ranges = new ArrayList<GlyphRange>(sortedKeys.size());
+        for( String key : sortedKeys){
+            ranges.add(mGlyphRanges.map.get(key));
+        }
+        return ranges;
+    }
     public static class GlyphRanges {
         public Map<String, GlyphRange> map;
          @Override
@@ -152,7 +160,7 @@ public class FontMetadata {
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */
     private GlyphMap mGlyphMap;
-    private List<String> mGlyphRangeNames = new ArrayList<String>();
+    private List<String> mGlyphRangeMapKeys = new ArrayList<String>();
     public static class GlyphMap {
         TreeMap<String,Glyph> glyphMap;
         public String[] getAllGlyphNames(){
