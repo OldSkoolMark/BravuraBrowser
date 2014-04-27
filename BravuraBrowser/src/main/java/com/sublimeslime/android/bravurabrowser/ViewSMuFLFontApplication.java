@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class ViewSMuFLFontApplication extends Application {
     private final static String TAG = ViewSMuFLFontApplication.class.getCanonicalName();
+
     private Typeface mTypeface;
     public final Typeface getTypeface(){
         return mTypeface;
@@ -29,9 +30,9 @@ public class ViewSMuFLFontApplication extends Application {
         mTypeface = Typeface.createFromAsset(getAssets(), sf.getFontAsset());
         Log.i(TAG, "** SMuFL font: "+sf.getFontAsset());
     }
+
     private static volatile long sGlyphArrayListKey = 0;
-    private Map<Long,WeakReference<ArrayList<Glyph>>> mGlyphArrayListMap
-            = new HashMap<Long, WeakReference<ArrayList<Glyph>>>();
+    private Map<Long,WeakReference<ArrayList<Glyph>>> mGlyphArrayListMap = new HashMap<Long, WeakReference<ArrayList<Glyph>>>();
     public ArrayList<Glyph> getGlyphArrayList( Long id){
         return mGlyphArrayListMap.get(id).get();
     }

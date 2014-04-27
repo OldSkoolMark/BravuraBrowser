@@ -190,7 +190,7 @@ public class FontMetadata {
         int i = s.indexOf('(');
         line[1]= i > 0 ? s.substring(i) : null ;
         if( s.length() > 0){
-            int j = i == -1 ? s.length()-1 : i-1;
+            int j = i == -1 ? s.length() : i-1;
             line[0] = s.substring(0,j);
         }
         return line;

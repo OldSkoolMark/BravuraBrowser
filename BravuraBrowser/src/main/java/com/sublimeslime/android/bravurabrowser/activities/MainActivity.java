@@ -200,13 +200,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             ft.commit();
         }
     }
-    /*
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
-*/
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -231,11 +225,35 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            convertView = convertView == null ? inflater.inflate(R.layout.drawer_list_item,null) : convertView;
-             ((TextView) convertView).setText(getItem(position).description);
+            if( convertView == null) {
+                LayoutInflater inflater = (LayoutInflater)parent.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.drawer_list_item,null);
+                TextView tv1 = (TextView)convertView.findViewById(R.id.text1);
+                TextView tv2 = (TextView)convertView.findViewById(R.id.text2);
+                convertView.setTag(new RangeListItemViewHolder(tv1, tv2));
+            }
+            RangeListItemViewHolder vh = (RangeListItemViewHolder)convertView.getTag();
+            String line[] = FontMetadata.get2LineDescription(getItem(position).description);
+            if( line[0] != null){
+                vh.tv1.setText(line[0]);
+            }
+            if( line[1] != null){
+                vh.tv2.setText(line[1]);
+                vh.tv2.setVisibility(View.VISIBLE);
+            } else {
+                vh.tv2.setVisibility(View.GONE);
+            }
             return convertView;
         }
+    }
+
+    public class RangeListItemViewHolder {
+        public RangeListItemViewHolder(TextView line1, TextView line2){
+            tv1 = line1;
+            tv2 = line2;
+        }
+        public final TextView tv1;
+        public final TextView tv2;
     }
 
     private class LoadGlyphsTask extends AsyncTask<Void, Void, Void> {
