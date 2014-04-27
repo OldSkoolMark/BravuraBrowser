@@ -194,4 +194,48 @@ public class FontMetadata {
         tv.setText(uniCode);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
+
+    public static class SMuFLFont {
+        public String getName() {
+            return name;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getFontAsset() {
+            return fontAsset;
+        }
+
+        private final String name;
+        private final String version;
+        private final String description;
+        private final String fontAsset;
+        public SMuFLFont(String name, String version, String description, String fontAsset){
+            this.name = name;
+            this.version = version;
+            this.description = description;
+            this.fontAsset = fontAsset;
+        }
+    }
+
+    public final static ArrayList<SMuFLFont> availableFonts = new ArrayList<SMuFLFont>();
+    static  {
+        availableFonts.add(new SMuFLFont("Bravura", "0.9","Bravura","bravura_0_9/Bravura.otf" ));
+        availableFonts.add(new SMuFLFont("BravuraText", "0.9","Bravura Text","bravura_0_9/BravuraText.otf"));
+    }
+    public final static SMuFLFont getSMuFLFont( String name ){
+        for( SMuFLFont s : availableFonts){
+            if( s.name.equals(name))
+                return s;
+        }
+        return null;
+    }
 }
+
+

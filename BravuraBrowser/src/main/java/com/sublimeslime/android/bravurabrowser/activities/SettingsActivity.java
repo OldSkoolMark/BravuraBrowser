@@ -111,7 +111,6 @@ public class SettingsActivity extends PreferenceActivity {
 
         // Add 'general' preferences.
         addPreferencesFromResource(R.xml.pref_general);
-
          // Add 'data and sync' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_font_sizes);

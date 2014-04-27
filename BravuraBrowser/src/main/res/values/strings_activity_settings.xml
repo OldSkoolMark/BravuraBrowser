@@ -17,9 +17,9 @@
     </string-array>
 
     <!-- Font Sizes -->
-    <string name="pref_header_font_sizes">Font size settings</string>
+    <string name="pref_header_font_sizes">Font settings</string>
 
-    <string name="pref_grid_view_title">Grid view glyphs</string>
+    <string name="pref_grid_view_title">Grid view glyph font size</string>
     <string-array name="pref_grid_view_titles">
         <item>12</item>
         <item>14</item>
@@ -43,7 +43,7 @@
         <item>128.0f</item>
     </string-array>
 
-    <string name="pref_detail_view_title">Detail view glyphs</string>
+    <string name="pref_detail_view_title">Detail view glyph font size</string>
     <string-array name="pref_detail_view_titles">
         <item>32</item>
         <item>48</item>
@@ -70,7 +70,7 @@
     </string-array>
     <string-array name="pref_font_entry_values">
         <item>Bravura</item>
-        <item>Bravura Text</item>
+        <item>BravuraText</item>
     </string-array>
 
 </resources>
