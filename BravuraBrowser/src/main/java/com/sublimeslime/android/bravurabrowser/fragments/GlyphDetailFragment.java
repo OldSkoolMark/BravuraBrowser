@@ -1,19 +1,19 @@
 package com.sublimeslime.android.bravurabrowser.fragments;
 
-import android.support.v4.app.Fragment;
-import android.graphics.Typeface;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+        import android.support.v4.app.Fragment;
+        import android.graphics.Typeface;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.TextView;
 
-import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
-import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
-import com.sublimeslime.android.bravurabrowser.R;
+        import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
+        import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
+        import com.sublimeslime.android.bravurabrowser.R;
 
-import java.util.ArrayList;
+        import java.util.ArrayList;
 
 public class GlyphDetailFragment extends Fragment {
 
@@ -29,11 +29,7 @@ public class GlyphDetailFragment extends Fragment {
         IParentActivity parent = (IParentActivity)getActivity();
         int position = getArguments().getInt(IntentKey.POSITION.name());
         Glyph glyph = parent.getGlyphs().get(position);
-  //      Log.d(TAG, glyph.description + " :" +glyph.codepoint);
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
-        // glyph name
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(glyph.description);
         // glyph
         TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
         FontMetadata.getInstance().displayGlyph( glyphTv, glyph.codepoint, parent.getFontSize(), parent.getTypeface());
@@ -41,6 +37,8 @@ public class GlyphDetailFragment extends Fragment {
         StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
         cpTv.setText(codepointLabel.append( glyph.codepoint));
+        // glyph name
+        getActivity().getActionBar().setTitle(glyph.description);
 
         return rootView;
     }

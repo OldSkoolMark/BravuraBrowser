@@ -20,19 +20,10 @@ public class ViewSMuFLFontApplication extends Application {
     public final Typeface getTypeface(){
         return mTypeface;
     }
-/*
-    private ArrayList<Glyph> mDetailGlyphs = new ArrayList<Glyph>();
-    public final void setDetailGlyphs(ArrayList<Glyph> glyphs){;
-        mDetailGlyphs = glyphs;
-    }
-    public final ArrayList<Glyph> getDetailGlyphs(){
-        return mDetailGlyphs;
-    }
-*/
+
     @Override
     public void onCreate() {
         super.onCreate();
-//        mTypeface = Typeface.createFromAsset(getAssets(), "bravura_0_9/Bravura.otf");
         String fontName = PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.FONT.toString(),"Bravura");
         SMuFLFont sf = FontMetadata.getSMuFLFont(fontName);
         mTypeface = Typeface.createFromAsset(getAssets(), sf.getFontAsset());

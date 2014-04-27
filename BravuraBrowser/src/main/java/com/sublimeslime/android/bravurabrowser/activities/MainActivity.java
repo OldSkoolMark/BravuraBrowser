@@ -50,8 +50,6 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private float mGridFontSize;
     private ArrayAdapter<GlyphRange> mRangeAdapter;
     private ArrayList<Glyph> mCurrentGlyphs = new ArrayList<Glyph>();
-    private Long mGlyphArrayListKey;
-
 
     // GridFragment.IParentActivity implementation
 
@@ -72,6 +70,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
     @Override
     public void onGridItemClick(int position){
+        Long mGlyphArrayListKey;
         mGlyphArrayListKey = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
         GlyphDetailActivity.start(this, position, mGlyphArrayListKey);
 
@@ -85,7 +84,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
         setContentView(R.layout.activity_main);
         Log.d(TAG,"onCreate()");
-        mTitle = getTitle();
+//        mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(), "64.0f"));
@@ -186,21 +185,28 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         if( rangeName != null ) {
 
             mCurrentGlyphs = FontMetadata.getInstance().getGlyphsForRange(rangeName);
-            getActionBar().setTitle(FontMetadata.getInstance().getGlyphRange(rangeName).description);
+            String rangeDescription = FontMetadata.getInstance().getGlyphRange(rangeName).description;
+            String[] statusLine = FontMetadata.get2LineDescription(rangeDescription);
+            if( statusLine[0] != null ){
+                getActionBar().setTitle(statusLine[0]);
+                if( statusLine[1] != null ){
+                    getActionBar().setSubtitle(statusLine[1]);
+                }
+            }
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.content_frame, fragment, rangeName);
-            ft.addToBackStack(rangeName);
             ft.commit();
         }
     }
+    /*
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
         getActionBar().setTitle(mTitle);
     }
-
+*/
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);

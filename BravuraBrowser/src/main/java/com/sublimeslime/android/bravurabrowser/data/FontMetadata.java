@@ -178,6 +178,26 @@ public class FontMetadata {
             return "";
         }
       }
+
+    /**
+     * Split string into actionbar title and subtitle
+     * @param s
+     * @return String[0]=title and String[1]=subtitle
+     */
+    public static String[] get2LineDescription(String s){
+        String[] line = new String[2];
+        // everything after ( is line 2
+        int i = s.indexOf('(');
+        line[1]= i > 0 ? s.substring(i) : null ;
+        if( s.length() > 0){
+            int j = i == -1 ? s.length()-1 : i-1;
+            line[0] = s.substring(0,j);
+        }
+        return line;
+    }
+    /**
+     * Glyph
+     */
     public static class Glyph {
         public String codepoint;
         public String description;
@@ -186,6 +206,7 @@ public class FontMetadata {
         public String toString() {
             return "[ "+description + " " + codepoint + " ]" ;
         }
+
     }
 
     public static void displayGlyph(TextView tv, String codepoint, float fontSize, Typeface face){
@@ -194,6 +215,10 @@ public class FontMetadata {
         tv.setText(uniCode);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
+
+    /**
+     * Font asset configuration
+     */
 
     public static class SMuFLFont {
         public String getName() {
@@ -223,6 +248,10 @@ public class FontMetadata {
             this.fontAsset = fontAsset;
         }
     }
+
+    /**
+     * Available fonts
+     */
 
     public final static ArrayList<SMuFLFont> availableFonts = new ArrayList<SMuFLFont>();
     static  {
