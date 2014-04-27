@@ -64,6 +64,13 @@
         <item>384.0f</item>
 
     </string-array>
-
+    <string-array name="pref_font_entries">
+        <item>Bravura</item>
+        <item>Bravura Text</item>
+    </string-array>
+    <string-array name="pref_font_entry_values">
+        <item>Bravura</item>
+        <item>Bravura Text</item>
+    </string-array>
 
 </resources>

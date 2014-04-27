@@ -36,7 +36,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
-    public enum Settings { GRID_FONT_SIZE("grid_font_size"), DETAIL_FONT_SIZE("detail_font_size"), THEME("theme");
+    public enum Settings { FONT("font_name"), GRID_FONT_SIZE("grid_font_size"), DETAIL_FONT_SIZE("detail_font_size"), THEME("theme");
         private final String s;
         private Settings(String prefName){
             s = prefName;
@@ -116,12 +116,14 @@ public class SettingsActivity extends PreferenceActivity {
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_font_sizes);
         getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_font);
         addPreferencesFromResource(R.xml.pref_font_sizes);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference(Settings.THEME.toString()));
+        bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
     }
@@ -240,12 +242,14 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_font);
             addPreferencesFromResource(R.xml.pref_font_sizes);
 
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+            bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
         }
