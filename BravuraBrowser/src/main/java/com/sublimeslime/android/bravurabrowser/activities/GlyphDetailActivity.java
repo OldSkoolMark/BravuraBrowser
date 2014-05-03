@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
@@ -19,7 +20,7 @@ import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
 import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 
-public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetailFragment.IParentActivity {
+public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetailFragment.IParentActivity, ViewPager.OnPageChangeListener {
     // IParentActivity contract
     @Override
     public ArrayList<Glyph> getGlyphs(){
@@ -34,6 +35,28 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
     public Typeface getTypeface() {
         return mTypeface;
     }
+    /**
+     * OnPageChangeListener interface
+     */
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        Log.i(TAG, "* onPageScrolled :" + position);
+        mPositionOnLastScroll = position;
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+//        Log.i(TAG, "* onPageSelected :" + position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+//        Log.i(TAG, "* onPageScrollStateChanged state: "+state);
+        if( state == 0 ){
+            Glyph g = mGlyphs.get(mPositionOnLastScroll);
+            getActionBar().setTitle(g.description);
+        }
+    }
 
     public enum IntentKey { POSITION, ARRAY_LIST_KEY }
     // start activity convenience method
@@ -43,13 +66,15 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         i.putExtra(IntentKey.ARRAY_LIST_KEY.name(), arrayListKey);
         c.startActivity(i);
     }
-
+    private int mPositionOnLastScroll;
     private GlyphDetailPagerAdapter mGlyphDetailPagerAdapter;
     private ViewPager mViewPager;
     private int mGlyphPosition;
     private ArrayList<Glyph> mGlyphs;
     private Typeface mTypeface;
     private float mFontSize;
+
+    private Long mListMapKey; // to Glyph list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +85,14 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         mGlyphPosition = getIntent().getIntExtra(IntentKey.POSITION.name(), 0);
 
         // Set up the ViewPager
-        mGlyphs = ((ViewSMuFLFontApplication) getApplication()).getGlyphArrayList(getIntent().getLongExtra(IntentKey.ARRAY_LIST_KEY.name(),0L));
+        mListMapKey = getIntent().getLongExtra(IntentKey.ARRAY_LIST_KEY.name(),0L);
+        mGlyphs = ((ViewSMuFLFontApplication) getApplication()).getGlyphArrayList(mListMapKey);
         mGlyphDetailPagerAdapter = new GlyphDetailPagerAdapter(getSupportFragmentManager(), mGlyphs);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mGlyphDetailPagerAdapter);
         mViewPager.setCurrentItem(mGlyphPosition);
-
+        mViewPager.setOnPageChangeListener( this );
+        getActionBar().setTitle(mGlyphs.get(mGlyphPosition).description);
     }
 
     private class GlyphDetailPagerAdapter extends FragmentStatePagerAdapter {
@@ -91,4 +118,5 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
             return mGlyphs.get(position).description;
         }
     }
+    private final static String TAG = GlyphDetailActivity.class.getCanonicalName();
 }

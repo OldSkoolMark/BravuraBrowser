@@ -83,11 +83,11 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         IParentActivity parent = (IParentActivity)getActivity();
         if (key.equals(SettingsActivity.Settings.GRID_FONT_SIZE.toString())) {
-            float fontSize = Float.parseFloat(
+            float newFontSize = Float.parseFloat(
                     PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),
                     "64.0f"));
-            if (mFontSize != fontSize) {
-                mFontSize = fontSize;
+            if (mFontSize != newFontSize) {
+                mFontSize = newFontSize;
                 mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, parent.getTypeface()));
             }
         } if(key.equals(SettingsActivity.Settings.FONT.toString())){

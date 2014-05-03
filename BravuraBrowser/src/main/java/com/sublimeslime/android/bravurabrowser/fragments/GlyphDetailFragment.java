@@ -37,9 +37,6 @@ public class GlyphDetailFragment extends Fragment {
         StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
         cpTv.setText(codepointLabel.append( glyph.codepoint));
-        // glyph name
-        getActivity().getActionBar().setTitle(glyph.description);
-
         return rootView;
     }
 
