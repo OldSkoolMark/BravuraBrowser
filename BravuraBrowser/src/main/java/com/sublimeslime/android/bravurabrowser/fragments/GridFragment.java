@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.sublimeslime.android.bravurabrowser.GlyphView;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
 import com.sublimeslime.android.bravurabrowser.R;
@@ -112,14 +113,14 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
             convertView = convertView == null ?
                     ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null)
                     : convertView;
-            TextView tv = (TextView) convertView;
+            GlyphView gv = (GlyphView)convertView;
             Glyph g = getItem(position);
 //            Log.d(TAG, g.description + " :"+g.codepoint );
-            tv.setTypeface(mGlyphTypeface);
+            gv.setTypeface(mGlyphTypeface);
             String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
-            tv.setText(uniCode);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mGlyphFontSize);
-            return tv;
+            gv.setText(uniCode);
+            gv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mGlyphFontSize);
+            return gv;
         }
     }
 
