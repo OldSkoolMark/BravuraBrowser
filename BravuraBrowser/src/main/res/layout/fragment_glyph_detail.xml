@@ -3,10 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity$GlyphDetailFragment">
 
@@ -21,16 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/codepoint"
-        android:background="#888"
         android:gravity="center">
         <com.sublimeslime.android.bravurabrowser.GlyphView
             android:id="@+id/glyph"
             android:background="#ddd"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:exampleDimension="24sp"
-            app:exampleColor="#000"
+            app:LineColor="#00f"
             />
     </LinearLayout>
 </RelativeLayout>
