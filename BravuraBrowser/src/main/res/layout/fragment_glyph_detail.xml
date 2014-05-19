@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -16,12 +17,20 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/glyph"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/codepoint"
-        android:gravity="top"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
+        android:background="#888"
+        android:gravity="center">
+        <com.sublimeslime.android.bravurabrowser.GlyphView
+            android:id="@+id/glyph"
+            android:background="#ddd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:exampleDimension="24sp"
+            app:exampleColor="#000"
+            />
+    </LinearLayout>
 </RelativeLayout>

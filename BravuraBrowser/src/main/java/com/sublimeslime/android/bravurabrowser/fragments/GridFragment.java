@@ -122,5 +122,6 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
             return tv;
         }
     }
+
     private final static String TAG = GridFragment.class.getCanonicalName();
 }

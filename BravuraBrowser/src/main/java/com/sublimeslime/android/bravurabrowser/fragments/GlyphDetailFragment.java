@@ -9,6 +9,7 @@ package com.sublimeslime.android.bravurabrowser.fragments;
         import android.view.ViewGroup;
         import android.widget.TextView;
 
+        import com.sublimeslime.android.bravurabrowser.GlyphView;
         import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
         import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
         import com.sublimeslime.android.bravurabrowser.R;
@@ -31,8 +32,8 @@ public class GlyphDetailFragment extends Fragment {
         Glyph glyph = parent.getGlyphs().get(position);
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
         // glyph
-        TextView glyphTv = (TextView) rootView.findViewById(R.id.glyph);
-        FontMetadata.getInstance().displayGlyph( glyphTv, glyph.codepoint, parent.getFontSize(), parent.getTypeface());
+        GlyphView glyphTv = (GlyphView) rootView.findViewById(R.id.glyph);
+        FontMetadata.getInstance().displayGlyph2( glyphTv, glyph.codepoint, parent.getFontSize(), parent.getTypeface());
         // codepoint
         StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);

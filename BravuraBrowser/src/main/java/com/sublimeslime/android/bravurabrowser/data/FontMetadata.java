@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sublimeslime.android.bravurabrowser.GlyphView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -214,6 +215,12 @@ public class FontMetadata {
         String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(codepoint);
         tv.setText(uniCode);
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+    }
+    public static void displayGlyph2(GlyphView gv, String codepoint, float fontSize, Typeface face){
+        gv.setTypeface(face);
+        String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(codepoint);
+        gv.setText(uniCode);
+        gv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
 
     /**
