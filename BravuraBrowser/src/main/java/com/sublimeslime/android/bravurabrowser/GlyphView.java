@@ -57,12 +57,14 @@ public class GlyphView extends View {
             mDrawLines = true;
         }
          a.recycle();
-        // setup paint for baseline
-        mLinePaint = new Paint();
-        mLinePaint.setColor(mLineColor);
-        mLinePaint.setStrokeWidth(2.0f);
-        mLinePaint.setStyle(Paint.Style.STROKE);
-        mLinePaint.setPathEffect(new DashPathEffect(new float[]{2.0f, 2.0f}, 0));
+        if( mDrawLines) {
+            // setup paint for baseline
+            mLinePaint = new Paint();
+            mLinePaint.setColor(mLineColor);
+            mLinePaint.setStrokeWidth(2.0f);
+            mLinePaint.setStyle(Paint.Style.STROKE);
+            mLinePaint.setPathEffect(new DashPathEffect(new float[]{2.0f, 2.0f}, 0));
+        }
         // Set up a default TextPaint object
         mTextPaint = new TextPaint();
         mTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
