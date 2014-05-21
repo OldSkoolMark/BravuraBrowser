@@ -1,4 +1,4 @@
-package com.sublimeslime.android.bravurabrowser;
+package com.sublimeslime.android.bravurabrowser.views;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,6 +13,8 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
+
+import com.sublimeslime.android.bravurabrowser.R;
 
 
 /**
@@ -137,8 +139,8 @@ public class GlyphView extends View {
                 start,
                 -mTextPaint.getFontMetrics().top,
                 mTextPaint);
-        // Draw baseline
         if( mDrawLines ) {
+            // Draw baseline
             mBaselinePath.reset();
             mBaselinePath.moveTo(0, -mTextPaint.getFontMetrics().top);
             mBaselinePath.lineTo((float) getWidth(), -mTextPaint.getFontMetrics().top);

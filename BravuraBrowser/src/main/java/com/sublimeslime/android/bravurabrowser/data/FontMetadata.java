@@ -8,18 +8,16 @@ import android.widget.TextView;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sublimeslime.android.bravurabrowser.GlyphView;
+import com.sublimeslime.android.bravurabrowser.views.GlyphView;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -153,6 +151,16 @@ public class FontMetadata {
         for( String s : mGlyphMap.glyphMap.keySet()){
             if(s.matches(key))
                 matches.add(mGlyphMap.glyphMap.get(s));
+        }
+        return matches;
+    }
+    public ArrayList<Glyph> getGlyphsByMatchingDescription( String desc ){
+        ArrayList<Glyph> matches = new ArrayList<Glyph>();
+
+        for( Map.Entry<String,Glyph> e : mGlyphMap.glyphMap.entrySet()){
+            Glyph g = e.getValue();
+            if(g.description.matches(desc))
+                matches.add(g);
         }
         return matches;
     }

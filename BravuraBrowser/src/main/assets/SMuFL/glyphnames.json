@@ -1,4 +1,4 @@
-{ glyphMap :
+{ "glyphMap" :
 {
     "4stringTabClef": {
         "codepoint": "U+E06D", 

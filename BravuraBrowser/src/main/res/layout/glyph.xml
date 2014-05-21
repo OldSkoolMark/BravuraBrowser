@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<com.sublimeslime.android.bravurabrowser.GlyphView
+<com.sublimeslime.android.bravurabrowser.views.GlyphView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/glyph"

@@ -3,13 +3,12 @@ package com.sublimeslime.android.bravurabrowser.fragments;
         import android.support.v4.app.Fragment;
         import android.graphics.Typeface;
         import android.os.Bundle;
-        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.TextView;
 
-        import com.sublimeslime.android.bravurabrowser.GlyphView;
+        import com.sublimeslime.android.bravurabrowser.views.GlyphView;
         import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
         import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
         import com.sublimeslime.android.bravurabrowser.R;

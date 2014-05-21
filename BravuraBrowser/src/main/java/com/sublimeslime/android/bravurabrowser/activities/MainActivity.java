@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -40,7 +41,7 @@ import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
-public class MainActivity extends Activity implements GridFragment.IParentActivity {
+public class MainActivity extends Activity implements GridFragment.IParentActivity, SharedPreferences.OnSharedPreferenceChangeListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -61,11 +62,6 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     @Override
     public Typeface getTypeface() {
         return mTypeface;
-    }
-
-    @Override
-    public float getFontSize() {
-        return mGridFontSize;
     }
 
     @Override
@@ -160,6 +156,22 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(SettingsActivity.Settings.GRID_FONT_SIZE.toString())) {
+            float newFontSize = Float.parseFloat(
+                    PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),
+                            "64.0f"));
+            Log.d(TAG,"on pref change old="+mGridFontSize+ " new="+newFontSize);
+            if (mGridFontSize != newFontSize) {
+                mGridFontSize = newFontSize;
+            }
+        } if(key.equals(SettingsActivity.Settings.FONT.toString())){
+ //           mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, parent.getTypeface()));
+        }
+
     }
 
     // Handle nav drawer list item selection

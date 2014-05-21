@@ -33,10 +33,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         return ((ViewSMuFLFontApplication)getApplication()).getTypeface();
     }
 
-    @Override
-    public float getFontSize() {
-        return Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(), "64.0f"));
-    }
+
 
     @Override
     public void onGridItemClick(int position) {
@@ -76,7 +73,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         private ArrayList<Glyph> doQuery(String query){
             Log.d(TAG, "doQuery()");
             mQuery = query;
-            return FontMetadata.getInstance().getGlyphsByMatchingKey(mQuery);
+            return FontMetadata.getInstance().getGlyphsByMatchingDescription(mQuery);
         }
         @Override
         protected void onPostExecute(ArrayList<Glyph> results) {

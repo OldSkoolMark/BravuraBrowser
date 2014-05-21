@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/codepoint"
         android:gravity="center">
-        <com.sublimeslime.android.bravurabrowser.GlyphView
+        <com.sublimeslime.android.bravurabrowser.views.GlyphView
             android:id="@+id/glyph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
