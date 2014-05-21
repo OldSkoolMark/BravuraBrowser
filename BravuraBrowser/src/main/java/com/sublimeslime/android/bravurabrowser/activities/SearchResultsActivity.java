@@ -58,7 +58,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
 
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            new QueryTask().execute(query);
+            new QueryTask().execute(query.toUpperCase());
         }
     }
 
@@ -71,20 +71,27 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
             return doQuery(query[0]);
         }
         private ArrayList<Glyph> doQuery(String query){
-            Log.d(TAG, "doQuery()");
             mQuery = query;
-            return FontMetadata.getInstance().getGlyphsByMatchingDescription(mQuery);
+            if( mQuery.startsWith("U+")) {
+                return FontMetadata.getInstance().getGlyphByMatchingCodepoint(query);
+            }else{
+                return FontMetadata.getInstance().getGlyphsByMatchingDescription(mQuery);
+            }
         }
         @Override
         protected void onPostExecute(ArrayList<Glyph> results) {
             mCurrentGlyphs = results;
-            getActionBar().setTitle(mQuery);
-            Fragment fragment = new GridFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.container, fragment, mQuery);
-            ft.addToBackStack(mQuery);
-            ft.commit();
+            if( mCurrentGlyphs.size()>0) {
+                getActionBar().setTitle(mQuery);
+                Fragment fragment = new GridFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction ft = fragmentManager.beginTransaction();
+                ft.replace(R.id.container, fragment, mQuery);
+                ft.addToBackStack(mQuery);
+                ft.commit();
+            } else {
+                getActionBar().setTitle(getResources().getString(R.string.not_found));
+            }
         }
     }
     private final static String TAG = SearchResultsActivity.class.getCanonicalName();

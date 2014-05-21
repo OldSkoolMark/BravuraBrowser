@@ -159,10 +159,18 @@ public class FontMetadata {
 
         for( Map.Entry<String,Glyph> e : mGlyphMap.glyphMap.entrySet()){
             Glyph g = e.getValue();
-            if(g.description.matches(desc))
+            if(g.description.toUpperCase().matches(desc))
                 matches.add(g);
         }
         return matches;
+    }
+    public ArrayList<Glyph> getGlyphByMatchingCodepoint(String codepoint){
+        ArrayList<Glyph> result = new ArrayList<Glyph>();
+        String glyphName = mGlyphMap.lookupGlyphKeyByCodepoints(codepoint);
+        if(glyphName.length()>0){
+            result.add(mGlyphMap.glyphMap.get(glyphName));
+        }
+        return result;
     }
     /**
      * Result of parsing the glyph json file. Categorizes glyphs by name
@@ -180,7 +188,7 @@ public class FontMetadata {
         }
         public String lookupGlyphKeyByCodepoints(String codepoint){
             for( String key : glyphMap.keySet()){
-                if( codepoint != null && codepoint.equals( glyphMap.get(key).codepoint)) {
+                if( codepoint != null && codepoint.toUpperCase().equals(glyphMap.get(key).codepoint)) {
                     return key;
                 }
             }

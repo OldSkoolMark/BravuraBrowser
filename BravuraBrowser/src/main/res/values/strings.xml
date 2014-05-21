@@ -17,4 +17,5 @@
     <string name="pref_font_title">Font</string>
     <string name="bravura">Bravura</string>
     <string name="bravura_text">Bravura Text</string>
+    <string name="not_found">Not found</string>
 </resources>

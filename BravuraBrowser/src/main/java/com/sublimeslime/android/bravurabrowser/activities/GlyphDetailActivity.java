@@ -91,7 +91,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mGlyphDetailPagerAdapter);
         mViewPager.setCurrentItem(mGlyphPosition);
-        mViewPager.setOnPageChangeListener( this );
+        mViewPager.setOnPageChangeListener(this);
         getActionBar().setTitle(mGlyphs.get(mGlyphPosition).description);
     }
 
