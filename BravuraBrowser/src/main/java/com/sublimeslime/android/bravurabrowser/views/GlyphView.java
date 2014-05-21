@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -62,10 +63,8 @@ public class GlyphView extends View {
         if( mDrawLines) {
             // setup paint for baseline
             mLinePaint = new Paint();
-            mLinePaint.setColor(mLineColor);
             mLinePaint.setStrokeWidth(2.0f);
             mLinePaint.setStyle(Paint.Style.STROKE);
-            mLinePaint.setPathEffect(new DashPathEffect(new float[]{2.0f, 2.0f}, 0));
         }
         // Set up a default TextPaint object
         mTextPaint = new TextPaint();
@@ -92,7 +91,7 @@ public class GlyphView extends View {
         float widths[] = new float[1];
         mTextPaint.getTextWidths(mText.toString(),widths);
         int desiredWidth = (int)widths[0];
-        int desiredHeight = (int)(mTextPaint.getFontMetrics().bottom - mTextPaint.getFontMetrics().top); // top is negative
+        int desiredHeight = (int)(mTextPaint.getFontMetrics().bottom - mTextPaint.getFontMetrics().top + 10); // top is negative
  //       Log.d(TAG, "font bottom: " + (int) mTextPaint.getFontMetrics().bottom + "font top: " + (int) mTextPaint.getFontMetrics().top);
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -135,17 +134,39 @@ public class GlyphView extends View {
         super.onDraw(canvas);
         // Draw glyph
         int start = getWidth() > 2 * (int)mTextWidth ? getWidth()/ 2 : 0;
+        Log.d(TAG,"height: "+canvas.getHeight());
         canvas.drawText(mText.toString(),
                 start,
                 -mTextPaint.getFontMetrics().top,
                 mTextPaint);
         if( mDrawLines ) {
+            drawVerticalLine(canvas, start, 0xffff0000);
+             // Draw top
+            drawHorizontalLine(canvas, 0.0f, 0, 0xff00ff00);
+            // Draw ascent
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().ascent, 180, 0xffff0000);
             // Draw baseline
-            mBaselinePath.reset();
-            mBaselinePath.moveTo(0, -mTextPaint.getFontMetrics().top);
-            mBaselinePath.lineTo((float) getWidth(), -mTextPaint.getFontMetrics().top);
-            canvas.drawPath(mBaselinePath, mLinePaint);
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top, 0, 0xff000000);
+            // Draw descent
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().descent, 0, 0xff00ff00);
+            // Draw botton
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().bottom, 180, 0xff0000ff);
         }
+    }
+    private void drawHorizontalLine(Canvas canvas, float y, int phase, int color){
+        mBaselinePath.reset();
+        mBaselinePath.moveTo(0, y);
+        mBaselinePath.lineTo((float) getWidth(), y);
+        mLinePaint.setPathEffect(new DashPathEffect(new float[]{14.0f, 14.0f}, phase));
+        mLinePaint.setColor(color);
+        canvas.drawPath(mBaselinePath, mLinePaint);
+    }
+    private void drawVerticalLine(Canvas canvas, float x, int color){
+        mBaselinePath.reset();
+        mBaselinePath.moveTo(x, 0);
+        mBaselinePath.lineTo(x, (float) getHeight());
+        mLinePaint.setColor(color);
+        canvas.drawPath(mBaselinePath, mLinePaint);
     }
     public void setTypeface(Typeface tf) {
         if (mTextPaint.getTypeface() != tf) {
