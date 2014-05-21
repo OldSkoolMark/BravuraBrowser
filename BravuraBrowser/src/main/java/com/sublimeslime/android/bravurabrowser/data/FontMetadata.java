@@ -156,7 +156,6 @@ public class FontMetadata {
     }
     public ArrayList<Glyph> getGlyphsByMatchingDescription( String desc ){
         ArrayList<Glyph> matches = new ArrayList<Glyph>();
-
         for( Map.Entry<String,Glyph> e : mGlyphMap.glyphMap.entrySet()){
             Glyph g = e.getValue();
             if(g.description.toUpperCase().matches(desc))
@@ -164,13 +163,14 @@ public class FontMetadata {
         }
         return matches;
     }
-    public ArrayList<Glyph> getGlyphByMatchingCodepoint(String codepoint){
-        ArrayList<Glyph> result = new ArrayList<Glyph>();
-        String glyphName = mGlyphMap.lookupGlyphKeyByCodepoints(codepoint);
-        if(glyphName.length()>0){
-            result.add(mGlyphMap.glyphMap.get(glyphName));
+    public ArrayList<Glyph> getGlyphsByMatchingCodepoint(String codepoint){
+        ArrayList<Glyph> matches = new ArrayList<Glyph>();
+        for( Map.Entry<String,Glyph> e : mGlyphMap.glyphMap.entrySet()){
+            Glyph g = e.getValue();
+            if(g.codepoint.toUpperCase().matches(codepoint))
+                matches.add(g);
         }
-        return result;
+        return matches;
     }
     /**
      * Result of parsing the glyph json file. Categorizes glyphs by name

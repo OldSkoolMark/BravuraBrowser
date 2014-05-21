@@ -73,7 +73,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         private ArrayList<Glyph> doQuery(String query){
             mQuery = query;
             if( mQuery.startsWith("U+")) {
-                return FontMetadata.getInstance().getGlyphByMatchingCodepoint(query);
+                return FontMetadata.getInstance().getGlyphsByMatchingCodepoint(query.replace("U+","U\\+"));
             }else{
                 return FontMetadata.getInstance().getGlyphsByMatchingDescription(mQuery);
             }
