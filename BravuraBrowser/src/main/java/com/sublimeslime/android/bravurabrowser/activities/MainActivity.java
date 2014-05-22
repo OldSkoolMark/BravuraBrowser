@@ -22,6 +22,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
+import android.view.Window;
 import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -76,6 +77,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -269,6 +271,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     }
 
     private class LoadGlyphsTask extends AsyncTask<Void, Void, Void> {
+
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -281,10 +284,17 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mRangeAdapter.addAll(FontMetadata.getInstance().getGlyphRanges());
             mRangeAdapter.notifyDataSetChanged();
+            setProgressBarIndeterminateVisibility(false);
         }
     }
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="start_color">#ffe0e0e0</color>
+    <color name="top_color">#ffe0e0e0</color>
+    <color name="ascent_color">#ffe0e0e0</color>
+    <color name="baseline_color">#ffe0e0e0</color>
+    <color name="descent_color">#ffe0e0e0</color>
+    <color name="bottom_color">#ffe0e0e0</color>
+</resources>

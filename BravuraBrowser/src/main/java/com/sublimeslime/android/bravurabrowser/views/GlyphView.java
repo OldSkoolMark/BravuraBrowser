@@ -23,7 +23,6 @@ import com.sublimeslime.android.bravurabrowser.R;
  */
 public class GlyphView extends View {
     private int mLineColor = Color.RED; // TODO: use a default from R.color...
-
     private TextPaint mTextPaint;
     private Paint mLinePaint;
     private float mViewWidth;
@@ -139,24 +138,24 @@ public class GlyphView extends View {
                 -mTextPaint.getFontMetrics().top,
                 mTextPaint);
         if( mDrawLines ) {
-            drawVerticalLine(canvas, start, 0xffff0000);
+            drawVerticalLine(canvas, start, getResources().getColor(R.color.start_color));
              // Draw top
-            drawHorizontalLine(canvas, 0.0f, 0, 0xff00ff00);
+ //           drawHorizontalLine(canvas, 0.0f, 0, getResources().getColor(R.color.top_color));
             // Draw ascent
-            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().ascent, 180, 0xffff0000);
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().ascent, 180, getResources().getColor(R.color.ascent_color));
             // Draw baseline
-            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top, 0, 0xff000000);
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top, 0, getResources().getColor(R.color.baseline_color));
             // Draw descent
-            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().descent, 0, 0xff00ff00);
+            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().descent, 0, getResources().getColor(R.color.descent_color));
             // Draw botton
-            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().bottom, 180, 0xff0000ff);
+//            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().bottom, 180, getResources().getColor(R.color.bottom_color));
         }
     }
     private void drawHorizontalLine(Canvas canvas, float y, int phase, int color){
         mBaselinePath.reset();
         mBaselinePath.moveTo(0, y);
         mBaselinePath.lineTo((float) getWidth(), y);
-        mLinePaint.setPathEffect(new DashPathEffect(new float[]{14.0f, 14.0f}, phase));
+//        mLinePaint.setPathEffect(new DashPathEffect(new float[]{14.0f, 14.0f}, phase));
         mLinePaint.setColor(color);
         canvas.drawPath(mBaselinePath, mLinePaint);
     }
