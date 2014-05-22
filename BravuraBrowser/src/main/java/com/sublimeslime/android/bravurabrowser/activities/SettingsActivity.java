@@ -15,6 +15,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.preference.SwitchPreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
@@ -36,7 +37,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
-    public enum Settings { FONT("font_name"), GRID_FONT_SIZE("grid_font_size"), DETAIL_FONT_SIZE("detail_font_size"), THEME("theme");
+    public enum Settings { FONT("font_name"), GRID_FONT_SIZE("grid_font_size"), DETAIL_FONT_SIZE("detail_font_size"), THEME("theme"), DETAIL_FONT_METRICS("detail_font_metrics");
         private final String s;
         private Settings(String prefName){
             s = prefName;
@@ -125,6 +126,7 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
+        bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_METRICS.toString()));
     }
 
     /** {@inheritDoc} */
@@ -172,8 +174,15 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
+            if( preference instanceof SwitchPreference){
+                SwitchPreference switchPreference = (SwitchPreference)preference;
+                if( switchPreference.isChecked()){
+                    switchPreference.setSummary(switchPreference.getSwitchTextOn());
+                } else {
+                    switchPreference.setSummary(switchPreference.getSwitchTextOff());
+                }
 
-            if (preference instanceof ListPreference) {
+            } else if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
@@ -209,9 +218,16 @@ public class SettingsActivity extends PreferenceActivity {
 
         // Trigger the listener immediately with the preference's
         // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager.getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+        if( preference instanceof SwitchPreference){
+            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                    PreferenceManager.getDefaultSharedPreferences(preference.getContext())
+                            .getBoolean(preference.getKey(), false));
+        }else{
+            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                    PreferenceManager.getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), "")
+            );
+        }
     }
 
     /**
@@ -251,6 +267,7 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
+            bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_METRICS.toString()));
         }
     }
 }

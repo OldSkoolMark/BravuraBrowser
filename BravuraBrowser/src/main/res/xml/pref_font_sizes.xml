@@ -20,5 +20,11 @@
         android:defaultValue="128.0f"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
+    <SwitchPreference
+        android:key="detail_font_metrics"
+        android:title="@string/show_font_metrics"
+        android:summaryOff="no"
+        android:summaryOn="yes"
+        android:defaultValue="true"/>
 
 </PreferenceScreen>

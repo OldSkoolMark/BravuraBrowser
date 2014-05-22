@@ -57,6 +57,10 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
             getActionBar().setTitle(g.description);
         }
     }
+    @Override
+    public boolean showFontMetrics(){
+        return mShowFontMetrics;
+    }
 
     public enum IntentKey { POSITION, ARRAY_LIST_KEY }
     // start activity convenience method
@@ -73,6 +77,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
     private ArrayList<Glyph> mGlyphs;
     private Typeface mTypeface;
     private float mFontSize;
+    private boolean mShowFontMetrics;
 
     private Long mListMapKey; // to Glyph list
 
@@ -82,6 +87,8 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         setContentView(R.layout.activity_glyph_detail);
         mTypeface = ((ViewSMuFLFontApplication) getApplication()).getTypeface();
         mFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "128.0f"));
+        mShowFontMetrics = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.Settings.DETAIL_FONT_METRICS.toString(),false);
+
         mGlyphPosition = getIntent().getIntExtra(IntentKey.POSITION.name(), 0);
 
         // Set up the ViewPager

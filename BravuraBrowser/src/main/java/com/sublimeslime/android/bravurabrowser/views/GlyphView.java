@@ -134,7 +134,6 @@ public class GlyphView extends View {
         super.onDraw(canvas);
         // Draw glyph
         int start = getWidth() > 2 * (int)mTextWidth ? getWidth()/ 2 : 0;
-        Log.d(TAG,"height: "+canvas.getHeight());
         canvas.drawText(mText.toString(),
                 start,
                 -mTextPaint.getFontMetrics().top,
@@ -211,5 +210,9 @@ public class GlyphView extends View {
     public void setLineColor(int lineColor) {
         mLineColor = lineColor;
         invalidateTextPaintAndMeasurements();
+    }
+
+    public void showFontMetrics(boolean show){
+        mDrawLines = show;
     }
 }
