@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Window;
 
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
@@ -33,8 +34,6 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         return ((ViewSMuFLFontApplication)getApplication()).getTypeface();
     }
 
-
-
     @Override
     public void onGridItemClick(int position) {
         Long key = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
@@ -45,6 +44,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
     // Lifecycle methods
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         handleIntent(getIntent());
@@ -79,6 +79,12 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
             }
         }
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
         protected void onPostExecute(ArrayList<Glyph> results) {
             mCurrentGlyphs = results;
             if( mCurrentGlyphs.size()>0) {
@@ -92,6 +98,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
             } else {
                 getActionBar().setTitle(getResources().getString(R.string.not_found));
             }
+            setProgressBarIndeterminateVisibility(false);
         }
     }
     private final static String TAG = SearchResultsActivity.class.getCanonicalName();

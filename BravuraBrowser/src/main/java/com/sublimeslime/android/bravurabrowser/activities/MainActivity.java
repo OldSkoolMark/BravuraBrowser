@@ -81,8 +81,6 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Log.d(TAG,"onCreate()");
-//        mTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(), "64.0f"));
@@ -97,7 +95,6 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
- //       getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle(R.string.no_category_selected);
 
         // ActionBarDrawerToggle ties together the the proper interactions
@@ -128,7 +125,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         inflater.inflate(R.menu.main, menu);
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchItem = menu.findItem(R.id.search);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
@@ -139,7 +136,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
