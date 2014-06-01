@@ -3,11 +3,7 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.sublimeslime.android.bravurabrowser.activities.SettingsActivity$GeneralPreferenceFragment"
-        android:title="@string/pref_header_general" />
-
-    <header
-        android:fragment="com.sublimeslime.android.bravurabrowser.activities.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.sublimeslime.android.bravurabrowser.activities.SettingsActivity$FontsPreferenceFragment"
         android:title="@string/pref_header_font_sizes" />
 
 </preference-headers>

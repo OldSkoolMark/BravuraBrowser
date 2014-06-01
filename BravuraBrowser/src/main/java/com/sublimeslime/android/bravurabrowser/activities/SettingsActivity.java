@@ -3,9 +3,6 @@ package com.sublimeslime.android.bravurabrowser.activities;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -14,9 +11,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.preference.SwitchPreference;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
@@ -110,9 +104,6 @@ public class SettingsActivity extends PreferenceActivity {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
-        // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_general);
-         // Add 'data and sync' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_font_sizes);
         getPreferenceScreen().addPreference(fakeHeader);
@@ -122,7 +113,6 @@ public class SettingsActivity extends PreferenceActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(Settings.THEME.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
@@ -209,42 +199,19 @@ public class SettingsActivity extends PreferenceActivity {
 
         // Trigger the listener immediately with the preference's
         // current value.
-        if( preference instanceof SwitchPreference){
-            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                    PreferenceManager.getDefaultSharedPreferences(preference.getContext())
-                            .getBoolean(preference.getKey(), false));
-        }else{
-            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                    PreferenceManager.getDefaultSharedPreferences(preference.getContext())
+        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                PreferenceManager.getDefaultSharedPreferences(preference.getContext())
                             .getString(preference.getKey(), "")
-            );
-        }
+        );
     }
 
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference(Settings.THEME.toString()));
-        }
-    }
     /**
      * This fragment shows data and sync preferences only. It is used when the
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class DataSyncPreferenceFragment extends PreferenceFragment {
+    public static class FontsPreferenceFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -263,11 +230,9 @@ public class SettingsActivity extends PreferenceActivity {
 
     protected boolean isValidFragment(String fragmentName) {
         if (getApplicationInfo().targetSdkVersion  >= android.os.Build.VERSION_CODES.KITKAT) {
-            if( DataSyncPreferenceFragment.class.getName().equals(fragmentName))
+            if( FontsPreferenceFragment.class.getName().equals(fragmentName))
                 return true;
-            else if( GeneralPreferenceFragment.class.getName().equals(fragmentName))
-                return true;
-            else {
+            else  {
                 throw new RuntimeException(
                         "Subclasses of PreferenceActivity must override isValidFragment(String)"
                                 + " to verify that the Fragment class is valid! " + this.getClass().getName()
