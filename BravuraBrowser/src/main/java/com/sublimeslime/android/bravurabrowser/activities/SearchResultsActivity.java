@@ -46,6 +46,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             new QueryTask().execute(query.toUpperCase());
+            getSupportActionBar().setTitle(getString(R.string.searching_for) + " " + query);
         }
     }
 

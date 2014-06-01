@@ -19,4 +19,5 @@
     <string name="bravura_text">Bravura Text</string>
     <string name="not_found">Not found</string>
     <string name="show_font_metrics">Show font metrics in detail view</string>
+    <string name="searching_for">searching for </string>
 </resources>

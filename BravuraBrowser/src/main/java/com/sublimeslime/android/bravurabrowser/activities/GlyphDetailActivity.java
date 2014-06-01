@@ -27,13 +27,8 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         return mGlyphs;
     }
     @Override
-    public float getFontSize() {
-        return mFontSize;
-    }
-
-    @Override
-    public Typeface getTypeface() {
-        return mTypeface;
+    public boolean showFontMetrics(){
+        return mShowFontMetrics;
     }
     /**
      * OnPageChangeListener interface
@@ -56,10 +51,6 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
             Glyph g = mGlyphs.get(mPositionOnLastScroll);
             getActionBar().setTitle(g.description);
         }
-    }
-    @Override
-    public boolean showFontMetrics(){
-        return mShowFontMetrics;
     }
 
     public enum IntentKey { POSITION, ARRAY_LIST_KEY }
