@@ -3,24 +3,16 @@ package com.sublimeslime.android.bravurabrowser.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Window;
 
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
-import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata.Glyph;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class SearchResultsDisplayActivity extends ActionBarActivity implements GridFragment.IParentActivity {
@@ -55,7 +47,7 @@ public class SearchResultsDisplayActivity extends ActionBarActivity implements G
         super.onCreate(savedInstanceState);
         mGlyphArrayListKey = getIntent().getLongExtra(IntentKey.GLYPH_ARRAY_LIST_KEY.name(),-1L);
         mSearchQuery = getIntent().getStringExtra(IntentKey.SEARCH_QUERY.name());
-        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.activity_search_results_display);
         getActionBar().setTitle(mSearchQuery);
         Fragment fragment = new GridFragment();
         FragmentManager fragmentManager = getFragmentManager();

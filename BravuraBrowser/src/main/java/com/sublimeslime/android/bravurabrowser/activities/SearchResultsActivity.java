@@ -1,16 +1,10 @@
 package com.sublimeslime.android.bravurabrowser.activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Window;
 
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
@@ -22,18 +16,16 @@ import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 import java.util.ArrayList;
 
 public class SearchResultsActivity extends ActionBarActivity implements GridFragment.IParentActivity {
-
+    private Long mGlyphResultsKey;
     // IParentActivity contract
     @Override
     public ArrayList<Glyph> getGlyphs() {
-        return mCurrentGlyphs;
+        return ((ViewSMuFLFontApplication)getApplication()).getGlyphArrayList(mGlyphResultsKey);
     }
 
     @Override
     public void onGridItemClick(int position) {
-        Long key = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
-
-        GlyphDetailActivity.start(this, position, key);
+          GlyphDetailActivity.start(this, position, mGlyphResultsKey);
     }
 
     // Lifecycle methods
@@ -57,8 +49,11 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         }
     }
 
-    private ArrayList<Glyph> mCurrentGlyphs;
-    // Async search and result display
+    /**
+     * Async search task starts SearchResultDisplayActivity with results from
+     * font name or codepoint regex. Queries prefixed with U+ or u+ are interpreted
+     * as codepoint queries.
+     */
     private class QueryTask extends AsyncTask<String, Void, ArrayList<Glyph>>{
         private String mQuery;
         @Override
@@ -79,12 +74,17 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
             setProgressBarIndeterminateVisibility(true);
         }
 
+         /**
+          * Start search result display activity instead of directly installing the GridFragment here
+          * to steer clear of fragment lifecycle issues.
+          *
+          * @param results list of glyphs
+          */
         @Override
         protected void onPostExecute(ArrayList<Glyph> results) {
-            mCurrentGlyphs = results;
             ViewSMuFLFontApplication a = (ViewSMuFLFontApplication) getApplication();
-            Long resultsKey = a.addGlyphArrayList(results);
-            SearchResultsDisplayActivity.start(SearchResultsActivity.this, resultsKey, mQuery );
+            mGlyphResultsKey = a.addGlyphArrayList(results);
+            SearchResultsDisplayActivity.start(SearchResultsActivity.this, mGlyphResultsKey, mQuery );
             finish();
         }
     }
