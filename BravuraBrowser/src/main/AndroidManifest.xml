@@ -32,17 +32,24 @@
             android:name="com.sublimeslime.android.bravurabrowser.activities.SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:parentActivityName="com.sublimeslime.android.bravurabrowser.activities.MainActivity" >
-
             <!-- make this activity the target of the action bar search from MainActivity -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-
         </activity>
+
+        <activity
+            android:name="com.sublimeslime.android.bravurabrowser.activities.SearchResultsDisplayActivity"
+            android:label="SearchResultsDisplayActivity"
+            />
+
+        <activity
+            android:name="com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity"
+            android:label="GlyphDetailActivity"
+            />
 
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.SettingsActivity"
@@ -53,14 +60,7 @@
                 android:value="MainActivity" />
         </activity>
 
-        <activity
-            android:name="com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity"
-            android:label="@string/title_activity_glyph_detail"
-            >
-
-        </activity>
-
-        <provider
+         <provider
             android:name=".data.SMufFLContentProvider"
             android:authorities="com.sublimeslime.android.smuflbrowser.contentprovider"
             android:enabled="true"

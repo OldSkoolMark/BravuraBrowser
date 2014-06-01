@@ -270,4 +270,21 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_METRICS.toString()));
         }
     }
+
+    protected boolean isValidFragment(String fragmentName) {
+        if (getApplicationInfo().targetSdkVersion  >= android.os.Build.VERSION_CODES.KITKAT) {
+            if( DataSyncPreferenceFragment.class.getName().equals(fragmentName))
+                return true;
+            else if( GeneralPreferenceFragment.class.getName().equals(fragmentName))
+                return true;
+            else {
+                throw new RuntimeException(
+                        "Subclasses of PreferenceActivity must override isValidFragment(String)"
+                                + " to verify that the Fragment class is valid! " + this.getClass().getName()
+                                + " has not checked if fragment " + fragmentName + " is valid.");
+            }
+        } else {
+            return true;
+        }
+    }
 }

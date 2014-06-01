@@ -30,11 +30,12 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
      */
     public interface IParentActivity {
         public ArrayList<Glyph> getGlyphs();
-        public Typeface getTypeface();
         public void onGridItemClick( int position );
     }
 
-    private float mFontSize; // needed for pref change check
+    private float mFontSize;
+    private Typeface mTypeFace;
+
 
     public GridFragment() {
     }
@@ -43,6 +44,10 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String fontName = prefs.getString(SettingsActivity.Settings.FONT.toString(),"Bravura");
+        SMuFLFont sf = FontMetadata.getSMuFLFont(fontName);
+        mTypeFace = Typeface.createFromAsset(getActivity().getAssets(), sf.getFontAsset());
+        mFontSize = Float.parseFloat(prefs.getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"128.0f"));
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -51,15 +56,12 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
         View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
         // Parent activity contract with
         IParentActivity parent = (IParentActivity)getActivity();
-        mFontSize = Float.parseFloat(
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),
-                        "64.0f"));
         Log.d(TAG,"onCreateView() font size="+mFontSize);
         mGridView = (GridView) rootView.findViewById(R.id.gridview);
         mGridView.setAdapter(new GlyphListAdapter(getActivity(),
                 parent.getGlyphs(),
                 mFontSize,
-                parent.getTypeface()));
+                mTypeFace));
         mGridView.setOnItemClickListener(this);
         return rootView;
     }
@@ -90,10 +92,10 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
                             "64.0f"));
             if (mFontSize != newFontSize) {
                 mFontSize = newFontSize;
-                mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, parent.getTypeface()));
+                mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, mTypeFace));
             }
         } if(key.equals(SettingsActivity.Settings.FONT.toString())){
-            mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, parent.getTypeface()));
+            mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, mTypeFace));
         }
     }
 

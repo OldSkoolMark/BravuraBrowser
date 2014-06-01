@@ -51,24 +51,19 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private Typeface mTypeface;
     private float mGridFontSize;
     private ArrayAdapter<GlyphRange> mRangeAdapter;
-    private ArrayList<Glyph> mCurrentGlyphs = new ArrayList<Glyph>();
+    private String mSelectedRange;
+//    private ArrayList<Glyph> mCurrentGlyphs = new ArrayList<Glyph>();
+    Long mGlyphArrayListKey;
 
     // GridFragment.IParentActivity implementation
 
     @Override
     public ArrayList<Glyph> getGlyphs() {
-        return mCurrentGlyphs;
-    }
-
-    @Override
-    public Typeface getTypeface() {
-        return mTypeface;
+        return ((ViewSMuFLFontApplication)getApplication()).getGlyphArrayList(mGlyphArrayListKey);
     }
 
     @Override
     public void onGridItemClick(int position){
-        Long mGlyphArrayListKey;
-        mGlyphArrayListKey = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
         GlyphDetailActivity.start(this, position, mGlyphArrayListKey);
 
     }
@@ -115,8 +110,21 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        new LoadGlyphsTask().execute();
+        if( (FontMetadata.getInstance().getGlyphRanges().size() > 0)){
+            mRangeAdapter.addAll(FontMetadata.getInstance().getGlyphRanges());
+            if( savedInstanceState != null ){
+                mSelectedRange = savedInstanceState.getString(InstanceStateKey.SELECTED_RANGE.name());
+                replaceGridViewFragment(mSelectedRange);
+            }
+        } else {
+            new LoadGlyphsTask().execute();
+        }
+    }
+    private enum InstanceStateKey { SELECTED_RANGE }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(InstanceStateKey.SELECTED_RANGE.name(), mSelectedRange);
     }
 
     @Override
@@ -169,7 +177,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
                 mGridFontSize = newFontSize;
             }
         } if(key.equals(SettingsActivity.Settings.FONT.toString())){
- //           mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, parent.getTypeface()));
+//            mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, mTypeface));
         }
 
     }
@@ -186,7 +194,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private void selectItem(int position) {
         List<String> ranges = FontMetadata.getInstance().getRangeNames();
         if( position < ranges.size()){
-            replaceGridViewFragment(ranges.get(position));
+            mSelectedRange = ranges.get(position);
+            replaceGridViewFragment(mSelectedRange);
         }
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -195,8 +204,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
     private void replaceGridViewFragment(String rangeName){
         if( rangeName != null ) {
-
-            mCurrentGlyphs = FontMetadata.getInstance().getGlyphsForRange(rangeName);
+            ArrayList<Glyph> glyphs = FontMetadata.getInstance().getGlyphsForRange(rangeName);
+            mGlyphArrayListKey = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(glyphs);
             String rangeDescription = FontMetadata.getInstance().getGlyphRange(rangeName).description;
             String[] statusLine = FontMetadata.get2LineDescription(rangeDescription);
             if( statusLine[0] != null ){

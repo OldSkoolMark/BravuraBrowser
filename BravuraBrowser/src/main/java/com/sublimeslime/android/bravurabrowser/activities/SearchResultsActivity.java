@@ -30,11 +30,6 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
     }
 
     @Override
-    public Typeface getTypeface() {
-        return ((ViewSMuFLFontApplication)getApplication()).getTypeface();
-    }
-
-    @Override
     public void onGridItemClick(int position) {
         Long key = ((ViewSMuFLFontApplication)getApplication()).addGlyphArrayList(mCurrentGlyphs);
 
@@ -87,18 +82,10 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         @Override
         protected void onPostExecute(ArrayList<Glyph> results) {
             mCurrentGlyphs = results;
-            if( mCurrentGlyphs.size()>0) {
-                getActionBar().setTitle(mQuery);
-                Fragment fragment = new GridFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-                ft.replace(R.id.container, fragment, mQuery);
-                ft.addToBackStack(mQuery);
-                ft.commit();
-            } else {
-                getActionBar().setTitle(getResources().getString(R.string.not_found));
-            }
-            setProgressBarIndeterminateVisibility(false);
+            ViewSMuFLFontApplication a = (ViewSMuFLFontApplication) getApplication();
+            Long resultsKey = a.addGlyphArrayList(results);
+            SearchResultsDisplayActivity.start(SearchResultsActivity.this, resultsKey, mQuery );
+            finish();
         }
     }
     private final static String TAG = SearchResultsActivity.class.getCanonicalName();

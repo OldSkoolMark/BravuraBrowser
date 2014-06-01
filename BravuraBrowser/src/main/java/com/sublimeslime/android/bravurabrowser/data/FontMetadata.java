@@ -123,13 +123,17 @@ public class FontMetadata {
     private GlyphRanges mGlyphRanges;
 
     public ArrayList<GlyphRange> getGlyphRanges(){
-        ArrayList<String> sortedKeys = new ArrayList<String>(mGlyphRanges.map.keySet());
-        Collections.sort(sortedKeys);
-        ArrayList<GlyphRange> ranges = new ArrayList<GlyphRange>(sortedKeys.size());
-        for( String key : sortedKeys){
-            ranges.add(mGlyphRanges.map.get(key));
+        if( mGlyphRanges == null){
+            return new ArrayList<GlyphRange>();
+        } else {
+            ArrayList<String> sortedKeys = new ArrayList<String>(mGlyphRanges.map.keySet());
+            Collections.sort(sortedKeys);
+            ArrayList<GlyphRange> ranges = new ArrayList<GlyphRange>(sortedKeys.size());
+            for (String key : sortedKeys) {
+                ranges.add(mGlyphRanges.map.get(key));
+            }
+            return ranges;
         }
-        return ranges;
     }
     public static class GlyphRanges {
         public Map<String, GlyphRange> map;
