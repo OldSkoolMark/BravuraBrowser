@@ -21,24 +21,24 @@ package com.sublimeslime.android.bravurabrowser.fragments;
 public class GlyphDetailFragment extends Fragment {
     private Typeface mTypeface;
     private float mFontSize;
+
     public interface IParentActivity {
         public ArrayList<Glyph> getGlyphs();
-        public boolean showFontMetrics();
     }
     public GlyphDetailFragment() {  }
     private  enum IntentKey {POSITION};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mFontSize = Float.parseFloat( prefs.getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "64.0f"));
+        mFontSize = Float.parseFloat( prefs.getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "128.0f"));
         mTypeface = getTypefacePreference(prefs);
+
         IParentActivity parent = (IParentActivity)getActivity();
         int position = getArguments().getInt(IntentKey.POSITION.name());
         Glyph glyph = parent.getGlyphs().get(position);
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
         // glyph
         GlyphView glyphTv = (GlyphView) rootView.findViewById(R.id.glyph);
-        glyphTv.showFontMetrics(parent.showFontMetrics());
         FontMetadata.getInstance().displayGlyph2( glyphTv, glyph.codepoint, mFontSize, mTypeface);
         // codepoint
         StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));

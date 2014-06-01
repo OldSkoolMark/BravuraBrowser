@@ -26,10 +26,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
     public ArrayList<Glyph> getGlyphs(){
         return mGlyphs;
     }
-    @Override
-    public boolean showFontMetrics(){
-        return mShowFontMetrics;
-    }
+
     /**
      * OnPageChangeListener interface
      */
@@ -78,7 +75,6 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         setContentView(R.layout.activity_glyph_detail);
         mTypeface = ((ViewSMuFLFontApplication) getApplication()).getTypeface();
         mFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "128.0f"));
-        mShowFontMetrics = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.Settings.DETAIL_FONT_METRICS.toString(),false);
 
         mGlyphPosition = getIntent().getIntExtra(IntentKey.POSITION.name(), 0);
 

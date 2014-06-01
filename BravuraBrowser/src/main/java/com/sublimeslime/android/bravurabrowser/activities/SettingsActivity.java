@@ -37,7 +37,7 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends PreferenceActivity {
-    public enum Settings { FONT("font_name"), GRID_FONT_SIZE("grid_font_size"), DETAIL_FONT_SIZE("detail_font_size"), THEME("theme"), DETAIL_FONT_METRICS("detail_font_metrics");
+    public enum Settings { FONT("font_name"), GRID_FONT_SIZE("grid_font_size"), DETAIL_FONT_SIZE("detail_font_size"), THEME("theme") ;
         private final String s;
         private Settings(String prefName){
             s = prefName;
@@ -126,7 +126,6 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
         bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
-        bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_METRICS.toString()));
     }
 
     /** {@inheritDoc} */
@@ -174,15 +173,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
-            if( preference instanceof SwitchPreference){
-                SwitchPreference switchPreference = (SwitchPreference)preference;
-                if( switchPreference.isChecked()){
-                    switchPreference.setSummary(switchPreference.getSwitchTextOn());
-                } else {
-                    switchPreference.setSummary(switchPreference.getSwitchTextOff());
-                }
-
-            } else if (preference instanceof ListPreference) {
+            if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
@@ -267,7 +258,6 @@ public class SettingsActivity extends PreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
-            bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_METRICS.toString()));
         }
     }
 
