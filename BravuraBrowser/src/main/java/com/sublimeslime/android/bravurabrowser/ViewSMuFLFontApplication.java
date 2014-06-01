@@ -13,6 +13,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 public class ViewSMuFLFontApplication extends Application {
     private final static String TAG = ViewSMuFLFontApplication.class.getCanonicalName();
@@ -32,13 +33,13 @@ public class ViewSMuFLFontApplication extends Application {
     }
 
     private static volatile long sGlyphArrayListKey = 0;
-    private Map<Long,WeakReference<ArrayList<Glyph>>> mGlyphArrayListMap = new HashMap<Long, WeakReference<ArrayList<Glyph>>>();
+    private Map<Long, ArrayList<Glyph>> mGlyphArrayListMap = new WeakHashMap<Long, ArrayList<Glyph>>();
     public ArrayList<Glyph> getGlyphArrayList( Long id){
-        return mGlyphArrayListMap.get(id).get();
+        return mGlyphArrayListMap.get(id);
     }
     public Long addGlyphArrayList(ArrayList<Glyph> list){
         Long id = sGlyphArrayListKey++;
-        mGlyphArrayListMap.put(id, new WeakReference<ArrayList<Glyph>>(list));
+        mGlyphArrayListMap.put(id, new ArrayList<Glyph>(list));
         return id;
     }
 
