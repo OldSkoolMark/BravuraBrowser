@@ -282,8 +282,8 @@ public class FontMetadata {
 
     public final static ArrayList<SMuFLFont> availableFonts = new ArrayList<SMuFLFont>();
     static  {
-        availableFonts.add(new SMuFLFont("Bravura", "0.9","Bravura","bravura_0_9/Bravura.otf" ));
-        availableFonts.add(new SMuFLFont("BravuraText", "0.9","Bravura Text","bravura_0_9/BravuraText.otf"));
+        availableFonts.add(new SMuFLFont("Bravura", "0.99","Bravura","bravura_0_99/Bravura.otf" ));
+        availableFonts.add(new SMuFLFont("BravuraText", "0.99","Bravura Text","bravura_0_99/BravuraText.otf"));
     }
     public final static SMuFLFont getSMuFLFont( String name ){
         for( SMuFLFont s : availableFonts){
