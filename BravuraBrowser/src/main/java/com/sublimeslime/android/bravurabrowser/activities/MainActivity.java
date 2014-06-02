@@ -2,6 +2,7 @@ package com.sublimeslime.android.bravurabrowser.activities;
 
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.widget.SearchView;
@@ -46,7 +48,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private TextView mMainText;
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
@@ -67,7 +69,20 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         GlyphDetailActivity.start(this, position, mGlyphArrayListKey);
 
     }
-
+    private String getHtmlReadme(){
+        try {
+            InputStream input = getAssets().open("main.html");
+            int size = input.available();
+            byte[] buffer = new byte[size];
+            input.read(buffer);
+            input.close();
+            String text = new String(buffer);
+            return Html.fromHtml(text).toString();
+        } catch (IOException e) {
+            Log.e(TAG,e.getMessage());
+            return "";
+        }
+    }
     // Lifecycle methods
 
     @Override
@@ -86,7 +101,9 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         ArrayList<GlyphRange> grList = new ArrayList<GlyphRange>();
         mRangeAdapter = new RangeListAdapter(MainActivity.this, grList);
         mDrawerList.setAdapter(mRangeAdapter);
+        mMainText = (TextView)findViewById(R.id.main_text);
 
+        mMainText.setText(getHtmlReadme());
         mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
