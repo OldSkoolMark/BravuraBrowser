@@ -20,8 +20,37 @@
     <string name="not_found">Not found</string>
     <string name="show_font_metrics">Show font metrics in detail view</string>
     <string name="searching_for">searching for </string>
-    <!-- constants -->
+    <!-- font configuration constants -->
     <string name="bravura_name" translatable="false">Bravura</string>
     <string name="bravura_text_name" translatable="false">BravuraText</string>
     <string name="default_font_name" translatable="false">@string/bravura_name</string>
+    <string name="smufl_version" translatable="false">0.99</string>
+    <string name="bravura_version" translatable="false">0.99</string>
+    <string name="bravura_font_asset" translatable="false">bravura_0_99/Bravura.otf</string>
+    <string name="bravura_text_font_asset" translatable="false">bravura_0_99/BravuraText.otf</string>
+    <string name="smufl_glyphnames_asset" translatable="false">SMuFL_0_99/glyphnames.json</string>
+    <string name="smufl_ranges_asset" translatable="false">SMuFL_0_99/ranges.json</string>
+    <!--
+    Array of available fonts:
+    [0] key used in code
+    [1] version
+    [2] description for UI
+    [3] assets subdirectory
+    -->
+    <string-array name="bravura" translatable="false">
+            <item>@string/bravura_name</item>
+            <item>@string/bravura_version</item>
+            <item>@string/bravura</item>
+            <item>@string/bravura_font_asset</item>
+        </string-array>
+        <string-array name="bravura_text" translatable="false">
+            <item>@string/bravura_text_name</item>
+            <item>@string/bravura_version</item>
+            <item>@string/bravura_text</item>
+            <item>@string/bravura_text_font_asset</item>
+        </string-array>
+    <array name="available_fonts" translatable="false">
+        <item>@array/bravura</item>
+        <item>@array/bravura_text</item>
+    </array>
 </resources>

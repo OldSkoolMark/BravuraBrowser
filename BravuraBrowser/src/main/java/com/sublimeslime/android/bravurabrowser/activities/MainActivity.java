@@ -300,8 +300,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                FontMetadata.getInstance().parseGlyphNames(MainActivity.this, "SMuFL_0_99/glyphnames.json");
-                FontMetadata.getInstance().parseGlyphRanges(MainActivity.this, "SMuFL_0_99/ranges.json");
+                FontMetadata.getInstance().parseGlyphNames(MainActivity.this, getString(R.string.smufl_glyphnames_asset));
+                FontMetadata.getInstance().parseGlyphRanges(MainActivity.this, getString(R.string.smufl_ranges_asset));
             } catch( IOException e){
                 Log.e(TAG, "error parsing glyph names: " + e.getMessage());
             }
