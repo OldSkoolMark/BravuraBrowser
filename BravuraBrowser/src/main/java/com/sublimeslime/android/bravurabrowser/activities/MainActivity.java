@@ -42,6 +42,7 @@ import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
+import com.sublimeslime.android.bravurabrowser.data.Utils;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
 public class MainActivity extends Activity implements GridFragment.IParentActivity, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -104,7 +105,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mMainText = (TextView)findViewById(R.id.main_text);
 
         mMainText.setText(getHtmlReadme());
-        mTypeface = ((ViewSMuFLFontApplication)getApplication()).getTypeface();
+        mTypeface = Utils.getTypefacePreference(this);
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setTitle(R.string.no_category_selected);

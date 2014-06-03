@@ -33,7 +33,7 @@ public class FontMetadata {
      * Parses the Smufl  glyphnames.json file. 0.85 was not well formed for gson and required
      * hand editing as follows:
      *
-     * Beginning of file: { glyphMap :
+     * Beginning of file: { map :
      * End of file: }
      *
      * @param context that can provide assets
@@ -66,7 +66,7 @@ public class FontMetadata {
      * @return metadata
      */
     public Glyph getGlyphByName(String name){
-        return mGlyphMap.glyphMap.get(name);
+        return mGlyphMap.map.get(name);
     }
 
     /**
@@ -120,6 +120,13 @@ public class FontMetadata {
         public String range_end;
         public String range_start;
     }
+    public static class GlyphRanges {
+        public Map<String, GlyphRange> map;
+        @Override
+        public String toString(){
+            return "map = "+ map;
+        }
+    }
     private GlyphRanges mGlyphRanges;
 
     public ArrayList<GlyphRange> getGlyphRanges(){
@@ -135,13 +142,7 @@ public class FontMetadata {
             return ranges;
         }
     }
-    public static class GlyphRanges {
-        public Map<String, GlyphRange> map;
-         @Override
-        public String toString(){
-            return "map = "+ map;
-        }
-    }
+
     public ArrayList<Glyph> getGlyphsForRange(String rangeName){
         GlyphRange range = getGlyphRange(rangeName);
         ArrayList<Glyph> glyphs = new ArrayList<Glyph>(range.glyphs.length);
@@ -152,15 +153,15 @@ public class FontMetadata {
     }
     public ArrayList<Glyph> getGlyphsByMatchingKey( String key ){
         ArrayList<Glyph> matches = new ArrayList<Glyph>();
-        for( String s : mGlyphMap.glyphMap.keySet()){
+        for( String s : mGlyphMap.map.keySet()){
             if(s.matches(key))
-                matches.add(mGlyphMap.glyphMap.get(s));
+                matches.add(mGlyphMap.map.get(s));
         }
         return matches;
     }
     public ArrayList<Glyph> getGlyphsByMatchingDescription( String desc ){
         ArrayList<Glyph> matches = new ArrayList<Glyph>();
-        for( Map.Entry<String,Glyph> e : mGlyphMap.glyphMap.entrySet()){
+        for( Map.Entry<String,Glyph> e : mGlyphMap.map.entrySet()){
             Glyph g = e.getValue();
             if(g.description.toUpperCase().matches(desc))
                 matches.add(g);
@@ -169,7 +170,7 @@ public class FontMetadata {
     }
     public ArrayList<Glyph> getGlyphsByMatchingCodepoint(String codepoint){
         ArrayList<Glyph> matches = new ArrayList<Glyph>();
-        for( Map.Entry<String,Glyph> e : mGlyphMap.glyphMap.entrySet()){
+        for( Map.Entry<String,Glyph> e : mGlyphMap.map.entrySet()){
             Glyph g = e.getValue();
             if(g.codepoint.toUpperCase().matches(codepoint))
                 matches.add(g);
@@ -177,28 +178,40 @@ public class FontMetadata {
         return matches;
     }
     /**
+     * Glyph
+     */
+    public static class Glyph {
+        public String codepoint;
+        public String description;
+        public Glyph(){}
+        @Override
+        public String toString() {
+            return "[ "+description + " " + codepoint + " ]" ;
+        }
+    }
+    /**
      * Result of parsing the glyph json file. Categorizes glyphs by name
      */
-    private GlyphMap mGlyphMap;
-    private List<String> mGlyphRangeMapKeys = new ArrayList<String>();
     public static class GlyphMap {
-        TreeMap<String,Glyph> glyphMap;
+        TreeMap<String,Glyph> map;
         public String[] getAllGlyphNames(){
-            return glyphMap.keySet().toArray(new String[glyphMap.size()]);
+            return map.keySet().toArray(new String[map.size()]);
         }
         @Override
         public String toString() {
-            return "GlyphMap =" + glyphMap ;
+            return "GlyphMap =" + map;
         }
         public String lookupGlyphKeyByCodepoints(String codepoint){
-            for( String key : glyphMap.keySet()){
-                if( codepoint != null && codepoint.toUpperCase().equals(glyphMap.get(key).codepoint)) {
+            for( String key : map.keySet()){
+                if( codepoint != null && codepoint.toUpperCase().equals(map.get(key).codepoint)) {
                     return key;
                 }
             }
             return "";
         }
-      }
+    }
+    private GlyphMap mGlyphMap;
+    private List<String> mGlyphRangeMapKeys = new ArrayList<String>();
 
     /**
      * Split string into actionbar title and subtitle
@@ -215,19 +228,6 @@ public class FontMetadata {
             line[0] = s.substring(0,j);
         }
         return line;
-    }
-    /**
-     * Glyph
-     */
-    public static class Glyph {
-        public String codepoint;
-        public String description;
-        public Glyph(){}
-        @Override
-        public String toString() {
-            return "[ "+description + " " + codepoint + " ]" ;
-        }
-
     }
 
     public static void displayGlyph(TextView tv, String codepoint, float fontSize, Typeface face){

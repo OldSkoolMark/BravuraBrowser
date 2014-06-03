@@ -1,22 +1,23 @@
 package com.sublimeslime.android.bravurabrowser.fragments;
 
-        import android.content.SharedPreferences;
-        import android.preference.PreferenceManager;
-        import android.support.v4.app.Fragment;
-        import android.graphics.Typeface;
-        import android.os.Bundle;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-        import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
-        import com.sublimeslime.android.bravurabrowser.views.GlyphView;
-        import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
-        import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
-        import com.sublimeslime.android.bravurabrowser.R;
+import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
+import com.sublimeslime.android.bravurabrowser.data.Utils;
+import com.sublimeslime.android.bravurabrowser.views.GlyphView;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
+import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
+import com.sublimeslime.android.bravurabrowser.R;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class GlyphDetailFragment extends Fragment {
     private Typeface mTypeface;
@@ -31,7 +32,7 @@ public class GlyphDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mFontSize = Float.parseFloat( prefs.getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "128.0f"));
-        mTypeface = getTypefacePreference(prefs);
+        mTypeface = Utils.getTypefacePreference(getActivity());
 
         IParentActivity parent = (IParentActivity)getActivity();
         int position = getArguments().getInt(IntentKey.POSITION.name());
@@ -45,11 +46,6 @@ public class GlyphDetailFragment extends Fragment {
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
         cpTv.setText(codepointLabel.append( glyph.codepoint));
         return rootView;
-    }
-    private Typeface getTypefacePreference(SharedPreferences prefs){
-        String fontName = prefs.getString(SettingsActivity.Settings.FONT.toString(),"Bravura");
-        SMuFLFont sf = FontMetadata.getSMuFLFont(fontName);
-        return Typeface.createFromAsset(getActivity().getAssets(), sf.getFontAsset());
     }
 
     public static GlyphDetailFragment newGlyphFragmentInstance(int position) {

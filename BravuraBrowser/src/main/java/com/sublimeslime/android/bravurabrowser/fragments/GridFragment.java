@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import com.sublimeslime.android.bravurabrowser.data.Utils;
 import com.sublimeslime.android.bravurabrowser.views.GlyphView;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
@@ -44,15 +45,11 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mTypeFace = getTypefacePreference(prefs);
+        mTypeFace = Utils.getTypefacePreference(getActivity());
         mFontSize = Float.parseFloat(prefs.getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(),"128.0f"));
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
-    private Typeface getTypefacePreference(SharedPreferences prefs){
-        String fontName = prefs.getString(SettingsActivity.Settings.FONT.toString(),"Bravura");
-        SMuFLFont sf = FontMetadata.getSMuFLFont(fontName);
-        return Typeface.createFromAsset(getActivity().getAssets(), sf.getFontAsset());
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
@@ -97,7 +94,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
                 mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, mTypeFace));
             }
         } if(key.equals(SettingsActivity.Settings.FONT.toString())){
-            mTypeFace = getTypefacePreference(sharedPreferences);
+            mTypeFace = Utils.getTypefacePreference(getActivity());
             mGridView.setAdapter(new GlyphListAdapter(getActivity(),parent.getGlyphs(), mFontSize, mTypeFace));
         }
     }

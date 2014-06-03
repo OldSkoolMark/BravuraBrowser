@@ -17,6 +17,7 @@ import android.util.Log;
 import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.data.FontMetadata.*;
+import com.sublimeslime.android.bravurabrowser.data.Utils;
 import com.sublimeslime.android.bravurabrowser.fragments.GlyphDetailFragment;
 
 
@@ -73,7 +74,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glyph_detail);
-        mTypeface = ((ViewSMuFLFontApplication) getApplication()).getTypeface();
+        mTypeface = Utils.getTypefacePreference(this);
         mFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.DETAIL_FONT_SIZE.toString(), "128.0f"));
 
         mGlyphPosition = getIntent().getIntExtra(IntentKey.POSITION.name(), 0);

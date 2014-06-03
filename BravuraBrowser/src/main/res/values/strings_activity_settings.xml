@@ -69,8 +69,8 @@
         <item>Bravura Text</item>
     </string-array>
     <string-array name="pref_font_entry_values">
-        <item>Bravura</item>
-        <item>BravuraText</item>
+        <item>@string/default_font_name</item>
+        <item>@string/bravura_text_name</item>
     </string-array>
 
 </resources>

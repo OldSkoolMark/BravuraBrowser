@@ -20,4 +20,8 @@
     <string name="not_found">Not found</string>
     <string name="show_font_metrics">Show font metrics in detail view</string>
     <string name="searching_for">searching for </string>
+    <!-- constants -->
+    <string name="bravura_name" translatable="false">Bravura</string>
+    <string name="bravura_text_name" translatable="false">BravuraText</string>
+    <string name="default_font_name" translatable="false">@string/bravura_name</string>
 </resources>
