@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.activities.SettingsActivity;
 import com.sublimeslime.android.bravurabrowser.data.Utils;
 import com.sublimeslime.android.bravurabrowser.views.GlyphView;
@@ -45,6 +46,13 @@ public class GlyphDetailFragment extends Fragment {
         StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
         cpTv.setText(codepointLabel.append( glyph.codepoint));
+        // SMuFL version
+        TextView smuflTv = (TextView)rootView.findViewById(R.id.tv_smufl);
+        smuflTv.setText("SMuFL v"+getResources().getString(R.string.smufl_version));
+        // Font name and version
+        TextView smuflFontTv = (TextView)rootView.findViewById(R.id.tv_smufl_font);
+        ViewSMuFLFontApplication.SMuFLFont font = ViewSMuFLFontApplication.getSMuFLFont(Utils.getFontnamePreference(getActivity()));
+        smuflFontTv.setText(font.getDescription()+ " v"+font.getVersion());
         return rootView;
     }
 

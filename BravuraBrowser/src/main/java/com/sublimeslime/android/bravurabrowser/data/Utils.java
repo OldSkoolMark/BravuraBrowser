@@ -19,4 +19,9 @@ public class Utils {
         SMuFLFont sf = getSMuFLFont(fontName);
         return Typeface.createFromAsset(context.getAssets(), sf.getFontAsset());
     }
+    public static String getFontnamePreference(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(SettingsActivity.Settings.FONT.toString(), context.getResources().getString(R.string.default_font_name));
+    }
+
 }
