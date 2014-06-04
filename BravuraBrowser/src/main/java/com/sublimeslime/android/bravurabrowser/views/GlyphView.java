@@ -131,16 +131,12 @@ public class GlyphView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // Draw glyph
         int start = getWidth() > 2 * (int)mTextWidth ? getWidth()/ 2 : 0;
-        canvas.drawText(mText.toString(),
-                start,
-                -mTextPaint.getFontMetrics().top,
-                mTextPaint);
+        // Draw font metrics lines
         if( mDrawLines ) {
             drawVerticalLine(canvas, start, getResources().getColor(R.color.start_color));
-             // Draw top
- //           drawHorizontalLine(canvas, 0.0f, 0, getResources().getColor(R.color.top_color));
+            // Draw top
+            //           drawHorizontalLine(canvas, 0.0f, 0, getResources().getColor(R.color.top_color));
             // Draw ascent
             drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().ascent, 180, getResources().getColor(R.color.ascent_color));
             // Draw baseline
@@ -150,6 +146,12 @@ public class GlyphView extends View {
             // Draw botton
 //            drawHorizontalLine(canvas, -mTextPaint.getFontMetrics().top + mTextPaint.getFontMetrics().bottom, 180, getResources().getColor(R.color.bottom_color));
         }
+        // Draw glyph
+        canvas.drawText(mText.toString(),
+                start,
+                -mTextPaint.getFontMetrics().top,
+                mTextPaint);
+
     }
     private void drawHorizontalLine(Canvas canvas, float y, int phase, int color){
         mBaselinePath.reset();

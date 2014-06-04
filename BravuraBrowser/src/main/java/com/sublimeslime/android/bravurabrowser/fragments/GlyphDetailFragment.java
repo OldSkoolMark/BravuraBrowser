@@ -41,7 +41,7 @@ public class GlyphDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_glyph_detail, container, false);
         // glyph
         GlyphView glyphTv = (GlyphView) rootView.findViewById(R.id.glyph);
-        FontMetadata.getInstance().displayGlyph2( glyphTv, glyph.codepoint, mFontSize, mTypeface);
+        FontMetadata.getInstance().displayGlyph(glyphTv, glyph.codepoint, mFontSize, mTypeface);
         // codepoint
         StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);

@@ -55,7 +55,6 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
     private float mGridFontSize;
     private ArrayAdapter<GlyphRange> mRangeAdapter;
     private String mSelectedRange;
-//    private ArrayList<Glyph> mCurrentGlyphs = new ArrayList<Glyph>();
     Long mGlyphArrayListKey;
 
     // GridFragment.IParentActivity implementation
@@ -130,6 +129,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         if( (FontMetadata.getInstance().getGlyphRanges().size() > 0)){
             mRangeAdapter.addAll(FontMetadata.getInstance().getGlyphRanges());
+            // restore last selected range on configuration change
             if( savedInstanceState != null ){
                 mSelectedRange = savedInstanceState.getString(InstanceStateKey.SELECTED_RANGE.name());
                 replaceGridViewFragment(mSelectedRange);
@@ -138,7 +138,9 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             new LoadGlyphsTask().execute();
         }
     }
+
     private enum InstanceStateKey { SELECTED_RANGE }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

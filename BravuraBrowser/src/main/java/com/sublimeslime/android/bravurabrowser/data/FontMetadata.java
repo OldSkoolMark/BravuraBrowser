@@ -70,15 +70,6 @@ public class FontMetadata {
     }
 
     /**
-     * Return the key associated with a codepoint/alternatCodepoint value in the glyph map
-     * @param codepoint
-     * @return key
-     */
-    public String lookupGlyphKeyByCodepoints( String codepoint){
-        return mGlyphMap.lookupGlyphKeyByCodepoints(codepoint);
-    }
-
-    /**
      * Parses the Smufl ranges.json file. Not gson friendly and required hand editing as
      * follows:
      *
@@ -151,14 +142,7 @@ public class FontMetadata {
         }
         return glyphs;
     }
-    public ArrayList<Glyph> getGlyphsByMatchingKey( String key ){
-        ArrayList<Glyph> matches = new ArrayList<Glyph>();
-        for( String s : mGlyphMap.map.keySet()){
-            if(s.matches(key))
-                matches.add(mGlyphMap.map.get(s));
-        }
-        return matches;
-    }
+
     public ArrayList<Glyph> getGlyphsByMatchingDescription( String desc ){
         ArrayList<Glyph> matches = new ArrayList<Glyph>();
         for( Map.Entry<String,Glyph> e : mGlyphMap.map.entrySet()){
@@ -230,20 +214,12 @@ public class FontMetadata {
         return line;
     }
 
-    public static void displayGlyph(TextView tv, String codepoint, float fontSize, Typeface face){
-        tv.setTypeface(face);
-        String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(codepoint);
-        tv.setText(uniCode);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
-    }
-    public static void displayGlyph2(GlyphView gv, String codepoint, float fontSize, Typeface face){
+    public static void displayGlyph(GlyphView gv, String codepoint, float fontSize, Typeface face){
         gv.setTypeface(face);
         String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(codepoint);
         gv.setText(uniCode);
         gv.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
-
-
 }
 
 
