@@ -104,9 +104,6 @@ public class SettingsActivity extends PreferenceActivity {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
-        PreferenceCategory fakeHeader = new PreferenceCategory(this);
-        fakeHeader.setTitle(R.string.pref_header_font_sizes);
-        getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_font);
         addPreferencesFromResource(R.xml.pref_font_sizes);
 
