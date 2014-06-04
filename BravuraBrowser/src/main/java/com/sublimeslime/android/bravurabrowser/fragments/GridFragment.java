@@ -53,9 +53,7 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
-        // Parent activity contract with
         IParentActivity parent = (IParentActivity)getActivity();
-        Log.d(TAG,"onCreateView() font size="+mFontSize);
         mGridView = (GridView) rootView.findViewById(R.id.gridview);
         mGridView.setAdapter(new GlyphListAdapter(getActivity(),
                 parent.getGlyphs(),

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -91,7 +90,7 @@ public class SettingsActivity extends PreferenceActivity {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
-        addPreferencesFromResource(R.xml.pref_font_sizes);
+        addPreferencesFromResource(R.xml.preferences);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
@@ -197,7 +196,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_font_sizes);
+            addPreferencesFromResource(R.xml.preferences);
 
             bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
