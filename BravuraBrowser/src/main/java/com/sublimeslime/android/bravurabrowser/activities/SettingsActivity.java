@@ -91,7 +91,6 @@ public class SettingsActivity extends PreferenceActivity {
         // In the simplified UI, fragments are not used at all and we instead
         // use the older PreferenceActivity APIs.
 
-        addPreferencesFromResource(R.xml.pref_font);
         addPreferencesFromResource(R.xml.pref_font_sizes);
 
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
@@ -198,7 +197,6 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_font);
             addPreferencesFromResource(R.xml.pref_font_sizes);
 
             bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
