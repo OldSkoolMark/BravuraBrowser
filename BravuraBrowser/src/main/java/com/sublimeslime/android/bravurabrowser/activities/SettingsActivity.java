@@ -46,7 +46,7 @@ public class SettingsActivity extends PreferenceActivity {
      * as a master/detail two-pane view on tablets. When true, a single pane is
      * shown on tablets.
      */
-    private static final boolean ALWAYS_SIMPLE_PREFS = false;
+    private static final boolean ALWAYS_SIMPLE_PREFS = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +54,6 @@ public class SettingsActivity extends PreferenceActivity {
         setupActionBar();
     }
 
-    /**
-     * Set up the {@link android.app.ActionBar}, if the API is available.
-     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -69,16 +66,7 @@ public class SettingsActivity extends PreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            // TODO: If Settings has multiple levels, Up should navigate up
-            // that hierarchy.
-            NavUtils.navigateUpFromSameTask(this);
+             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -87,7 +75,6 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         setupSimplePreferencesScreen();
     }
 
@@ -151,7 +138,6 @@ public class SettingsActivity extends PreferenceActivity {
             loadHeadersFromResource(R.xml.pref_headers, target);
         }
     }
-
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -215,10 +201,6 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.pref_font);
             addPreferencesFromResource(R.xml.pref_font_sizes);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
             bindPreferenceSummaryToValue(findPreference(Settings.FONT.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.GRID_FONT_SIZE.toString()));
             bindPreferenceSummaryToValue(findPreference(Settings.DETAIL_FONT_SIZE.toString()));
