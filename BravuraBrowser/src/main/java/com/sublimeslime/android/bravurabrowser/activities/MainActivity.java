@@ -69,20 +69,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         GlyphDetailActivity.start(this, position, mGlyphArrayListKey);
 
     }
-    private String getHtmlReadme(){
-        try {
-            InputStream input = getAssets().open("main.html");
-            int size = input.available();
-            byte[] buffer = new byte[size];
-            input.read(buffer);
-            input.close();
-            String text = new String(buffer);
-            return Html.fromHtml(text).toString();
-        } catch (IOException e) {
-            Log.e(TAG,e.getMessage());
-            return "";
-        }
-    }
+
     // Lifecycle methods
 
     @Override
@@ -101,9 +88,9 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         ArrayList<GlyphRange> grList = new ArrayList<GlyphRange>();
         mRangeAdapter = new RangeListAdapter(MainActivity.this, grList);
         mDrawerList.setAdapter(mRangeAdapter);
+
         mMainText = (TextView)findViewById(R.id.main_text);
 
-        mMainText.setText(getHtmlReadme());
         mTypeface = Utils.getTypefacePreference(this);
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -180,6 +167,9 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         switch(item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_about:
+                AboutActivity.start(this);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

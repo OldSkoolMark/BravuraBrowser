@@ -6,14 +6,14 @@
     <string name="action_fontsize">font size</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="basic_explanation">Select a glyph category\nfrom the nav drawer</string>
+    <string name="basic_explanation">Bravura\nBrowser</string>
     <string name="search_title">search glyphs</string>
     <string name="search_hint">enter codepoint or glyph name</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
     <string name="title_activity_glyph_detail">GlyphDetailActivity</string>
     <string name="codepoint">codepoint: </string>
     <string name="alternate">alternate: </string>
-    <string name="no_category_selected">No category selected</string>
+    <string name="no_category_selected">No selection</string>
     <string name="pref_font_title">Font</string>
     <string name="bravura">Bravura</string>
     <string name="bravura_text">Bravura Text</string>
@@ -38,19 +38,25 @@
     [3] assets subdirectory
     -->
     <string-array name="bravura" translatable="false">
-            <item>@string/bravura_name</item>
-            <item>@string/bravura_version</item>
-            <item>@string/bravura</item>
-            <item>@string/bravura_font_asset</item>
-        </string-array>
-        <string-array name="bravura_text" translatable="false">
-            <item>@string/bravura_text_name</item>
-            <item>@string/bravura_version</item>
-            <item>@string/bravura_text</item>
-            <item>@string/bravura_text_font_asset</item>
-        </string-array>
+        <item>@string/bravura_name</item>
+        <item>@string/bravura_version</item>
+        <item>@string/bravura</item>
+        <item>@string/bravura_font_asset</item>
+    </string-array>
+    <string-array name="bravura_text" translatable="false">
+        <item>@string/bravura_text_name</item>
+        <item>@string/bravura_version</item>
+        <item>@string/bravura_text</item>
+        <item>@string/bravura_text_font_asset</item>
+    </string-array>
+
     <array name="available_fonts" translatable="false">
         <item>@array/bravura</item>
         <item>@array/bravura_text</item>
     </array>
+
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="about">about</string>
+
 </resources>

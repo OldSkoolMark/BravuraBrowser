@@ -7,12 +7,11 @@
         android:targetSdkVersion="19" />
 
     <application
-        android:name="com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication"
+        android:name=".ViewSMuFLFontApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.MainActivity"
             android:label="@string/app_name"
@@ -25,32 +24,28 @@
             <!-- set action bar search widget target -->
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".activities.SearchResultsActivity" />
+                android:value="com.sublimeslime.android.bravurabrowser.activities.SearchResultsActivity" />
         </activity>
-
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.SearchResultsActivity"
             android:label="@string/title_activity_search_results"
             android:parentActivityName="com.sublimeslime.android.bravurabrowser.activities.MainActivity" >
+
             <!-- make this activity the target of the action bar search from MainActivity -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.SearchResultsDisplayActivity"
-            android:label="SearchResultsDisplayActivity"
-            />
-
+            android:label="SearchResultsDisplayActivity" />
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity"
-            android:label="GlyphDetailActivity"
-            />
-
+            android:label="GlyphDetailActivity" />
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -60,12 +55,14 @@
                 android:value="MainActivity" />
         </activity>
 
-         <provider
-            android:name=".data.SMufFLContentProvider"
-            android:authorities="com.sublimeslime.android.smuflbrowser.contentprovider"
-            android:enabled="true"
-            android:exported="false" >
-        </provider>
+        <activity
+            android:name="com.sublimeslime.android.bravurabrowser.activities.AboutActivity"
+            android:label="@string/title_activity_about"
+            android:parentActivityName="com.sublimeslime.android.bravurabrowser.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
     </application>
 
 </manifest>

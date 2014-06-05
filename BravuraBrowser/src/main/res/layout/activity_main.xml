@@ -12,10 +12,10 @@
         android:layout_height="match_parent" >
         <TextView
             android:id="@+id/main_text"
-            android:textSize="20sp"
+            android:textSize="64sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="left"
+            android:gravity="center"
             android:text="@string/basic_explanation"/>
     </FrameLayout>
     <!-- The navigation drawer -->
