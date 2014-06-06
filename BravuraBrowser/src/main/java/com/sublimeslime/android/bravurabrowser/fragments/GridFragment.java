@@ -11,9 +11,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.AbsListView.LayoutParams;
+
 
 import com.sublimeslime.android.bravurabrowser.data.Utils;
 import com.sublimeslime.android.bravurabrowser.views.GlyphView;
@@ -52,9 +56,11 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        int colWidth = computeColumnWidth();
         View rootView = inflater.inflate(R.layout.fragment_grid, container, false);
         IParentActivity parent = (IParentActivity)getActivity();
         mGridView = (GridView) rootView.findViewById(R.id.gridview);
+        mGridView.setColumnWidth(colWidth);
         mGridView.setAdapter(new GlyphListAdapter(getActivity(),
                 parent.getGlyphs(),
                 mFontSize,
@@ -124,5 +130,31 @@ public class GridFragment extends Fragment implements AdapterView.OnItemClickLis
         }
     }
 
+    // Compute column width off screen
+    private int computeColumnWidth(){
+        FrameLayout buffer = new FrameLayout( getActivity() );
+        android.widget.AbsListView.LayoutParams layoutParams = new  android.widget.AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        int maxWidth = 0;
+        for( Glyph g : ((IParentActivity)getActivity()).getGlyphs() ){
+            GlyphView gv = (GlyphView)((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.glyph, null);
+            gv.setTypeface(mTypeFace);
+            String uniCode = FontMetadata.getInstance().parseGlyphCodepoint(g.codepoint);
+            gv.setText(uniCode);
+            gv.setTextSize(TypedValue.COMPLEX_UNIT_SP, mFontSize);
+            int w = measureCellWidth(getActivity(), gv, buffer, layoutParams);
+            maxWidth = w > maxWidth ? w : maxWidth;
+        }
+        return maxWidth;
+    }
+
+    private int measureCellWidth( Context context, View cell, FrameLayout buffer, LayoutParams layoutParams )
+    {
+        buffer.addView( cell, layoutParams);
+        cell.forceLayout();
+        cell.measure(1000, 1000);
+        int width = cell.getMeasuredWidth();
+        buffer.removeAllViews();
+        return width;
+    }
     private final static String TAG = GridFragment.class.getCanonicalName();
 }
