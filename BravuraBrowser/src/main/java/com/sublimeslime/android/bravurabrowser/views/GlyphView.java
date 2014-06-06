@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
@@ -22,6 +23,8 @@ import com.sublimeslime.android.bravurabrowser.R;
  * TODO: document your custom view class.
  */
 public class GlyphView extends View {
+    private final static int WIDTH_FUDGE = 20; // neither bounds or width works.
+    private final static int HEIGHT_FUDGE = 10;
     private int mLineColor = Color.RED; // TODO: use a default from R.color...
     private TextPaint mTextPaint;
     private Paint mLinePaint;
@@ -84,13 +87,21 @@ public class GlyphView extends View {
             mTextHeight = fontMetrics.bottom;
         }
     }
+
+    /**
+     * Measure the view based on the glyph. Neither TextPaint.getBounds or TextPaint.getWidth returns
+     * enough space for glyphs that draw something left of the origin, so we use a fudge factor
+     * 
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        float widths[] = new float[1];
-        mTextPaint.getTextWidths(mText.toString(),widths);
-        int desiredWidth = (int)widths[0];
-        int desiredHeight = (int)(mTextPaint.getFontMetrics().bottom - mTextPaint.getFontMetrics().top + 10); // top is negative
+        Paint.FontMetrics fm = mTextPaint.getFontMetrics();
+        Rect bounds = new Rect();
+        mTextPaint.getTextBounds(mText.toString(),0,1,bounds);
+        int desiredWidth = bounds.width()+ WIDTH_FUDGE;
+        int desiredHeight = (int)(fm.bottom - fm.top + HEIGHT_FUDGE); // top is negative
  //       Log.d(TAG, "font bottom: " + (int) mTextPaint.getFontMetrics().bottom + "font top: " + (int) mTextPaint.getFontMetrics().top);
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
@@ -131,7 +142,7 @@ public class GlyphView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int start = getWidth() > 2 * (int)mTextWidth ? getWidth()/ 2 : 0;
+        int start = getWidth() > 2 * (int)mTextWidth ? getWidth()/ 2 : WIDTH_FUDGE;
         // Draw font metrics lines
         if( mDrawLines ) {
             drawVerticalLine(canvas, start, getResources().getColor(R.color.start_color));
