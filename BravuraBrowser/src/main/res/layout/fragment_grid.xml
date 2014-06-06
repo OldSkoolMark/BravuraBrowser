@@ -10,4 +10,4 @@
     android:horizontalSpacing="3dp"
     android:stretchMode="spacingWidth"
     android:gravity="center"
-    android:padding="32dp" />
+    android:padding="2dp" />
