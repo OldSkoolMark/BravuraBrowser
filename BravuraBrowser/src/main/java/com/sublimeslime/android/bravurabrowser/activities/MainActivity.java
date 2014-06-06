@@ -227,6 +227,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             Fragment fragment = new GridFragment();
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right);
             ft.replace(R.id.content_frame, fragment, rangeName);
             ft.commit();
         }

@@ -1,7 +1,10 @@
 package com.sublimeslime.android.bravurabrowser.activities;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +18,7 @@ import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
 
 import java.util.ArrayList;
 
-public class SearchResultsActivity extends ActionBarActivity implements GridFragment.IParentActivity {
+public class SearchResultsActivity extends Activity implements GridFragment.IParentActivity {
     private Long mGlyphResultsKey;
     // IParentActivity contract
     @Override
@@ -33,7 +36,9 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        ColorDrawable colorDrawable = new ColorDrawable( Color.TRANSPARENT );
+        getWindow().setBackgroundDrawable( colorDrawable );
+//        setContentView(R.layout.activity_search_results);
         handleIntent(getIntent());
     }
 
@@ -46,7 +51,7 @@ public class SearchResultsActivity extends ActionBarActivity implements GridFrag
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             new QueryTask().execute(query.toUpperCase());
-            getSupportActionBar().setTitle(getString(R.string.searching_for) + " " + query);
+            getActionBar().setTitle(getString(R.string.searching_for) + " " + query);
         }
     }
 

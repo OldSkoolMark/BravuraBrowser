@@ -42,7 +42,9 @@
         </activity>
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.SearchResultsDisplayActivity"
-            android:label="SearchResultsDisplayActivity" />
+            android:label="SearchResultsDisplayActivity"
+            android:parentActivityName="com.sublimeslime.android.bravurabrowser.activities.MainActivity"
+        />
         <activity
             android:name="com.sublimeslime.android.bravurabrowser.activities.GlyphDetailActivity"
             android:label="GlyphDetailActivity" />

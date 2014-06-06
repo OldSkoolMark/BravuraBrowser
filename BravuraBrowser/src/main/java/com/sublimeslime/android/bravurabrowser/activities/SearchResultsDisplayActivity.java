@@ -52,19 +52,19 @@ public class SearchResultsDisplayActivity extends ActionBarActivity implements G
         Fragment fragment = new GridFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.animator.slide_in_top, R.animator.slide_out_bottom);
         ft.replace(R.id.container, fragment, mSearchQuery);
         ft.addToBackStack(mSearchQuery);
         ft.commit();
     }
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
+        overridePendingTransition(R.anim.abc_slide_in_top, R.anim.abc_slide_out_bottom);
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-    }
+
 
     private final static String TAG = SearchResultsDisplayActivity.class.getCanonicalName();
 }
