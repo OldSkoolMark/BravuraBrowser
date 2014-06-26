@@ -88,10 +88,11 @@ public class GlyphView extends View {
         }
     }
 
-    /**
+    /** @inheritdoc
+     *
      * Measure the view based on the glyph. Neither TextPaint.getBounds or TextPaint.getWidth returns
      * enough space for glyphs that draw something left of the origin, so we use a fudge factor
-     * 
+     *
      * @param widthMeasureSpec
      * @param heightMeasureSpec
      */

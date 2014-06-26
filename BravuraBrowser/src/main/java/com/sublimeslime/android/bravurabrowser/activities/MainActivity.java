@@ -2,9 +2,9 @@ package com.sublimeslime.android.bravurabrowser.activities;
 
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -18,13 +18,19 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -44,30 +50,32 @@ import com.sublimeslime.android.bravurabrowser.R;
 import com.sublimeslime.android.bravurabrowser.ViewSMuFLFontApplication;
 import com.sublimeslime.android.bravurabrowser.data.Utils;
 import com.sublimeslime.android.bravurabrowser.fragments.GridFragment;
+import com.sublimeslime.android.bravurabrowser.views.GlyphView;
 
 public class MainActivity extends Activity implements GridFragment.IParentActivity, SharedPreferences.OnSharedPreferenceChangeListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private RelativeLayout mContentFrame;
     private TextView mMainText;
     private CharSequence mTitle;
     private Typeface mTypeface;
     private float mGridFontSize;
     private ArrayAdapter<GlyphRange> mRangeAdapter;
     private String mSelectedRange;
-    Long mGlyphArrayListKey;
+    private Long mGlyphArrayListKey;
+
 
     // GridFragment.IParentActivity implementation
 
     @Override
     public ArrayList<Glyph> getGlyphs() {
-        return ((ViewSMuFLFontApplication)getApplication()).getGlyphArrayList(mGlyphArrayListKey);
+        return ((ViewSMuFLFontApplication) getApplication()).getGlyphArrayList(mGlyphArrayListKey);
     }
 
     @Override
-    public void onGridItemClick(int position){
+    public void onGridItemClick(int position) {
         GlyphDetailActivity.start(this, position, mGlyphArrayListKey);
-
     }
 
     // Lifecycle methods
@@ -79,6 +87,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
 
         setContentView(R.layout.activity_main);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mContentFrame = (RelativeLayout) findViewById(R.id.content_frame);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mGridFontSize = Float.parseFloat(PreferenceManager.getDefaultSharedPreferences(this).getString(SettingsActivity.Settings.GRID_FONT_SIZE.toString(), "64.0f"));
         // set a custom shadow that overlays the main content when the drawer opens
@@ -89,7 +98,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         mRangeAdapter = new RangeListAdapter(MainActivity.this, grList);
         mDrawerList.setAdapter(mRangeAdapter);
 
-        mMainText = (TextView)findViewById(R.id.main_text);
+        mMainText = (TextView) findViewById(R.id.main_text);
 
         mTypeface = Utils.getTypefacePreference(this);
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -103,8 +112,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
                 mDrawerLayout,         /* DrawerLayout object */
                 R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
                 R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close)  /* "close drawer" description for accessibility */
-        {
+                R.string.drawer_close)  /* "close drawer" description for accessibility */ {
             public void onDrawerClosed(View view) {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
@@ -114,10 +122,10 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        if( (FontMetadata.getInstance().getGlyphRanges().size() > 0)){
+        if ((FontMetadata.getInstance().getGlyphRanges().size() > 0)) {
             mRangeAdapter.addAll(FontMetadata.getInstance().getGlyphRanges());
             // restore last selected range on configuration change
-            if( savedInstanceState != null ){
+            if (savedInstanceState != null) {
                 mSelectedRange = savedInstanceState.getString(InstanceStateKey.SELECTED_RANGE.name());
                 replaceGridViewFragment(mSelectedRange);
             }
@@ -126,7 +134,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
         }
     }
 
-    private enum InstanceStateKey { SELECTED_RANGE }
+    private enum InstanceStateKey { SELECTED_RANGE };
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -315,6 +323,8 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             setProgressBarIndeterminateVisibility(false);
         }
     }
+
+
 
     private final static String TAG = MainActivity.class.getCanonicalName();
 }

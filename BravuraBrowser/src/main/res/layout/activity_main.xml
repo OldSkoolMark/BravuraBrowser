@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.sublimeslime.android.bravurabrowser.activities.MainActivity">>
     <!-- The main content view -->
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/basic_explanation"/>
-    </FrameLayout>
+    </RelativeLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
         android:layout_width="420dp"

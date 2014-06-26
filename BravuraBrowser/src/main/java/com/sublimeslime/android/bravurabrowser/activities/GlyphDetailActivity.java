@@ -88,6 +88,7 @@ public class GlyphDetailActivity extends ActionBarActivity implements GlyphDetai
         mViewPager.setCurrentItem(mGlyphPosition);
         mViewPager.setOnPageChangeListener(this);
         getActionBar().setTitle(mGlyphs.get(mGlyphPosition).description);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private class GlyphDetailPagerAdapter extends FragmentStatePagerAdapter {

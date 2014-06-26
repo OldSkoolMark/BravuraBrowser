@@ -32,6 +32,7 @@ local.properties
 
 # Built application files
 /*/build/
+build/
  
 # Crashlytics configuations
 com_crashlytics_export_strings.xml
