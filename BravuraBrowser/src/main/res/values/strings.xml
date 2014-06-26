@@ -24,12 +24,12 @@
     <string name="bravura_name" translatable="false">Bravura</string>
     <string name="bravura_text_name" translatable="false">BravuraText</string>
     <string name="default_font_name" translatable="false">@string/bravura_name</string>
-    <string name="smufl_version" translatable="false">0.99</string>
-    <string name="bravura_version" translatable="false">0.99</string>
-    <string name="bravura_font_asset" translatable="false">bravura_0_99/Bravura.otf</string>
-    <string name="bravura_text_font_asset" translatable="false">bravura_0_99/BravuraText.otf</string>
-    <string name="smufl_glyphnames_asset" translatable="false">SMuFL_0_99/glyphnames.json</string>
-    <string name="smufl_ranges_asset" translatable="false">SMuFL_0_99/ranges.json</string>
+    <string name="smufl_version" translatable="false">1.0</string>
+    <string name="bravura_version" translatable="false">1.02</string>
+    <string name="bravura_font_asset" translatable="false">bravura_1_02/Bravura.otf</string>
+    <string name="bravura_text_font_asset" translatable="false">bravura_1_02/BravuraText.otf</string>
+    <string name="smufl_glyphnames_asset" translatable="false">SMuFL_1_00/glyphnames.json</string>
+    <string name="smufl_ranges_asset" translatable="false">SMuFL_1_00/ranges.json</string>
     <!--
     Array of available fonts:
     [0] key used in code
