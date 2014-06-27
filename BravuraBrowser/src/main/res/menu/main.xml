@@ -18,7 +18,7 @@
         android:orderInCategory="200"
         android:showAsAction="ifRoom" />
     <item android:id="@+id/action_github"
-        android:title="@string/about"
+        android:title="@string/github"
         android:icon="@drawable/ic_action_github_mark_dark"
         android:orderInCategory="200"
         android:showAsAction="ifRoom" />
