@@ -16,6 +16,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -178,6 +179,12 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
                 return true;
             case R.id.action_about:
                 AboutActivity.start(this);
+                return true;
+            case R.id.action_github:
+                String url = "http://github.com/OldSkoolMark/BravuraBrowser";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
