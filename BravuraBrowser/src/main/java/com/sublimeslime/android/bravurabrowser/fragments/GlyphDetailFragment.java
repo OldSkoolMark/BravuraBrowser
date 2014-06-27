@@ -43,9 +43,8 @@ public class GlyphDetailFragment extends Fragment {
         GlyphView glyphTv = (GlyphView) rootView.findViewById(R.id.glyph);
         FontMetadata.getInstance().displayGlyph(glyphTv, glyph.codepoint, mFontSize, mTypeface);
         // codepoint
-        StringBuffer codepointLabel = new StringBuffer(getActivity().getResources().getString(R.string.codepoint));
         TextView cpTv = (TextView)rootView.findViewById(R.id.codepoint);
-        cpTv.setText(codepointLabel.append( glyph.codepoint));
+        cpTv.setText( glyph.codepoint );
         // SMuFL version
         TextView smuflTv = (TextView)rootView.findViewById(R.id.tv_smufl);
         smuflTv.setText("SMuFL v"+getResources().getString(R.string.smufl_version));

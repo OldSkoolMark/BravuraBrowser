@@ -8,6 +8,7 @@
     <TextView
         android:id="@+id/codepoint"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:layout_width="match_parent"
