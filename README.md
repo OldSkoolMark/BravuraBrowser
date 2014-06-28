@@ -1,6 +1,12 @@
 BravuraBrowser
 ==============
 
+Tool primarily for developers
+--------------------------
+BravuraBrowser is an open-source native Android application that allows developers to select and display Bravura music font glyphs. I wrote it as a warm-up for some other work that involves music notation.
+
+SMuFL and Bravura
+-----------------
 Bravura is the first SMuFL-compliant music font and is available under the SIL Open Font License. This application aids Android developers of music applications by providing allowing you to select and display Bravura glyphs in a range of sizes.
 
 Selecting glyphs
