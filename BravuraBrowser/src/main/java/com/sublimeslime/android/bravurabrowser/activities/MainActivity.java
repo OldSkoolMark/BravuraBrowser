@@ -177,9 +177,6 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
-            case R.id.action_about:
-                AboutActivity.start(this);
-                return true;
             case R.id.action_github:
                 String url = getString(R.string.bravura_browser_github_link);
                 Intent i = new Intent(Intent.ACTION_VIEW);
