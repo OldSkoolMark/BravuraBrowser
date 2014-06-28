@@ -181,7 +181,7 @@ public class MainActivity extends Activity implements GridFragment.IParentActivi
                 AboutActivity.start(this);
                 return true;
             case R.id.action_github:
-                String url = "http://github.com/OldSkoolMark/BravuraBrowser";
+                String url = getString(R.string.bravura_browser_github_link);
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);

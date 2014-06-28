@@ -56,8 +56,8 @@
     </array>
 
     <string name="title_activity_about">AboutActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="about">about</string>
-    <string name="github">github</string>
+    <string name="github" translatable="false">github</string>
+    <string name="bravura_browser_github_link" translatable="false">http://github.com/OldSkoolMark/BravuraBrowser</string>
 
 </resources>
