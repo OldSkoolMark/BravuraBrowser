@@ -38,7 +38,7 @@ public class SearchResultsActivity extends Activity implements GridFragment.IPar
         super.onCreate(savedInstanceState);
         ColorDrawable colorDrawable = new ColorDrawable( Color.TRANSPARENT );
         getWindow().setBackgroundDrawable( colorDrawable );
-//        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.activity_search_results);
         handleIntent(getIntent());
     }
 
