@@ -3,7 +3,7 @@ BravuraBrowser
 
 Tool primarily for developers
 --------------------------
-BravuraBrowser is a native Android application that allows you to select and display Bravura music font glyphs. In addition to being an entertaining compendium of both common and arcane music notations,it  may be used by Android developers of notation-rich applications to find and use one of the 3000+ glyphs provided by Bravura.
+BravuraBrowser is a native Android application that allows you to select and display Bravura music font glyphs. In addition to being an entertaining compendium of both common and arcane music notations,it  may be used by Android developers of notation-rich applications to find and use any of the 3000+ glyphs provided by Bravura. 
 
 Demo APK available from Play store
 --------
